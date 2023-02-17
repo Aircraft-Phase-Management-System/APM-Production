@@ -11,7 +11,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
-  name: String,
+  holidayName: String,
   date: String,
 });
 
@@ -22,10 +22,10 @@ const AddHoliday = () => {
 
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { name, date } = data;
+    const { holidayName, date } = data;
     const owner = Meteor.user().username;
     const collectionName = Holidays.getCollectionName();
-    const definitionData = { name, date, owner };
+    const definitionData = { holidayName, date, owner };
     defineMethod.callPromise({ collectionName, definitionData })
       .catch(error => swal('Error', error.message, 'error'))
       .then(() => {
@@ -44,7 +44,7 @@ const AddHoliday = () => {
           <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
             <Card>
               <Card.Body>
-                <TextField name="name" />
+                <TextField name="holidayName" />
                 <TextField name="date" />
                 <SubmitField value="Submit" />
                 <ErrorsField />
