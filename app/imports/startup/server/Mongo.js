@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
+import { Holidays } from '../../api/holiday/HolidayCollection'
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
@@ -15,3 +16,19 @@ if (Stuffs.count() === 0) {
     Meteor.settings.defaultData.map(data => addData(data));
   }
 }
+
+// Initialize the database with a default data document.
+function addHolidayData(data) {
+  console.log(`  Adding: ${data.holidayName} (${data.owner})`);
+  Holidays.define(data);
+}
+
+
+
+if (Holidays.count() === 0) {
+  if (Meteor.settings.defaultHolidays) {
+    console.log('Creating default data for holidays.');
+    Meteor.settings.defaultHolidays.map(data => addHolidayData(data));
+  }
+}
+

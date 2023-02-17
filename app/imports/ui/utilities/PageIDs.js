@@ -1,6 +1,6 @@
 /** Define ids for each page. */
 export const PAGE_IDS = {
-  ADD_STUFF: 'add-stuff',
+  ADD_HOLIDAY: 'add-holiday',
   EDIT_STUFF: 'edit-stuff',
   LANDING: 'landing',
   LIST_STUFF: 'list-stuff',

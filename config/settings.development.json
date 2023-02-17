@@ -4,13 +4,15 @@
     },
     { "email": "john@foo.com", "password": "changeme", "role": "USER" , "firstName": "John", "lastName": "Doe" }
   ],
-
-  "defaultData": [
-    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
-    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
-    { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
-    { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+  "defaultHolidays": [
+    { "holidayName": "New Year's Day", "date": "January 1", "owner": "john@foo.com"},
+    { "holidayName": "Independece Day", "date": "July 4", "owner": "john@foo.com"},
+    { "holidayName": "Veterans Dar", "date": "November 11", "owner": "john@foo.com"},
+    { "holidayName": "Christmas Day","date": "December 25", "owner": "john@foo.com" }
   ],
+
+
+
   "public": {
     "development": true
   }

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
+import { Holidays } from '../holiday/HolidayCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';
 
@@ -14,6 +15,7 @@ class MATPClass {
     // list of all the MATPCollections collections
     this.collections = [
       AdminProfiles,
+      Holidays,
       Stuffs,
       UserProfiles,
     ];
@@ -23,6 +25,7 @@ class MATPClass {
     this.collectionLoadSequence = [
       AdminProfiles,
       UserProfiles,
+      Holidays,
       Stuffs,
     ];
 
