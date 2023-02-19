@@ -3,6 +3,7 @@ export const PAGE_IDS = {
   ADD_HOLIDAY: 'add-holiday',
   EDIT_STUFF: 'edit-stuff',
   LANDING: 'landing',
+  MAIN_CALENDAR: 'main-calendar',
   LIST_STUFF: 'list-stuff',
   LIST_STUFF_ADMIN: 'list-stuff-admin',
   MANAGE_DATABASE: 'manage-database',
