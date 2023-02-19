@@ -14,44 +14,43 @@ export const holidayPublications = {
 class HolidayCollection extends BaseCollection {
   constructor() {
     super('Holidays', new SimpleSchema({
-      holidayName: String,
-      date: String,
+      title: String,
+      start: String,
       owner: String,
     }));
   }
 
   /**
    * Defines a new Holiday item.
-   * @param holidayName the name of the item.
-   * @param quantity how many.
+   * @param title the name of the item.
+   * @param start how many.
    * @param owner the owner of the item.
-   * @param condition the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ holidayName, date, owner }) {
+  define({ title, start, owner }) {
     const docID = this._collection.insert({
-      holidayName,
-      date,
+      title,
+      start,
       owner,
     });
     return docID;
   }
 
   /**
-   * Updates the given document.
-   * @param docID the id of the document to update.
-   * @param holidayName the new name (optional).
+   * Upstarts the given document.
+   * @param docID the id of the document to upstart.
+   * @param title the new name (optional).
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { holidayName, date }) {
+  update(docID, { title, start }) {
     const updateData = {};
-    if (holidayName) {
-      updateData.holidayName = holidayName;
+    if (title) {
+      updateData.title = title;
     }
 
-    if (date) {
-      updateData.date = date;
+    if (start) {
+      updateData.start = start;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -61,8 +60,8 @@ class HolidayCollection extends BaseCollection {
    * @param { String | Object } name A document or docID in this collection.
    * @returns true
    */
-  removeIt(holidayName) {
-    const doc = this.findDoc(holidayName);
+  removeIt(title) {
+    const doc = this.findDoc(title);
     check(doc, Object);
     this._collection.remove(doc._id);
     return true;
@@ -133,10 +132,10 @@ class HolidayCollection extends BaseCollection {
    */
   dumpOne(docID) {
     const doc = this.findDoc(docID);
-    const holidayName = doc.holidayName;
-    const date = doc.date;
+    const title = doc.title;
+    const start = doc.start;
     const owner = doc.owner;
-    return { holidayName, date, owner };
+    return { title, start, owner };
   }
 }
 
