@@ -19,7 +19,7 @@ if (Stuffs.count() === 0) {
 
 // Initialize the database with a default data document.
 function addHolidayData(data) {
-  console.log(`  Adding: ${data.holidayName} (${data.owner})`);
+  console.log(`  Adding: ${data.title} (${data.owner})`);
   Holidays.define(data);
 }
 
