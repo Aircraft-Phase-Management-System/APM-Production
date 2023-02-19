@@ -12,6 +12,7 @@ import { PAGE_IDS } from "../utilities/PageIDs";
   { title: "Holiday 1", start: new Date() },
 ];*/
 
+
 const Calendar = () => {
   const { ready, holidays } = useTracker(() => {
     // Note that this subscription will get cleaned up
