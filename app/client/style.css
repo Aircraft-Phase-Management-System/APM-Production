@@ -50,3 +50,15 @@ body {
   flex-grow: 1;
   padding: 3em;
 }
+
+/* Non-Working Days Card (add holiday) */
+
+.card-non-working-days {
+  padding: 1em;
+}
+
+/* List holidays card */
+
+.card-list-holidays {
+  padding: 1em;
+}

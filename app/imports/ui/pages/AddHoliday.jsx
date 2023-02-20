@@ -1,13 +1,20 @@
-import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
-import swal from 'sweetalert';
-import { Meteor } from 'meteor/meteor';
-import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
-import SimpleSchema from 'simpl-schema';
-import { Holidays } from '../../api/holiday/HolidayCollection';
-import { defineMethod } from '../../api/base/BaseCollection.methods';
-import { PAGE_IDS } from '../utilities/PageIDs';
+import React from "react";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import {
+  AutoForm,
+  ErrorsField,
+  NumField,
+  SelectField,
+  SubmitField,
+  TextField,
+} from "uniforms-bootstrap5";
+import swal from "sweetalert";
+import { Meteor } from "meteor/meteor";
+import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
+import SimpleSchema from "simpl-schema";
+import { Holidays } from "../../api/holiday/HolidayCollection";
+import { defineMethod } from "../../api/base/BaseCollection.methods";
+import { PAGE_IDS } from "../utilities/PageIDs";
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -19,17 +26,17 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddStuff page for adding a document. */
 const AddHoliday = () => {
-
   // On submit, insert the data.
   const submit = (data, formRef) => {
     const { title, start } = data;
     const owner = Meteor.user().username;
     const collectionName = Holidays.getCollectionName();
     const definitionData = { title, start, owner };
-    defineMethod.callPromise({ collectionName, definitionData })
-      .catch(error => swal('Error', error.message, 'error'))
+    defineMethod
+      .callPromise({ collectionName, definitionData })
+      .catch((error) => swal("Error", error.message, "error"))
       .then(() => {
-        swal('Success', 'Holiday added successfully', 'success');
+        swal("Success", "Holiday added successfully", "success");
         formRef.reset();
       });
   };
@@ -38,21 +45,28 @@ const AddHoliday = () => {
   let fRef = null;
   return (
     <Container id={PAGE_IDS.ADD_HOLIDAY} className="py-3">
-      <Row className="justify-content-center">
-        <Col xs={5}>
-          <Col className="text-center"><h2>Add Holiday</h2></Col>
-          <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
-            <Card>
-              <Card.Body>
-                <TextField name="title" />
-                <TextField name="start" />
-                <SubmitField value="Submit" />
-                <ErrorsField />
-              </Card.Body>
-            </Card>
-          </AutoForm>
-        </Col>
-      </Row>
+      <Card className="card-non-working-days">
+        <Card.Title>INSERT A NEW HOLIDAY</Card.Title>
+      <AutoForm
+        ref={(ref) => {
+          fRef = ref;
+        }}
+        schema={bridge}
+        onSubmit={(data) => submit(data, fRef)}
+      >
+        <Row>
+          <Col sm="9">
+            <TextField name="title" label="Holiday's Name" placeholder="Ex: Veteran's Day" />
+          </Col>
+          <Col sm="3">
+            <TextField name="start" label="Date" placeholder="Ex: YYYY-MM-DD" />
+          </Col>
+            <SubmitField value="Submit" />
+        </Row>
+
+        <ErrorsField />
+      </AutoForm>
+      </Card>
     </Container>
   );
 };

@@ -1,6 +1,8 @@
 /** Define ids for each page. */
 export const PAGE_IDS = {
   ADD_HOLIDAY: 'add-holiday',
+  NON_WORKING_DAYS: 'non-working-days',
+  LIST_HOLIDAY: 'list-holiday',
   EDIT_STUFF: 'edit-stuff',
   LANDING: 'landing',
   MAIN_CALENDAR: 'main-calendar',

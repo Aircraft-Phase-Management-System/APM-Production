@@ -9,6 +9,7 @@ import Landing from '../pages/Landing';
 import ListStuff from '../pages/ListStuff';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddHoliday from '../pages/AddHoliday';
+import NonWorkingDays from '../pages/NonWorkingDays';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/SignUp';
@@ -16,6 +17,7 @@ import SignOut from '../pages/SignOut';
 import NavBar from '../components/NavBar';
 import SignIn from '../pages/SignIn';
 import Calendar from '../pages/Calendar';
+import ListHoliday from '../pages/ListHoliday';
 import NotAuthorized from '../pages/NotAuthorized';
 import { ROLE } from '../../api/role/Role';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -39,6 +41,8 @@ const App = () => {
           <Route path="/signout" element={<SignOut />} />
           <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
           <Route path="/main-calendar" element={<Calendar />} />
+          <Route path="/non-working-days" element={<ProtectedRoute><NonWorkingDays /></ProtectedRoute>} />
+          <Route path="/list-holiday" element={<ProtectedRoute><ListHoliday /></ProtectedRoute>} />
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add-holiday" element={<ProtectedRoute><AddHoliday /></ProtectedRoute>} />
           <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
