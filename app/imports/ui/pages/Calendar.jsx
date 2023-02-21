@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from '@fullcalendar/interaction'
 import { Container, Col, Button } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 // import { ChevronLeft, List } from 'react-bootstrap-icons';
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
+import { formatDate } from '@fullcalendar/core'
 
-/*const EVENTS = [
-  { title: "event 1", start: "2023-02-20", end: "2023-02-24" },
-  { title: "Holiday 1", start: new Date() },
-];*/
 
 
 const Calendar = () => {
@@ -34,45 +32,7 @@ const Calendar = () => {
     };
   }, []);
 
-  /* const EVENTS = defaultHolidays.map(
-    ({ holidayName: title, date: start, _id, owner, ...rest }) => ({
-      title,
-      start,
-      ...rest,
-    })
-  );*/
-
-  return (
-    <div className="demo-app">
-      {renderSideBar(holidays)}
-      <Col>
-        <div
-          id={PAGE_IDS.MAIN_CALENDAR}
-          className="d-flex justify-content-center"
-        >
-          <Container className="p-lg-5">
-            <FullCalendar
-              defaultView="dayGridMonth"
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-              }}
-              plugins={[dayGridPlugin]}
-              /* weekends={false} */
-              events={holidays}
-              eventContent={renderEventContent}
-
-              /* eslint-disable-next-line react/jsx-no-bind */
-            />
-          </Container>
-        </div>
-      </Col>
-    </div>
-  );
-};
-
-const renderSideBar = (holidays) => {
+  const renderSideBar = (holidays) => {
     return (
       <div className="demo-app-sidebar">
         <div className="demo-app-sidebar-section">
@@ -90,24 +50,84 @@ const renderSideBar = (holidays) => {
       </div>
     );
   };
-  
-  function renderSidebarEvent(event) {
-    return (
-      <li /*key={event.id}*/>
-        <b>
-          {moment(event.start, "YYYY-MM-DD").format("MM-DD")}
-        </b>
-        <i>{' '}{event.title}</i>
-      </li>
-    );
+
+  handleDateSelect = (selectInfo) => {
+    let title = prompt('Please enter a new title for your event')
+    let calendarApi = selectInfo.view.calendar
+
+    calendarApi.unselect() // clear date selection
+
+    if (title) {
+      calendarApi.addEvent({
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
+      })
+    }
   }
 
-function renderEventContent(event) {
+  handleEventClick = (clickInfo) => {
+    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      clickInfo.event.remove()
+    }
+  }
+
+  const eventRender = (info) => {
+    if (info.event.extendedProps.type === "holiday") {
+      info.el.classList.add("fc-nonbusiness");
+      info.el.setAttribute("title", "Unavailable");
+    }
+  };
+
+
+    return (
+      <div className='demo-app'>
+        {renderSideBar(holidays)}
+        <div className='demo-app-main'>
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }}
+            initialView='dayGridMonth'
+            editable={true}
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={true}
+            select={handleDateSelect}
+            eventContent={renderEventContent} // custom render function
+            eventClick={this.handleEventClick}
+            /* you can update a remote database when these fire:
+            eventAdd={function(){}}
+            eventChange={function(){}}
+            eventRemove={function(){}}
+            */
+          />
+        </div>
+      </div>
+    )
+
+}
+
+function renderEventContent(eventInfo) {
   return (
     <>
-      <i>{event.event.title}</i>
+      <b>{eventInfo.timeText}</b>
+      <i>{eventInfo.event.title}</i>
     </>
-  );
+  )
+}
+
+function renderSidebarEvent(event) {
+  return (
+    <li key={event.id}>
+      <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
+      <i>{event.title}</i>
+    </li>
+  )
 }
 
 export default Calendar;
