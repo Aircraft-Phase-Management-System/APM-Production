@@ -60,16 +60,25 @@ const Calendar = () => {
     console.log(clickInfo.dateStr)
     for(let n = 0; n < holidays.length; n++ ){
       if(clickInfo.dateStr == holidays[n].start){
-        alert(clickInfo.dateStr + " is a Holiday")
+        alert(clickInfo.dateStr + " is a Holiday \n You can't edit this date" )
         return 
       }
+    }
+    let title = prompt('Please enter a new title for your event')
+    if (title) {
+      calendarApi.addEvent({
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay
+      })
     }
     alert(clickInfo.dateStr)
 
 }
 
   handleDateSelect = (selectInfo) => {
-       console.log(selectInfo)
+       console.log(selectInfo.startStr)
             let title = prompt('Please enter a new title for your event')
             let calendarApi = selectInfo.view.calendar
         
@@ -119,14 +128,14 @@ const Calendar = () => {
               center: 'title',
               right: 'dayGridMonth,timeGridWeek,timeGridDay'
             }}
-            dateClick={this.handleDateClick}
             initialView='dayGridMonth'
             editable={true}
             events={holidays}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            select={handleDateSelect}
+            dateClick={handleDateClick}
+            //select={handleDateSelect}
             eventContent={renderEventContent} // custom render function
             eventClick={this.handleEventClick}
           />
