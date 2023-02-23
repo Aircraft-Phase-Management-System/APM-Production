@@ -8,14 +8,16 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from '@fullcalendar/core'
-
+import { Info } from "react-bootstrap-icons";
 
 
 const Calendar = () => {
   const { ready, holidays } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
+    let isHoliday = '';
+
+    // let hd = new FederalHolidays('US');
+
+
     const subscription = Holidays.subscribeHoliday();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
@@ -51,32 +53,57 @@ const Calendar = () => {
     );
   };
 
-  handleDateSelect = (selectInfo) => {
-    let title = prompt('Please enter a new title for your event')
-    let calendarApi = selectInfo.view.calendar
+  const holidayDate = holidays[1];
 
-    calendarApi.unselect() // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      })
+  handleDateClick = (clickInfo) => { // bind with an arrow function
+    
+    console.log(clickInfo.dateStr)
+    for(let n = 0; n < holidays.length; n++ ){
+      if(clickInfo.dateStr == holidays[n].start){
+        alert(clickInfo.dateStr + " is a Holiday")
+        return 
+      }
     }
-  }
+    alert(clickInfo.dateStr)
+
+}
+
+  handleDateSelect = (selectInfo) => {
+       console.log(selectInfo)
+            let title = prompt('Please enter a new title for your event')
+            let calendarApi = selectInfo.view.calendar
+        
+            calendarApi.unselect() // clear date selection
+            
+            if (title) {
+              calendarApi.addEvent({
+                title,
+                start: selectInfo.startStr,
+                end: selectInfo.endStr,
+                allDay: selectInfo.allDay
+              })
+          
+       
+     }
+  
+}
 
   handleEventClick = (clickInfo) => {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove()
+      holidays.removeIt(clickInfo.event.title)
     }
   }
 
-  const eventRender = (info) => {
-    if (info.event.extendedProps.type === "holiday") {
-      info.el.classList.add("fc-nonbusiness");
-      info.el.setAttribute("title", "Unavailable");
+
+
+  const eventRender = (clickInfo) => {
+    if (clickInfo.event.type === "holidays") {
+      clickInfo.el.classList.add("fc-nonbusiness");
+      clickInfo.el.setAttribute("title", "Unavailable");
+      return false;
+    } else {
+      return true;
     }
   };
 
@@ -92,19 +119,16 @@ const Calendar = () => {
               center: 'title',
               right: 'dayGridMonth,timeGridWeek,timeGridDay'
             }}
+            dateClick={this.handleDateClick}
             initialView='dayGridMonth'
             editable={true}
+            events={holidays}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
             select={handleDateSelect}
             eventContent={renderEventContent} // custom render function
             eventClick={this.handleEventClick}
-            /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-            */
           />
         </div>
       </div>

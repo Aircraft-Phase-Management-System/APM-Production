@@ -17,6 +17,7 @@ class HolidayCollection extends BaseCollection {
       title: String,
       start: String,
       owner: String,
+      type: String,
     }));
   }
 
@@ -25,13 +26,15 @@ class HolidayCollection extends BaseCollection {
    * @param title the name of the item.
    * @param start how many.
    * @param owner the owner of the item.
+   * @param type the type of the item
    * @return {String} the docID of the new document.
    */
-  define({ title, start, owner }) {
+  define({ title, start, owner, type }) {
     const docID = this._collection.insert({
       title,
       start,
       owner,
+      type: "holidays",
     });
     return docID;
   }
