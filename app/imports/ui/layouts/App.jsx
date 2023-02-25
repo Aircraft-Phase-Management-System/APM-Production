@@ -9,6 +9,7 @@ import Landing from '../pages/Landing';
 import ListStuff from '../pages/ListStuff';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
 import AddHoliday from '../pages/AddHoliday';
+import EditHoliday from '../pages/EditHoliday';
 import NonWorkingDays from '../pages/NonWorkingDays';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
@@ -45,7 +46,7 @@ const App = () => {
           <Route path="/list-holiday" element={<ProtectedRoute><ListHoliday /></ProtectedRoute>} />
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add-holiday" element={<ProtectedRoute><AddHoliday /></ProtectedRoute>} />
-          <Route path="/edit/:_id" element={<ProtectedRoute><EditStuff /></ProtectedRoute>} />
+          <Route path="/edit/:_id" element={<ProtectedRoute><EditHoliday /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />

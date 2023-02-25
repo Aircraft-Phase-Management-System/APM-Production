@@ -9,8 +9,7 @@ const HolidayItem = ({ holiday }) => (
   <Row>
     <Col sm={8}>{holiday.title}</Col>
     <Col sm={3}>{holiday.start}</Col>
-    <Col><h6>Edit</h6></Col>
-    {/*<Link className={COMPONENT_IDS.LIST_STUFF_EDIT} to={`/edit/${stuff._id}`}>Edit</Link>*/}
+    <Col><Link className={COMPONENT_IDS.LIST_HOLIDAY_EDIT} to={`/edit/${holiday._id}`}>Edit</Link></Col>
   </Row>
 );
 

@@ -1,6 +1,5 @@
 export const COMPONENT_IDS = {
-  LIST_STUFF_EDIT: 'list-stuff-edit',
-  NAVBAR_ADD_HOLIDAY: 'navbar-add-holiday',
+  LIST_HOLIDAY_EDIT: 'list-holiday-edit',
   NAVBAR_NON_WORKING_DAYS: 'navbar-non-working-days',
   NAVBAR_MAIN_CALENDAR: 'navbar-main-calendar',
   NAVBAR_LIST_STUFF: 'navbar-list-stuff',
