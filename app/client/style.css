@@ -52,13 +52,22 @@ body {
 }
 
 /* Non-Working Days Card (add holiday) */
-
 .card-non-working-days {
   padding: 1em;
 }
 
 /* List holidays card */
-
 .card-list-holidays {
   padding: 1em;
+}
+
+/* Row of Holiday Item */
+.holiday-item-row {
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+#edit-holiday-close-button {
+  margin-bottom: 4px;
+  margin-left: 6px;
 }

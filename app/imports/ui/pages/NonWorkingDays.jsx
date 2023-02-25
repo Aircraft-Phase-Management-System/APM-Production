@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Container, Nav, Row, Tab} from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
-//import Sonnet from '../../components/Sonnet';
 import AddHoliday from './AddHoliday';
 import ListHoliday from './ListHoliday';
 
@@ -28,7 +27,7 @@ function NonWorkingDays() {
               <ListHoliday/>
             </Tab.Pane>
             <Tab.Pane eventKey="second">
-            <p>TO DO</p>
+            <p>WILL MERGE WITH HOLIDAYS</p>
             </Tab.Pane>
           </Tab.Content>
         </Col>

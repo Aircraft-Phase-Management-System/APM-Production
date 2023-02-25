@@ -27,17 +27,15 @@ const ListHoliday = () => {
     <Container id={PAGE_IDS.LIST_HOLIDAY} className="py-3">
       <Card className="card-list-holidays">
         <Card.Title>ALL CURRENT HOLIDAYS</Card.Title>
-      <Row className="justify-content-center">
         <Row>
           <Col sm={8}><h6>Name</h6></Col>
           <Col sm={3}><h6>Date</h6></Col>
-          <Col><h6>Edit</h6></Col>
-        </Row>
+          <Col sm={1}><h6>Modify</h6></Col>
+          </Row>
           {holidays.map((holiday) => (
             <HolidayItem key={holiday._id} holiday={holiday} />
           ))}
 
-      </Row>
       </Card>
     </Container>
   ) : (
