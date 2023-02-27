@@ -20,6 +20,7 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 const formSchema = new SimpleSchema({
   title: String,
   start: String,
+  type: {type: String, defaultValue: "holiday" },
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
@@ -31,7 +32,7 @@ const AddHoliday = () => {
     const { title, start } = data;
     const owner = Meteor.user().username;
     const collectionName = Holidays.getCollectionName();
-    const definitionData = { title, start, owner };
+    const definitionData = { title, start, owner, type: "holiday" };
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
