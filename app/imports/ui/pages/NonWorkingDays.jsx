@@ -4,6 +4,7 @@ import { PAGE_IDS } from '../utilities/PageIDs';
 
 import AddHoliday from './AddHoliday';
 import ListHoliday from './ListHoliday';
+import TotalNoneWorkingDays from './TotalNoneWorkingDays';
 
 function NonWorkingDays() {
   return (
@@ -18,6 +19,9 @@ function NonWorkingDays() {
             <Nav.Item>
               <Nav.Link eventKey="second">Current Training Days</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="third">Total Non-Working days</Nav.Link>
+            </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
@@ -28,6 +32,9 @@ function NonWorkingDays() {
             </Tab.Pane>
             <Tab.Pane eventKey="second">
             <p>WILL MERGE WITH HOLIDAYS</p>
+            </Tab.Pane>
+            <Tab.Pane eventKey="third">
+              <TotalNoneWorkingDays/>
             </Tab.Pane>
           </Tab.Content>
         </Col>
