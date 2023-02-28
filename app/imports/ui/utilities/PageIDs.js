@@ -15,4 +15,5 @@ export const PAGE_IDS = {
   SIGN_IN: 'sign-in',
   SIGN_OUT: 'sign-out',
   SIGN_UP: 'sign-up',
+  TOTAL_NONE_WORKING_DAYS:'Total-None-Working-Days',
 };
