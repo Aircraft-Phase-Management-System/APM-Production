@@ -35,6 +35,7 @@ function NonWorkingDays() {
             </Tab.Pane>
             <Tab.Pane eventKey="third">
               <TotalNoneWorkingDays/>
+              <ListHoliday/>
             </Tab.Pane>
           </Tab.Content>
         </Col>

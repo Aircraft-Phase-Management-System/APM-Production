@@ -53,7 +53,7 @@ const Calendar = () => {
     );
   };
 
-  const holidayDate = holidays[1];
+  const holidayDate = holidays[1]; // test
 
   handleDateClick = (clickInfo) => { // bind with an arrow function
     
@@ -61,6 +61,7 @@ const Calendar = () => {
     for(let n = 0; n < holidays.length; n++ ){
       if(clickInfo.dateStr == holidays[n].start){
         alert(clickInfo.dateStr + " is a Holiday \n You can't edit this date" )
+        console.log(holidays)
         return 
       }
     }
