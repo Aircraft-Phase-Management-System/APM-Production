@@ -10,6 +10,64 @@
     { "title": "Veterans Dar", "start": "2023-11-11", "owner": "john@foo.com"},
     { "title": "Christmas Day","start": "2023-12-25", "owner": "john@foo.com" }
   ],
+  "defaultPMIs": [
+    {
+      "title": "PMI 1",
+      "start": "2023-10-20 15:50:00",
+      "end": "2023-12-19 23:30:00",
+      "bgColor": "#17C8E7",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 2",
+      "start": "2023-09-20 15:50:00",
+      "end": "2023-11-19 23:30:00",
+      "bgColor": "#17E7E1",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 3",
+      "start": "2023-10-21 15:50:00",
+      "end": "2023-12-19 23:30:00",
+      "bgColor": "#17E7AB",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 4",
+      "start": "2023-01-20 15:50:00",
+      "end": "2023-03-19 23:30:00",
+      "bgColor": "#33E717",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 5",
+      "start": "2022-11-20 15:50:00",
+      "end": "2023-01-19 23:30:00",
+      "bgColor": "#F5D120",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 6",
+      "start": "2022-10-20 15:50:00",
+      "end": "2022-12-15 23:30:00",
+      "bgColor": "#F3A928",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 7",
+      "start": "2022-12-10 15:50:00",
+      "end": "2022-02-09 23:30:00",
+      "bgColor": "#E5700F",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "PMI 8",
+      "start": "2023-01-20 15:50:00",
+      "end": "2023-02-15 23:30:00",
+      "bgColor": "#E5390F",
+      "owner": "john@foo.com"
+    }
+  ],
 
 
 

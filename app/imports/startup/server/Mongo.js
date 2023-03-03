@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Holidays } from '../../api/holiday/HolidayCollection'
+import { PMIs } from '../../api/pmi/PMICollection';
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
@@ -17,12 +18,11 @@ if (Stuffs.count() === 0) {
   }
 }
 
-// Initialize the database with a default data document.
+// Initialize the database with a default holiday data document.
 function addHolidayData(data) {
   console.log(`  Adding: ${data.title} (${data.owner})`);
   Holidays.define(data);
 }
-
 
 
 if (Holidays.count() === 0) {
@@ -31,4 +31,19 @@ if (Holidays.count() === 0) {
     Meteor.settings.defaultHolidays.map(data => addHolidayData(data));
   }
 }
+
+// Initialize the database with a default PMI data document.
+function addPMIData(data) {
+  console.log(`  Adding: ${data.title} (${data.owner})`);
+  PMIs.define(data);
+}
+
+
+if (PMIs.count() === 0) {
+  if (Meteor.settings.defaultPMIs) {
+    console.log('Creating default data for PMI events.');
+    Meteor.settings.defaultPMIs.map(data => addPMIData(data));
+  }
+}
+
 
