@@ -6,22 +6,23 @@ import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
-export const PMIPublications = {
-  pmi: 'PMI',
-  pmiAdmin: 'PMIAdmin',
+export const phasePublications = {
+  phase: 'Phase',
+  phaseAdmin: 'PhaseAdmin',
 };
 
-class PMICollection extends BaseCollection {
+class PhaseCollection extends BaseCollection {
   constructor() {
-    super('PMIs', new SimpleSchema({
+    super('Phases', new SimpleSchema({
       title: String,
       start: String,
       end: String,
       bgColor: String,
+      owner: String,
     }));
   }
 
-  /**
+    /**
    * Defines a new Stuff item.
    * @param title the name of the item.
    * @param start how many.
@@ -32,8 +33,8 @@ class PMICollection extends BaseCollection {
   define({ title, start, end, bgColor, owner }) {
     const docID = this._collection.insert({
       title,
-      start,
-      end, 
+      start, 
+      end,
       bgColor,
       owner,
     });
@@ -48,7 +49,7 @@ class PMICollection extends BaseCollection {
    * @param end the new condition (optional).
    * @param bgColor the new condition (optional).
    */
-  update(docID, { title, start, end, bgColor }) {
+  update(docID, { title, start }) {
     const updateData = {};
     if (title) {
       updateData.title = title;
@@ -70,8 +71,8 @@ class PMICollection extends BaseCollection {
    * @param { String | Object } name A document or docID in this collection.
    * @returns true
    */
-  removeIt(name) {
-    const doc = this.findDoc(name);
+  removeIt(title) {
+    const doc = this.findDoc(title);
     check(doc, Object);
     this._collection.remove(doc._id);
     return true;
@@ -86,7 +87,7 @@ class PMICollection extends BaseCollection {
       // get the StuffCollection instance.
       const instance = this;
       /** This subscription publishes only the documents associated with the logged in user */
-      Meteor.publish(PMIPublications.pmi, function publish() {
+      Meteor.publish(phasePublications.phase, function publish() {
         if (this.userId) {
           const username = Meteor.users.findOne(this.userId).username;
           return instance._collection.find({ owner: username });
@@ -95,7 +96,7 @@ class PMICollection extends BaseCollection {
       });
 
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publish(PMIPublications.pmiAdmin, function publish() {
+      Meteor.publish(phasePublications.phaseAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
           return instance._collection.find();
         }
@@ -105,11 +106,11 @@ class PMICollection extends BaseCollection {
   }
 
   /**
-   * Subscription method for stuff owned by the current user.
+   * Subscription method for holiday owned by the current user.
    */
-  subscribePMI() {
+  subscribePhase() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(PMIPublications.pmi);
+      return Meteor.subscribe(phasePublications.phase);
     }
     return null;
   }
@@ -118,9 +119,9 @@ class PMICollection extends BaseCollection {
    * Subscription method for admin users.
    * It subscribes to the entire collection.
    */
-  subscribePMIAdmin() {
+  subscribePhaseAdmin() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(PMIPublications.pmiAdmin);
+      return Meteor.subscribe(phasePublications.phaseAdmin);
     }
     return null;
   }
@@ -144,8 +145,8 @@ class PMICollection extends BaseCollection {
     const doc = this.findDoc(docID);
     const title = doc.title;
     const start = doc.start;
-    const end = doc.end;
-    const bgColor = doc.bgColor;
+    const end = doc.start;
+    const bgColor = doc.start;
     const owner = doc.owner;
     return { title, start, end, bgColor, owner };
   }
@@ -154,4 +155,4 @@ class PMICollection extends BaseCollection {
 /**
  * Provides the singleton instance of this class to all other entities.
  */
-export const PMIs = new PMICollection();
+export const Phases = new PhaseCollection();

@@ -6,18 +6,18 @@ import { Container, Col, Button } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 // import { ChevronLeft, List } from 'react-bootstrap-icons';
 import { Holidays } from "../../api/holiday/HolidayCollection";
+import { Phases } from "../../api/phase/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from '@fullcalendar/core'
 import { Info } from "react-bootstrap-icons";
 
 
 const Calendar = () => {
+  
   const { ready, holidays } = useTracker(() => {
     let isHoliday = '';
 
     // let hd = new FederalHolidays('US');
-
-
     const subscription = Holidays.subscribeHoliday();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
@@ -26,13 +26,29 @@ const Calendar = () => {
       {},
       { sort: { holidayName: 1 } }
     ).fetch();
-    // if (holidayItems[0] != null) defaultHolidays.push(holidayItems[0]);
 
     return {
       holidays: holidayItems,
       ready: rdy,
     };
   }, []);
+
+  const { ready1, phases } = useTracker(() => {
+    // Get access to Stuff documents.
+    const subscription = Phases.subscribePhase();
+    // Determine if the subscription is ready
+    const rdy1 = subscription.ready();
+    // Get the Stuff documents
+    const phaseItems = Phases.find({}, { sort: { title: 1 } }).fetch();
+    return {
+      phases: phaseItems,
+      ready1: rdy1,
+    };
+  }, []);
+
+  console.log(phases);
+  console.log(holidays);
+
 
   const renderSideBar = (holidays) => {
     return (
@@ -131,7 +147,7 @@ const Calendar = () => {
             }}
             initialView='dayGridMonth'
             editable={true}
-            events={holidays}
+            events={phases}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}

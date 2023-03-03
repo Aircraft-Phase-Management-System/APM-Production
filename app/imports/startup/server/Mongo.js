@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Holidays } from '../../api/holiday/HolidayCollection'
-import { PMIs } from '../../api/pmi/PMICollection';
+import { Phases  } from '../../api/phase/PhaseCollection';
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
@@ -35,11 +35,11 @@ if (Holidays.count() === 0) {
 // Initialize the database with a default PMI data document.
 function addPMIData(data) {
   console.log(`  Adding: ${data.title} (${data.owner})`);
-  PMIs.define(data);
+  Phases.define(data);
 }
 
 
-if (PMIs.count() === 0) {
+if (Phases.count() === 0) {
   if (Meteor.settings.defaultPMIs) {
     console.log('Creating default data for PMI events.');
     Meteor.settings.defaultPMIs.map(data => addPMIData(data));
