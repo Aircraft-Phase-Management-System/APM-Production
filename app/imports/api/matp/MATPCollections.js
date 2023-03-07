@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
 import { Holidays } from '../holiday/HolidayCollection';
-import { Events } from '../event/EventCollection';
+import { Events } from '../event_phase/EventCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';
 

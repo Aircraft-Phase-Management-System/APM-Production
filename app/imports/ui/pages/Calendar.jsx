@@ -6,7 +6,7 @@ import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { PlusSquare } from "react-bootstrap-icons";
 import { Holidays } from "../../api/holiday/HolidayCollection";
-import { Events } from "../../api/event/EventCollection";
+import { Events } from "../../api/event_phase/EventCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
@@ -97,13 +97,14 @@ const Calendar = () => {
     const rdy1 = subscription.ready();
     // Get the Stuff documents
     const eventItems = Events.find({}, { sort: { title: 1 } }).fetch();
+    console.log(eventItems);
     return {
-      event: eventItems,
+      events: eventItems,
       ready1: rdy1,
     };
   }, []);
 
-  console.log(holidays);
+  
 
   const renderSideBar = (phaseLanes) => {
     return (

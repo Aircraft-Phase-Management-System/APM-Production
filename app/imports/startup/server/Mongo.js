@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Holidays } from '../../api/holiday/HolidayCollection'
-import { Events  } from '../../api/event/EventCollection';
+import { Events  } from '../../api/event_phase/EventCollection';
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
@@ -40,7 +40,7 @@ function addEvent(data) {
 
 
 if (Events.count() === 0) {
-  if (Meteor.settings.defaultEventes) {
+  if (Meteor.settings.defaultEvents) {
     console.log('Creating default data for events for Phase Lanes.');
     Meteor.settings.defaultEvents.map(data => addEvent(data));
   }
