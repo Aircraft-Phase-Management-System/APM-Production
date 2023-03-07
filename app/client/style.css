@@ -36,7 +36,7 @@ body {
 }
 
 .app-sidebar {
-  margin-top: 100px;
+  margin-top: 37px;
   width: 300px;
   line-height: 1.5;
   border-right: 1px solid #d3e2e8;
@@ -63,8 +63,4 @@ body {
   margin-top: 4px;
 }
 
-#edit-holiday-close-button {
-  margin-bottom: 4px;
-  margin-left: 6px;
-}
 

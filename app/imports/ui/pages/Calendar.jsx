@@ -7,68 +7,10 @@ import { useTracker } from "meteor/react-meteor-data";
 import { PlusSquare } from "react-bootstrap-icons";
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { Events } from "../../api/event_phase/EventCollection";
+import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
-
-const phaseLanes = [
-  {
-    id: "r0",
-    name: "Flight Lane 1",
-    author: "Team 1",
-    bgColor: "#3788d8",
-    issue: "#1",
-  },
-  {
-    id: "r1",
-    name: "Flight Lane 2",
-    author: "Team 2",
-    bgColor: "#87aef5",
-    issue: "#2",
-  },
-  {
-    id: "r2",
-    name: "Flight Lane 3",
-    author: "Team 3",
-    bgColor: "#3788d8",
-    issue: "#3",
-  },
-  {
-    id: "r3",
-    name: "Flight Lane 4",
-    author: "Team 4",
-    bgColor: "#87aef5",
-    issue: "#4",
-  },
-  {
-    id: "r4",
-    name: "Flight Lane 5",
-    author: "Team 5",
-    bgColor: "#3788d8",
-    issue: "#5",
-  },
-  {
-    id: "r5",
-    name: "Flight Lane 6",
-    author: "Team 6",
-    bgColor: "#87aef5",
-    issue: "#6",
-  },
-  {
-    id: "r6",
-    name: "Flight Lane 7",
-    author: "Team 7",
-    bgColor: "#3788d8",
-    issue: "#7",
-  },
-  {
-    id: "r7",
-    name: "Flight Lane 8",
-    author: "Team 8",
-    bgColor: "#87aef5",
-    issue: "#8",
-  },
-];
 
 const Calendar = () => {
   const { ready, holidays } = useTracker(() => {
@@ -97,16 +39,29 @@ const Calendar = () => {
     const rdy1 = subscription.ready();
     // Get the Stuff documents
     const eventItems = Events.find({}, { sort: { title: 1 } }).fetch();
-    console.log(eventItems);
     return {
       events: eventItems,
       ready1: rdy1,
     };
   }, []);
 
+  const { ready2, phases } = useTracker(() => {
+    // Get access to Stuff documents.
+    const subscription = Phases.subscribePhase();
+    // Determine if the subscription is ready
+    const rdy2 = subscription.ready();
+    // Get the Stuff documents
+    const phaseItems = Phases.find({}, { sort: { name: 1 } }).fetch();
+    console.log(phaseItems);
+    return {
+      phases: phaseItems,
+      ready2: rdy2,
+    };
+  }, []);
+
   
 
-  const renderSideBar = (phaseLanes) => {
+  const renderSideBar = (phases) => {
     return (
       <div className="app-sidebar">
         <Container>
@@ -118,7 +73,7 @@ const Calendar = () => {
             </div>
           </Row>
           <Row>
-            {phaseLanes.map((phase) => (
+            {phases.map((phase) => (
               <PhaseLaneItem key={phase._id} phase={phase} />
             ))}
           </Row>
@@ -192,7 +147,7 @@ const Calendar = () => {
 
   return (
     <div className="demo-app">
-      {renderSideBar(phaseLanes)}
+      {renderSideBar(phases)}
       <div className="demo-app-main">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}

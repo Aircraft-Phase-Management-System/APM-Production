@@ -14,28 +14,28 @@ export const phasePublications = {
 class PhaseCollection extends BaseCollection {
   constructor() {
     super('Phases', new SimpleSchema({
-      title: String,
-      start: String,
-      end: String,
+      name: String,
+      author: String,
       bgColor: String,
+      issue: String,
       owner: String,
     }));
   }
 
     /**
    * Defines a new Stuff item.
-   * @param title the name of the item.
-   * @param start how many.
-   * @param end the owner of the item.
-   * @param bgColor the condition of the item.
+   * @param name the name of the item.
+   * @param author how many.
+   * @param bgColor the owner of the item.
+   * @param issue the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ title, start, end, bgColor, owner }) {
+  define({ name, author, bgColor, issue, owner }) {
     const docID = this._collection.insert({
-      title,
-      start, 
-      end,
+      name,
+      author, 
       bgColor,
+      issue,
       owner,
     });
     return docID;
@@ -44,24 +44,24 @@ class PhaseCollection extends BaseCollection {
   /**
    * Updates the given document.
    * @param docID the id of the document to update.
-   * @param title the new name (optional).
-   * @param start the new quantity (optional).
-   * @param end the new condition (optional).
+   * @param name the new name (optional).
+   * @param author the new quantity (optional).
    * @param bgColor the new condition (optional).
+   * @param issue the new condition (optional).
    */
-  update(docID, { title, start }) {
+  update(docID, { name, author }) {
     const updateData = {};
-    if (title) {
-      updateData.title = title;
+    if (name) {
+      updateData.name = name;
     }
-    if (start) {
-      updateData.start = start;
-    }
-    if (end) {
-      updateData.end = end;
+    if (author) {
+      updateData.author = author;
     }
     if (bgColor) {
       updateData.bgColor = bgColor;
+    }
+    if (issue) {
+      updateData.issue = issue;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -71,8 +71,8 @@ class PhaseCollection extends BaseCollection {
    * @param { String | Object } name A document or docID in this collection.
    * @returns true
    */
-  removeIt(title) {
-    const doc = this.findDoc(title);
+  removeIt(name) {
+    const doc = this.findDoc(name);
     check(doc, Object);
     this._collection.remove(doc._id);
     return true;
@@ -143,12 +143,12 @@ class PhaseCollection extends BaseCollection {
    */
   dumpOne(docID) {
     const doc = this.findDoc(docID);
-    const title = doc.title;
-    const start = doc.start;
-    const end = doc.start;
-    const bgColor = doc.start;
+    const name = doc.name;
+    const author = doc.author;
+    const bgColor = doc.bgColor;
+    const issue = doc.issue;
     const owner = doc.owner;
-    return { title, start, end, bgColor, owner };
+    return { name, author, bgColor, issue, owner };
   }
 }
 

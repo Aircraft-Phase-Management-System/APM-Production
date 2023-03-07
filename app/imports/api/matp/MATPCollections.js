@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
 import { Holidays } from '../holiday/HolidayCollection';
 import { Events } from '../event_phase/EventCollection';
+import { Phases } from '../phase_lane/PhaseCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';
 
@@ -18,6 +19,7 @@ class MATPClass {
       AdminProfiles,
       Holidays,
       Events,
+      Phases,
       Stuffs,
       UserProfiles,
     ];
@@ -29,6 +31,7 @@ class MATPClass {
       UserProfiles,
       Holidays,
       Events,
+      Phases,
       Stuffs,
     ];
 
