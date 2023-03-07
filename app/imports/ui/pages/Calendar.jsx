@@ -6,7 +6,7 @@ import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { PlusSquare } from "react-bootstrap-icons";
 import { Holidays } from "../../api/holiday/HolidayCollection";
-import { Phases } from "../../api/phase/PhaseCollection";
+import { Events } from "../../api/event/EventCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
@@ -90,20 +90,19 @@ const Calendar = () => {
     };
   }, []);
 
-  const { ready1, phases } = useTracker(() => {
+  const { ready1, events } = useTracker(() => {
     // Get access to Stuff documents.
-    const subscription = Phases.subscribePhase();
+    const subscription = Events.subscribeEvent();
     // Determine if the subscription is ready
     const rdy1 = subscription.ready();
     // Get the Stuff documents
-    const phaseItems = Phases.find({}, { sort: { title: 1 } }).fetch();
+    const eventItems = Events.find({}, { sort: { title: 1 } }).fetch();
     return {
-      phases: phaseItems,
+      event: eventItems,
       ready1: rdy1,
     };
   }, []);
 
-  console.log(phases);
   console.log(holidays);
 
   const renderSideBar = (phaseLanes) => {
@@ -203,7 +202,7 @@ const Calendar = () => {
           }}
           initialView="dayGridMonth"
           editable={true}
-          events={phases}
+          events={events}
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}

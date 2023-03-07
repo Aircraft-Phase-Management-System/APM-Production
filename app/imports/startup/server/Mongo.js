@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Holidays } from '../../api/holiday/HolidayCollection'
-import { Phases  } from '../../api/phase/PhaseCollection';
+import { Events  } from '../../api/event/EventCollection';
 /* eslint-disable no-console */
 
 // Initialize the database with a default data document.
@@ -19,7 +19,7 @@ if (Stuffs.count() === 0) {
 }
 
 // Initialize the database with a default holiday data document.
-function addHolidayData(data) {
+function addHoliday(data) {
   console.log(`  Adding: ${data.title} (${data.owner})`);
   Holidays.define(data);
 }
@@ -28,21 +28,21 @@ function addHolidayData(data) {
 if (Holidays.count() === 0) {
   if (Meteor.settings.defaultHolidays) {
     console.log('Creating default data for holidays.');
-    Meteor.settings.defaultHolidays.map(data => addHolidayData(data));
+    Meteor.settings.defaultHolidays.map(data => addHoliday(data));
   }
 }
 
 // Initialize the database with a default PMI data document.
-function addPMIData(data) {
+function addEvent(data) {
   console.log(`  Adding: ${data.title} (${data.owner})`);
-  Phases.define(data);
+  Events.define(data);
 }
 
 
-if (Phases.count() === 0) {
-  if (Meteor.settings.defaultPMIs) {
-    console.log('Creating default data for PMI events.');
-    Meteor.settings.defaultPMIs.map(data => addPMIData(data));
+if (Events.count() === 0) {
+  if (Meteor.settings.defaultEventes) {
+    console.log('Creating default data for events for Phase Lanes.');
+    Meteor.settings.defaultEvents.map(data => addEvent(data));
   }
 }
 

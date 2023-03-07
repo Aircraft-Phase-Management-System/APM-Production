@@ -6,14 +6,14 @@ import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
-export const phasePublications = {
-  phase: 'Phase',
-  phaseAdmin: 'PhaseAdmin',
+export const eventPublications = {
+  event: 'Event',
+  eventAdmin: 'EventAdmin',
 };
 
-class PhaseCollection extends BaseCollection {
+class EventCollection extends BaseCollection {
   constructor() {
-    super('Phases', new SimpleSchema({
+    super('Events', new SimpleSchema({
       title: String,
       start: String,
       end: String,
@@ -87,7 +87,7 @@ class PhaseCollection extends BaseCollection {
       // get the StuffCollection instance.
       const instance = this;
       /** This subscription publishes only the documents associated with the logged in user */
-      Meteor.publish(phasePublications.phase, function publish() {
+      Meteor.publish(eventPublications.event, function publish() {
         if (this.userId) {
           const username = Meteor.users.findOne(this.userId).username;
           return instance._collection.find({ owner: username });
@@ -96,7 +96,7 @@ class PhaseCollection extends BaseCollection {
       });
 
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publish(phasePublications.phaseAdmin, function publish() {
+      Meteor.publish(eventPublications.eventAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
           return instance._collection.find();
         }
@@ -108,9 +108,9 @@ class PhaseCollection extends BaseCollection {
   /**
    * Subscription method for holiday owned by the current user.
    */
-  subscribePhase() {
+  subscribeEvent() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(phasePublications.phase);
+      return Meteor.subscribe(eventPublications.event);
     }
     return null;
   }
@@ -119,9 +119,9 @@ class PhaseCollection extends BaseCollection {
    * Subscription method for admin users.
    * It subscribes to the entire collection.
    */
-  subscribePhaseAdmin() {
+  subscribeEventAdmin() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(phasePublications.phaseAdmin);
+      return Meteor.subscribe(eventPublications.eventAdmin);
     }
     return null;
   }
@@ -155,4 +155,4 @@ class PhaseCollection extends BaseCollection {
 /**
  * Provides the singleton instance of this class to all other entities.
  */
-export const Phases = new PhaseCollection();
+export const Events = new EventCollection();
