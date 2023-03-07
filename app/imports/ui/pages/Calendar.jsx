@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Container, Column, Row, Button, Card } from "react-bootstrap";
+import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
-import { AirplaneFill } from "react-bootstrap-icons";
+import { PlusSquare } from "react-bootstrap-icons";
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { Phases } from "../../api/phase/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
-
 
 const phaseLanes = [
   {
@@ -109,13 +108,21 @@ const Calendar = () => {
 
   const renderSideBar = (phaseLanes) => {
     return (
-      <div className="demo-app-sidebar">
+      <div className="app-sidebar">
         <Container>
           <Row>
-          {phaseLanes.map((phase) => <PhaseLaneItem key={phase._id} phase={phase} />)}
+            <div className="d-grid gap-2">
+              <Button variant="light">
+                <PlusSquare /> <Col>Create New Phase Lane</Col>
+              </Button>
+            </div>
+          </Row>
+          <Row>
+            {phaseLanes.map((phase) => (
+              <PhaseLaneItem key={phase._id} phase={phase} />
+            ))}
           </Row>
         </Container>
-      
       </div>
     );
   };

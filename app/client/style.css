@@ -35,15 +35,11 @@ body {
   font-size: 14px;
 }
 
-.demo-app-sidebar {
+.app-sidebar {
+  margin-top: 100px;
   width: 300px;
   line-height: 1.5;
-  background: #eaf9ff;
   border-right: 1px solid #d3e2e8;
-}
-
-.demo-app-sidebar-section {
-  padding: 2em;
 }
 
 .demo-app-main {
@@ -70,4 +66,9 @@ body {
 #edit-holiday-close-button {
   margin-bottom: 4px;
   margin-left: 6px;
+}
+
+/* Phase Lane Calendar */
+.phase-lane-button {
+  margin-left: -20px;
 }
