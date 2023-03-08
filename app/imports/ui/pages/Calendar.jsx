@@ -11,6 +11,19 @@ import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
+import AddEvent from "../components/AddEvent";
+
+const testEvents = [
+  {
+    title: "PMI 1",
+    start: "2023-03-20",
+    end: "2023-12-19",
+    bgColor: "#17C8E7",
+    owner: "john@foo.com",
+  },
+];
+
+console.log(testEvents);
 
 const Calendar = () => {
   const { ready, holidays } = useTracker(() => {
@@ -52,19 +65,21 @@ const Calendar = () => {
     const rdy2 = subscription.ready();
     // Get the Stuff documents
     const phaseItems = Phases.find({}, { sort: { name: 1 } }).fetch();
-    console.log(phaseItems);
     return {
       phases: phaseItems,
       ready2: rdy2,
     };
   }, []);
 
-  
-
   const renderSideBar = (phases) => {
     return (
       <div className="app-sidebar">
         <Container>
+          {/* ROW TO BE REMOVED */}
+          <Row>
+         <AddEvent/>
+          </Row>
+          {/* ROW TO BE REMOVED */}
           <Row>
             <div className="d-grid gap-2">
               <Button variant="light">
