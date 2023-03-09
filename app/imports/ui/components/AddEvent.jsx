@@ -3,7 +3,6 @@ import { Card, Col, Container, Row, Button } from "react-bootstrap";
 import {
   AutoForm,
   ErrorsField,
-  NumField,
   SelectField,
   SubmitField,
   TextField,

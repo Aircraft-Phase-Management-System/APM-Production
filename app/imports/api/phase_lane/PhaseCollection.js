@@ -16,7 +16,11 @@ class PhaseCollection extends BaseCollection {
     super('Phases', new SimpleSchema({
       name: String,
       author: String,
-      color: String,
+      color: {
+        type: String,
+        allowedValues: ["#3788d8", "#87aef5"],
+        defaultValue: "#87aef5",
+      },
       issue: String,
       owner: String,
     }));
@@ -49,7 +53,7 @@ class PhaseCollection extends BaseCollection {
    * @param color the new condition (optional).
    * @param issue the new condition (optional).
    */
-  update(docID, { name, author }) {
+  update(docID, { name, author, color, issue }) {
     const updateData = {};
     if (name) {
       updateData.name = name;
