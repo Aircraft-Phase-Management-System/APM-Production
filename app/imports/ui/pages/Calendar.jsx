@@ -4,7 +4,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
-import { PlusSquare } from "react-bootstrap-icons";
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { Events } from "../../api/event_phase/EventCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
@@ -12,6 +11,7 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddEvent from "../components/AddEvent";
+import AddPhaseLane from "../components/AddPhaseLane";
 
 const testEvents = [
   {
@@ -81,11 +81,7 @@ const Calendar = () => {
           </Row>
           {/* ROW TO BE REMOVED */}
           <Row>
-            <div className="d-grid gap-2">
-              <Button variant="light">
-                <PlusSquare /> <Col>Create New Phase Lane</Col>
-              </Button>
-            </div>
+            <AddPhaseLane/>
           </Row>
           <Row>
             {phases.map((phase) => (
