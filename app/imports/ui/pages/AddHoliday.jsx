@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import {
   AutoForm,
+  DateField,
   ErrorsField,
   NumField,
   SelectField,
@@ -15,6 +16,8 @@ import SimpleSchema from "simpl-schema";
 import { Holidays } from "../../api/holiday/HolidayCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { PAGE_IDS } from "../utilities/PageIDs";
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -56,11 +59,11 @@ const AddHoliday = () => {
         onSubmit={(data) => submit(data, fRef)}
       >
         <Row>
-          <Col sm="9">
+          <Col sm="6">
             <TextField name="title" label="Holiday's Name" placeholder="Ex: Veteran's Day" />
           </Col>
-          <Col sm="3">
-            <TextField name="start" label="Date" placeholder="Ex: YYYY-MM-DD" />
+          <Col sm="6">
+            <DateField name="start" label="Date" />
           </Col>
             <SubmitField value="Submit" />
         </Row>

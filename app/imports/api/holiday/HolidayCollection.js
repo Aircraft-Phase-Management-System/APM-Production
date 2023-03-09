@@ -15,7 +15,7 @@ class HolidayCollection extends BaseCollection {
   constructor() {
     super('Holidays', new SimpleSchema({
       title: String,
-      start: String,
+      start: Date,
       owner: String,
       type: String,
     }));
@@ -34,7 +34,7 @@ class HolidayCollection extends BaseCollection {
       title,
       start,
       owner,
-      type: "holidays",
+      type,
     });
     return docID;
   }
