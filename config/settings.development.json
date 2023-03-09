@@ -15,56 +15,56 @@
     {
       "name": "Flight Lane 1",
       "author": "Team 1",
-      "bgColor": "#3788d8",
+      "color": "#3788d8",
       "issue": "#1",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 2",
       "author": "Team 2",
-      "bgColor": "#87aef5",
+      "color": "#87aef5",
       "issue": "#2",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 3",
       "author": "Team 3",
-      "bgColor": "#3788d8",
+      "color": "#3788d8",
       "issue": "#3",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 4",
       "author": "Team 4",
-      "bgColor": "#87aef5",
+      "color": "#87aef5",
       "issue": "#4",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 5",
       "author": "Team 5",
-      "bgColor": "#3788d8",
+      "color": "#3788d8",
       "issue": "#5",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 6",
       "author": "Team 6",
-      "bgColor": "#87aef5",
+      "color": "#87aef5",
       "issue": "#6",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 7",
       "author": "Team 7",
-      "bgColor": "#3788d8",
+      "color": "#3788d8",
       "issue": "#7",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 8",
       "author": "Team 8",
-      "bgColor": "#87aef5",
+      "color": "#87aef5",
       "issue": "#8",
       "owner": "john@foo.com"
     }

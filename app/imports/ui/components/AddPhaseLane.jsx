@@ -21,7 +21,7 @@ import Modal from "react-bootstrap/Modal";
 const formSchema = new SimpleSchema({
   name: String,
   author: String,
-  bgColor: {
+  color: {
     type: String,
     allowedValues: ["#3788d8", "#87aef5"],
     defaultValue: "#87aef5",
@@ -40,10 +40,10 @@ const AddPhaseLane = () => {
 
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { name, author, bgColor, issue } = data;
+    const { name, author, color, issue } = data;
     const owner = Meteor.user().username;
     const collectionName = Phases.getCollectionName();
-    const definitionData = { name, author, bgColor, issue, owner };
+    const definitionData = { name, author, color, issue, owner };
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -85,7 +85,7 @@ const AddPhaseLane = () => {
               </Row>
               <Row><TextField name="author" label="Team" placeholder="Ex: Team 1"  />
               </Row>
-              <SelectField name="bgColor" />
+              <SelectField name="color" />
               <ErrorsField />
             </Container>
           </Modal.Body>

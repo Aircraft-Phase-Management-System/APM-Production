@@ -16,7 +16,7 @@ class PhaseCollection extends BaseCollection {
     super('Phases', new SimpleSchema({
       name: String,
       author: String,
-      bgColor: String,
+      color: String,
       issue: String,
       owner: String,
     }));
@@ -26,15 +26,15 @@ class PhaseCollection extends BaseCollection {
    * Defines a new Stuff item.
    * @param name the name of the item.
    * @param author how many.
-   * @param bgColor the owner of the item.
+   * @param color the owner of the item.
    * @param issue the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ name, author, bgColor, issue, owner }) {
+  define({ name, author, color, issue, owner }) {
     const docID = this._collection.insert({
       name,
       author, 
-      bgColor,
+      color,
       issue,
       owner,
     });
@@ -46,7 +46,7 @@ class PhaseCollection extends BaseCollection {
    * @param docID the id of the document to update.
    * @param name the new name (optional).
    * @param author the new quantity (optional).
-   * @param bgColor the new condition (optional).
+   * @param color the new condition (optional).
    * @param issue the new condition (optional).
    */
   update(docID, { name, author }) {
@@ -57,8 +57,8 @@ class PhaseCollection extends BaseCollection {
     if (author) {
       updateData.author = author;
     }
-    if (bgColor) {
-      updateData.bgColor = bgColor;
+    if (color) {
+      updateData.color = color;
     }
     if (issue) {
       updateData.issue = issue;
@@ -145,10 +145,10 @@ class PhaseCollection extends BaseCollection {
     const doc = this.findDoc(docID);
     const name = doc.name;
     const author = doc.author;
-    const bgColor = doc.bgColor;
+    const color = doc.color;
     const issue = doc.issue;
     const owner = doc.owner;
-    return { name, author, bgColor, issue, owner };
+    return { name, author, color, issue, owner };
   }
 }
 

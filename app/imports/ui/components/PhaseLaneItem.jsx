@@ -11,17 +11,23 @@ import {
 } from "react-bootstrap";
 // import { Link } from "react-router-dom";
 // import { COMPONENT_IDS } from "../utilities/ComponentIDs";
-// import EditHoliday from "../pages/EditHoliday";
-import { AirplaneFill, AiOut } from "react-bootstrap-icons";
+import EditPhaseLane from "../pages/EditPhaseLane";
+import { AirplaneFill } from "react-bootstrap-icons";
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const PhaseLaneItem = ({ phase }) => (
-  <Card style={{ backgroundColor: phase.bgColor }}>
-    <Card.Header>{phase.issue} PHASE LANE</Card.Header>
+  <Card style={{ backgroundColor: phase.color }}>
+    <Card.Header>
+      <Row>
+        <Col>{phase.issue} PHASE LANE</Col>{" "}
+        <Col xs={2}>
+          <EditPhaseLane key={phase._id} phase={phase} />
+        </Col>
+      </Row>
+    </Card.Header>
     <Card.Body>
       <Card.Title as="h6">
-        <AirplaneFill style={{ transform: "rotate(90deg)" }} />{" "}
-        {phase.name}
+        <AirplaneFill style={{ transform: "rotate(90deg)" }} /> {phase.name}
       </Card.Title>
       <Card.Subtitle className="mb-2 text-muted">{phase.author}</Card.Subtitle>
     </Card.Body>
