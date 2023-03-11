@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
+import { XSquare } from "react-bootstrap-icons";
 import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../../api/event_phase/EventCollection";
@@ -9,6 +10,21 @@ import Modal from "react-bootstrap/Modal";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+let startDate = null;
+let reqNumberDays = 0;
+let calculatedEndDate = "";
+let suggestionReady = false;
+
+/*
+const holidays = [
+  { start : "2023-12-25", end: "2023-12-29"}
+];*/
+
+const holidays = [{ start: "2023-12-25", end: "2023-12-27" }];
+
+allStartHolidays = _.pluck(holidays, "start")[0];
+allEndHolidays = _.pluck(holidays, "end")[0];
+
 const schema = yup.object().shape({
   title: yup.string().required(),
   start: yup.string().required(),
@@ -17,38 +33,60 @@ const schema = yup.object().shape({
   color: yup.string().required(),
 });
 
-
 /* Renders the AddEvent page for adding a document. */
 const AddEvent = () => {
+  /* To open and close modal */
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const [validated, setValidated] = useState(false);
+  /* To calculate the end date */
+  const setValsforCalc = (e) => {
+    const date = e.target.value;
+    const numberOfDays = e.target.valueAsNumber;
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    console.log(form);
-    /* if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+    if (date.length === 10) {
+      startDate = date;
     }
 
-    setValidated(true);*/
+    if (numberOfDays) {
+      reqNumberDays = numberOfDays;
+    }
   };
 
-  const onFormChange = (e) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    console.log(name);
-    console.log(value);
+  const calculateEndDate = () => {
+    if (startDate && reqNumberDays) {
+      console.log(startDate);
+      console.log(reqNumberDays);
+
+      const curStartYear = parseInt(allStartHolidays.substring(0, 4));
+      const curStartMonth = parseInt(allStartHolidays.substring(5, 7));
+      const curStartDay = parseInt(allStartHolidays.substring(8));
+
+      const curEndYear = parseInt(allEndHolidays.substring(0, 4));
+      const curEndMonth = parseInt(allEndHolidays.substring(5, 7));
+      const curEndDay = parseInt(allEndHolidays.substring(8));
+
+      const startYear = parseInt(startDate.substring(0, 4));
+      const startMonth = parseInt(startDate.substring(5, 7));
+      const startDay = parseInt(startDate.substring(8));
+
+      const daysOff = curEndDay - curStartDay + 1;
+
+      if (startDay <= curStartDay && curEndDay <= startDay + reqNumberDays - 1) {
+        calculatedEndDate = startYear + "-" + startMonth + "-" + (startDay + reqNumberDays - 1 + daysOff);
+        console.log(calculatedEndDate);
+        suggEndDateReport(calculatedEndDate, allStartHolidays, daysOff);
+      }
+    }
   };
 
-  const onFormClick = (e) => {
-    const value = e.target.value;
-    console.log(value);
-  };
+  const suggEndDateReport = (endDate, holidaysIncluded, daysOff) => {
+    suggestionReady = true;
+
+  }
+
+  console.log("udapte");
 
   // On submit, insert the data.
   const submit = (data) => {
@@ -121,24 +159,42 @@ const AddEvent = () => {
                         type="text"
                         name="start"
                         placeholder="Ex: 2023-03-15"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setValsforCalc(e);
+                          handleChange(e);
+                        }}
                         isValid={touched.start && !errors.start}
                       />
                     </Form.Group>
-                    
-                <Form.Group as={Col} md="6" controlId="validationCustom03">
-                  <Form.Label>Required Number of Days</Form.Label>
-                  <Form.Control type="number" name="days" placeholder="Ex: 20"  onChange={handleChange} required />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid number.
-                  </Form.Control.Feedback>
-                </Form.Group>
-      
+
+                    <Form.Group as={Col} md="6" controlId="validationCustom03">
+                      <Form.Label>Required Number of Days</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="days"
+                        placeholder="Ex: 20"
+                        onChange={(e) => {
+                          setValsforCalc(e);
+                          handleChange(e);
+                        }}
+                        isValid={touched.days && !errors.days}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please provide a valid number.
+                      </Form.Control.Feedback>
+                    </Form.Group>
                   </Row>
-                  {/*
+
                   <Row className="mb-3">
-                    <Button>Calculate Date</Button>
-    </Row>  */}
+                    <Button onClick= {() => {
+                           calculateEndDate();
+                          handleChange;
+                        }}>Calculate Date</Button>
+                  </Row>
+
+                  { suggestionReady? <Row className="mb-3">
+                    <h2>Hello there</h2>
+                  </Row> : <p>hello</p> }
 
                   <Row className="mb-3">
                     <Form.Group controlId="validationFormik04">
@@ -167,15 +223,17 @@ const AddEvent = () => {
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Row>
-                  <Button type="submit">Submit form</Button>
                 </Container>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="danger" onClick={handleClose}>
+                  <XSquare
+                    style={{ marginBottom: "4px", marginRight: "6px" }}
+                  />
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleClose}>
-                  Save Changes
+                <Button variant="success" onClick={handleClose} type="submit">
+                  Save
                 </Button>
               </Modal.Footer>
             </Form>
