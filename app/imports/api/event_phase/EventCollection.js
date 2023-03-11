@@ -16,8 +16,9 @@ class EventCollection extends BaseCollection {
     super('Events', new SimpleSchema({
       title: String,
       start: String,
+      days : Number,
       end: String,
-      bgColor: String,
+      color: String,
       owner: String,
     }));
   }
@@ -30,12 +31,13 @@ class EventCollection extends BaseCollection {
    * @param bgColor the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ title, start, end, bgColor, owner }) {
+  define({ title, start, days, end, color, owner }) {
     const docID = this._collection.insert({
       title,
       start, 
+      days,
       end,
-      bgColor,
+      color,
       owner,
     });
     return docID;
@@ -47,7 +49,7 @@ class EventCollection extends BaseCollection {
    * @param title the new name (optional).
    * @param start the new quantity (optional).
    * @param end the new condition (optional).
-   * @param bgColor the new condition (optional).
+   * @param color the new condition (optional).
    */
   update(docID, { title, start }) {
     const updateData = {};
@@ -57,11 +59,15 @@ class EventCollection extends BaseCollection {
     if (start) {
       updateData.start = start;
     }
+    // if (quantity) { NOTE: 0 is falsy so we need to check if the quantity is a number.
+    if (_.isNumber(days)) {
+      updateData.days = days;
+    }
     if (end) {
       updateData.end = end;
     }
-    if (bgColor) {
-      updateData.bgColor = bgColor;
+    if (color) {
+      updateData.color = color;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -145,10 +151,11 @@ class EventCollection extends BaseCollection {
     const doc = this.findDoc(docID);
     const title = doc.title;
     const start = doc.start;
+    const days = doc.days;
     const end = doc.start;
-    const bgColor = doc.start;
+    const color = doc.start;
     const owner = doc.owner;
-    return { title, start, end, bgColor, owner };
+    return { title, start, days, end, color, owner };
   }
 }
 

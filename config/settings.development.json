@@ -75,57 +75,65 @@
     {
       "title": "PMI 1",
       "start": "2023-10-20 15:50:00",
+      "daysNum": 10,
       "end": "2023-12-19 23:30:00",
-      "bgColor": "#17C8E7", 
+      "color": "#17C8E7", 
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 2",
       "start": "2023-09-20 15:50:00",
+      "days": 10,
       "end": "2023-11-19 23:30:00",
-      "bgColor": "#17E7E1",
+      "color": "#17E7E1",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 3",
       "start": "2023-10-21 15:50:00",
+      "days": 10,
       "end": "2023-12-19 23:30:00",
-      "bgColor": "#17E7AB",
+      "color": "#17E7AB",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 4",
       "start": "2023-01-20 15:50:00",
+      "days": 10,
       "end": "2023-03-19 23:30:00",
-      "bgColor": "#33E717",
+      "color": "#33E717",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 5",
       "start": "2022-11-20 15:50:00",
+      "days": 10,
       "end": "2023-01-19 23:30:00",
-      "bgColor": "#F5D120",
+      "color": "#F5D120",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 6",
       "start": "2023-10-20 15:50:00",
+      "days": 10,
       "end": "2023-12-15 23:30:00",
-      "bgColor": "#F3A928",
+      "color": "#F3A928",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 7",
       "start": "2023-12-10 15:50:00",
+      "days": 10,
       "end": "2023-02-09 23:30:00",
-      "bgColor": "#E5700F",
+      "color": "#E5700F",
       "owner": "john@foo.com"
     },
     {
       "title": "PMI 8",
       "start": "2023-01-20 15:50:00",
+      "days": 10,
       "end": "2023-02-15 23:30:00",
-      "bgColor": "#E5390F",
+      "color": "#E5390F",
       "owner": "john@foo.com"
     }
   ],

@@ -1,16 +1,7 @@
 import React, { useState } from "react";
-import { Col, Container, Row, Button, Form, InputGroup } from "react-bootstrap";
-import {
-  AutoForm,
-  ErrorsField,
-  SelectField,
-  SubmitField,
-  TextField,
-} from "uniforms-bootstrap5";
+import { Col, Container, Row, Button, Form } from "react-bootstrap";
 import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
-import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
-import SimpleSchema from "simpl-schema";
 import { Events } from "../../api/event_phase/EventCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { PAGE_IDS } from "../utilities/PageIDs";
@@ -21,11 +12,11 @@ import * as yup from "yup";
 const schema = yup.object().shape({
   title: yup.string().required(),
   start: yup.string().required(),
+  days: yup.number().required(),
   end: yup.string().required(),
-  bgColor: yup.string().required(),
+  color: yup.string().required(),
 });
 
-//const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddEvent page for adding a document. */
 const AddEvent = () => {
@@ -60,11 +51,12 @@ const AddEvent = () => {
   };
 
   // On submit, insert the data.
-  const submit = (data, formRef) => {
-    const { title, end, start, bgColor } = data;
+  const submit = (data) => {
+    console.log(data);
+    const { title, start, days, end, color } = data;
     const owner = Meteor.user().username;
     const collectionName = Events.getCollectionName();
-    const definitionData = { title, start, end, bgColor, owner };
+    const definitionData = { title, start, days, end, color, owner };
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -76,96 +68,121 @@ const AddEvent = () => {
   // Render the form. Use Uniforms: https://github.com/vazco/uniforms
 
   return (
-    <Formik
-      validationSchema={schema}
-      onSubmit={submit}
-      initialValues={{
-        title: "Mark",
-        start: "Otto",
-        end: "hi",
-        bgColor: "hi",
-      }}
-    >
-      {({
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        values,
-        touched,
-        isValid,
-        errors,
-      }) => (
-        <Form noValidate onSubmit={handleSubmit}>
-          <Row className="mb-3">
-            <Form.Group controlId="validationFormik01">
-              <Form.Label>Event Title</Form.Label>
-              <Form.Control
-                type="text"
-                name="title"
-                placeholder="Ex: PMI 1"
-                onChange={handleChange}
-                isValid={touched.title && !errors.title}
-              />
-            </Form.Group>
-          </Row>
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        Add Event
+      </Button>
 
-          <Row className="mb-3">
-            <Form.Group as={Col} md="6" controlId="validationFormik02">
-              <Form.Label>Start Date</Form.Label>
-              <Form.Control
-                type="text"
-                name="start"
-                placeholder="Ex: 2023-03-15"
-                onChange={handleChange}
-                isValid={touched.start && !errors.start}
-              />
-            </Form.Group>
-            {/*
+      <Modal show={show} onHide={handleClose}>
+        <Formik
+          validationSchema={schema}
+          onSubmit={submit}
+          initialValues={{
+            title: "PMI 1000",
+            start: "2023-05-12",
+            days: 10,
+            end: "2023-05-24",
+            color: "Blue",
+          }}
+        >
+          {({
+            handleSubmit,
+            handleChange,
+            handleBlur,
+            values,
+            touched,
+            isValid,
+            errors,
+          }) => (
+            <Form noValidate onSubmit={handleSubmit}>
+              <Modal.Header closeButton>
+                <Modal.Title as="h5">Add New Event</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <Container id={PAGE_IDS.ADD_EVENT} className="py-3">
+                  <Row className="mb-3">
+                    <Form.Group controlId="validationFormik01">
+                      <Form.Label>Event Title</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        placeholder="Ex: PMI 1"
+                        onChange={handleChange}
+                        isValid={touched.title && !errors.title}
+                      />
+                    </Form.Group>
+                  </Row>
+
+                  <Row className="mb-3">
+                    <Form.Group as={Col} md="6" controlId="validationFormik02">
+                      <Form.Label>Start Date</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="start"
+                        placeholder="Ex: 2023-03-15"
+                        onChange={handleChange}
+                        isValid={touched.start && !errors.start}
+                      />
+                    </Form.Group>
+                    
                 <Form.Group as={Col} md="6" controlId="validationCustom03">
                   <Form.Label>Required Number of Days</Form.Label>
-                  <Form.Control type="text" name="daysNum" placeholder="Ex: 20" required />
+                  <Form.Control type="number" name="days" placeholder="Ex: 20"  onChange={handleChange} required />
                   <Form.Control.Feedback type="invalid">
                     Please provide a valid number.
                   </Form.Control.Feedback>
                 </Form.Group>
-      */}
-          </Row>
-          {/*
+      
+                  </Row>
+                  {/*
                   <Row className="mb-3">
                     <Button>Calculate Date</Button>
     </Row>  */}
 
-          <Row className="mb-3">
-            <Form.Group controlId="validationFormik03">
-              <Form.Label>End Date</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="end"
-                placeholder="Ex: 2023-03-15"
-                onChange={handleChange}
-                isValid={touched.end && !errors.end}
-              />
-            </Form.Group>
-          </Row>
-          <Row className="mb-3">
-            <Form.Group controlId="validationFormik04">
-              <Form.Label>Event Color</Form.Label>
-              <Form.Control
-                type="text"
-                name="bgColor"
-                onChange={handleChange}
-                isValid={touched.bgColor && !errors.bgColor}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.color}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Row>
-          <Button type="submit">Submit form</Button>
-        </Form>
-      )}
-    </Formik>
+                  <Row className="mb-3">
+                    <Form.Group controlId="validationFormik04">
+                      <Form.Label>End Date</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        name="end"
+                        placeholder="Ex: 2023-03-15"
+                        onChange={handleChange}
+                        isValid={touched.end && !errors.end}
+                      />
+                    </Form.Group>
+                  </Row>
+                  <Row className="mb-3">
+                    <Form.Group controlId="validationFormik05">
+                      <Form.Label>Event Color</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="color"
+                        onChange={handleChange}
+                        isValid={touched.color && !errors.color}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.color}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Row>
+                  <Button type="submit">Submit form</Button>
+                </Container>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={handleClose}>
+                  Save Changes
+                </Button>
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
+    </>
   );
 };
 
