@@ -9,11 +9,11 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 import Modal from "react-bootstrap/Modal";
 import { Formik } from "formik";
 import * as yup from "yup";
+import Alert from "react-bootstrap/Alert";
 
 let startDate = null;
 let reqNumberDays = 0;
 let calculatedEndDate = "";
-let suggestionReady = false;
 
 /*
 const holidays = [
@@ -39,6 +39,12 @@ const AddEvent = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  /* Button for suggestion end date */
+  const [showButton, setShowButton] = useState(false);
+  const [showSuggestion, setSuggestion] = useState(false);
+
+  const [endDate, setEndDate] = useState("");
 
   /* To calculate the end date */
   const setValsforCalc = (e) => {
@@ -73,18 +79,22 @@ const AddEvent = () => {
 
       const daysOff = curEndDay - curStartDay + 1;
 
-      if (startDay <= curStartDay && curEndDay <= startDay + reqNumberDays - 1) {
-        calculatedEndDate = startYear + "-" + startMonth + "-" + (startDay + reqNumberDays - 1 + daysOff);
+      if (
+        startDay <= curStartDay &&
+        curEndDay <= startDay + reqNumberDays - 1
+      ) {
+        setEndDate(startYear + "-" + startMonth + "-" + (startDay + reqNumberDays - 1 + daysOff))
         console.log(calculatedEndDate);
         suggEndDateReport(calculatedEndDate, allStartHolidays, daysOff);
       }
+
+      setSuggestion(true);
     }
   };
 
   const suggEndDateReport = (endDate, holidaysIncluded, daysOff) => {
-    suggestionReady = true;
-
-  }
+    setSuggestion(true);
+  };
 
   console.log("udapte");
 
@@ -186,15 +196,27 @@ const AddEvent = () => {
                   </Row>
 
                   <Row className="mb-3">
-                    <Button onClick= {() => {
-                           calculateEndDate();
-                          handleChange;
-                        }}>Calculate Date</Button>
-                  </Row>
+                    <Alert show={showButton && showSuggestion} variant="warning">
+                    { showSuggestion && endDate.length != 0 ? (<>
+                      <Alert.Heading>We found 1 holiday(s) within the range!</Alert.Heading>
+                      <p>Total of Non-Working Days (1)</p>
+                      <p>From {allStartHolidays} to {allEndHolidays}</p>
+                      <h6>Suggested End Date: {endDate}</h6>
+                      <hr /></> ): (<p>Nothing Found!</p>) }
+                      <div className="d-flex justify-content-end">
+                        <Button
+                          onClick={() => setShowButton(false)}
+                          variant="outline-warning"
+                        >
+                          Close
+                        </Button>
+                      </div>
+                    </Alert>
 
-                  { suggestionReady? <Row className="mb-3">
-                    <h2>Hello there</h2>
-                  </Row> : <p>hello</p> }
+                    {!showButton && (
+                      <Button onClick={() => {calculateEndDate(); showSuggestion? setShowButton(true) : setShowButton(false) }}>Calculate End Date</Button>
+                    )}
+                  </Row>
 
                   <Row className="mb-3">
                     <Form.Group controlId="validationFormik04">
