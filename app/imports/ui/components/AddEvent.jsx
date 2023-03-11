@@ -83,9 +83,15 @@ const AddEvent = () => {
         startDay <= curStartDay &&
         curEndDay <= startDay + reqNumberDays - 1
       ) {
-        setEndDate(startYear + "-" + startMonth + "-" + (startDay + reqNumberDays - 1 + daysOff))
-        console.log(calculatedEndDate);
-        suggEndDateReport(calculatedEndDate, allStartHolidays, daysOff);
+        setEndDate(
+          startYear +
+            "-" +
+            startMonth +
+            "-" +
+            (startDay + reqNumberDays - 1 + daysOff)
+        );
+        console.log(endDate);
+        suggEndDateReport(endDate, allStartHolidays, daysOff);
       }
 
       setSuggestion(true);
@@ -196,13 +202,25 @@ const AddEvent = () => {
                   </Row>
 
                   <Row className="mb-3">
-                    <Alert show={showButton && showSuggestion} variant="warning">
-                    { showSuggestion && endDate.length != 0 ? (<>
-                      <Alert.Heading>We found 1 holiday(s) within the range!</Alert.Heading>
-                      <p>Total of Non-Working Days (1)</p>
-                      <p>From {allStartHolidays} to {allEndHolidays}</p>
-                      <h6>Suggested End Date: {endDate}</h6>
-                      <hr /></> ): (<p>Nothing Found!</p>) }
+                    <Alert
+                      show={showButton && showSuggestion}
+                      variant="warning"
+                    >
+                      {showSuggestion && endDate.length != 0 ? (
+                        <>
+                          <Alert.Heading>
+                            We found 1 holiday(s) within the range!
+                          </Alert.Heading>
+                          <p>Total of Non-Working Days (1)</p>
+                          <p>
+                            From {allStartHolidays} to {allEndHolidays}
+                          </p>
+                          <h6>Suggested End Date: {endDate}</h6>
+                          <hr />
+                        </>
+                      ) : (
+                        <p>Nothing Found!</p>
+                      )}
                       <div className="d-flex justify-content-end">
                         <Button
                           onClick={() => setShowButton(false)}
@@ -214,7 +232,16 @@ const AddEvent = () => {
                     </Alert>
 
                     {!showButton && (
-                      <Button onClick={() => {calculateEndDate(); showSuggestion? setShowButton(true) : setShowButton(false) }}>Calculate End Date</Button>
+                      <Button
+                        onClick={() => {
+                          calculateEndDate();
+                          showSuggestion
+                            ? setShowButton(true)
+                            : setShowButton(false);
+                        }}
+                      >
+                        Calculate End Date
+                      </Button>
                     )}
                   </Row>
 
