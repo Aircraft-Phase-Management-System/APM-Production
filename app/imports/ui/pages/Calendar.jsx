@@ -71,7 +71,7 @@ const Calendar = () => {
     };
   }, []);
 
-  const renderSideBar = (phases) => {
+  const renderSideBar = () => {
     return (
       <div className="app-sidebar">
         <Container>
@@ -158,14 +158,14 @@ const Calendar = () => {
 
   return (
     <div className="demo-app">
-      {renderSideBar(phases)}
+      {renderSideBar()}
       <div className="demo-app-main">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
+            /*right: "dayGridMonth,timeGridWeek,timeGridDay", */
           }}
           initialView="dayGridMonth"
           editable={true}

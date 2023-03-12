@@ -13,17 +13,23 @@ import Alert from "react-bootstrap/Alert";
 
 let startDate = null;
 let reqNumberDays = 0;
-let calculatedEndDate = "";
+let totalConflictOffDays = 0;
+let conflictingRangesIndex = [];
 
-/*
 const holidays = [
-  { start : "2023-12-25", end: "2023-12-29"}
-];*/
+  { title: "New Year's Day", start: "2023-12-30", end: "2024-01-03" },
+  { title: "Independece Day", start: "2023-07-04", end: null },
+  { title: "Veterans Dar", start: "2023-11-11", end: null },
+  { title: "Christmas Day", start: "2023-12-25", end: "2023-12-27" },
+];
 
-const holidays = [{ start: "2023-12-25", end: "2023-12-27" }];
+const allStartHolidays = _.pluck(holidays, "start");
+const allEndHolidays = _.pluck(holidays, "end");
 
-allStartHolidays = _.pluck(holidays, "start")[0];
-allEndHolidays = _.pluck(holidays, "end")[0];
+console.log(allStartHolidays);
+console.log(allEndHolidays);
+
+const allDatesRange = _.zip(allStartHolidays, allEndHolidays);
 
 const schema = yup.object().shape({
   title: yup.string().required(),
@@ -35,15 +41,17 @@ const schema = yup.object().shape({
 
 /* Renders the AddEvent page for adding a document. */
 const AddEvent = () => {
+  //console.log(holidays);
   /* To open and close modal */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  /* Button for suggestion end date */
-  const [showButton, setShowButton] = useState(false);
+  /* Show alert after providing start date and required number of days. */
+  const [showAlert, setShowAlert] = useState(false);
+  /* Show suggestion if a non-working days was found.  */
   const [showSuggestion, setSuggestion] = useState(false);
-
+  /* Save the suggestion date after found.  */
   const [endDate, setEndDate] = useState("");
 
   /* To calculate the end date */
@@ -61,48 +69,120 @@ const AddEvent = () => {
   };
 
   const calculateEndDate = () => {
-    if (startDate && reqNumberDays) {
-      console.log(startDate);
-      console.log(reqNumberDays);
+    /* Received inputs from the user using the form */
+    const recvStartYear = parseInt(startDate.substring(0, 4));
+    const recvStartMonth = parseInt(startDate.substring(5, 7));
+    const recvStartDay = parseInt(startDate.substring(8));
 
-      const curStartYear = parseInt(allStartHolidays.substring(0, 4));
-      const curStartMonth = parseInt(allStartHolidays.substring(5, 7));
-      const curStartDay = parseInt(allStartHolidays.substring(8));
+    /* Calculate possible end date */
+    const calcDay = recvStartDay + reqNumberDays - 1;
+    console.log("Calc Day: ", calcDay);
+    let monthDays = checkMonthDays(recvStartMonth);
+    let possEndDate = null;
 
-      const curEndYear = parseInt(allEndHolidays.substring(0, 4));
-      const curEndMonth = parseInt(allEndHolidays.substring(5, 7));
-      const curEndDay = parseInt(allEndHolidays.substring(8));
+    if (monthDays < calcDay) {
+      /* TODO: Move to next month. */
+    } else {
+      possEndDate = recvStartYear + "-" + recvStartMonth + "-" + calcDay;
+    }
 
-      const startYear = parseInt(startDate.substring(0, 4));
-      const startMonth = parseInt(startDate.substring(5, 7));
-      const startDay = parseInt(startDate.substring(8));
+    console.log("Start Date", startDate);
+    console.log("Possible End Date", possEndDate);
 
-      const daysOff = curEndDay - curStartDay + 1;
+    /* Transform into date formart the start date from the and calculated possEnd end date. */
+    startDate = Date.parse(startDate);
+    possEndDate = Date.parse(possEndDate);
 
-      if (
-        startDay <= curStartDay &&
-        curEndDay <= startDay + reqNumberDays - 1
-      ) {
-        setEndDate(
-          startYear +
-            "-" +
-            startMonth +
-            "-" +
-            (startDay + reqNumberDays - 1 + daysOff)
-        );
-        console.log(endDate);
-        suggEndDateReport(endDate, allStartHolidays, daysOff);
+    const numOffDays = allDatesRange.length;
+
+    /* Loop through all the ranges of the off days*/
+    for (let offDay = 0; offDay < numOffDays; offDay++) {
+      let curStart = allDatesRange[offDay][0];
+      let curEnd = allDatesRange[offDay][1];
+
+      const curStartYear = parseInt(curStart .substring(0, 4));
+      const curStartMonth = parseInt(curStart .substring(5, 7));
+      const curStartDay = parseInt(curStart.substring(8));
+
+      /* If the there is only one off day (not a range) */
+      if (!curEnd) {
+        /* TO DO */
+        /* curStart = Date.parse(curStart);
+           curEnd = Date.parse(curEnd); */
+
+        /* If it is a range of off days */
+      } else {
+
+        /* Only get day, month, and year of current off day if end exists (a range exist) */
+        const curEndYear = parseInt(curEnd.substring(0, 4));
+        const curEndMonth = parseInt(curEnd.substring(5, 7));
+        const curEndDay = parseInt(curEnd.substring(8));
+        const curOffDays = Math.abs(curEndDay - curStartDay) + 1;
+      
+        curStart = Date.parse(curStart);
+        curEnd = Date.parse(curEnd);
+
+        /* If current days off takes place within event range */
+        if ((curStart >= startDate  && curStart <= possEndDate ) && (curEnd >= startDate &&  curEnd  <= possEndDate)) {
+            conflictingRangesIndex.push(offDay);
+            //console.log(conflictingRangesIndex);
+            
+            /* if the current start month is not the same as the end month */
+            if (curStartMonth != curEndMonth) {
+              let curMonthDays = checkMonthDays(curStartMonth);
+              let otherMonOffDays = (curMonthDays - curStartDay + 1) + curEndDay;
+              totalConflictOffDays += otherMonOffDays;
+            } else {
+              totalConflictOffDays += curOffDays;
+            }
+            console.log(totalConflictOffDays);
+
+            setEndDate(recvStartYear + "-" + recvStartMonth + "-" + (recvStartDay + reqNumberDays - 1 + curOffDays));
+            setSuggestion(true);
+            console.log("LOOP 1");
+
+          /* If current start off day is within  */
+        } else if (curStart >= startDate  && curStart <= possEndDate ) {
+            /* TODO */
+            conflictingRangesIndex.push(offDay);
+            setSuggestion(true);
+            console.log("LOOP 2");
+
+          /* If possible calculated date is within off day range */
+        } else if (curEnd >= startDate &&  curEnd  <= possEndDate) {
+            /* TODO */
+            let dayDiffLeft = possEndDate - curStartDay;
+            conflictingRangesIndex.push(offDay);
+            setSuggestion(true);
+            console.log("LOOP 3");
+        }
       }
-
-      setSuggestion(true);
     }
   };
 
-  const suggEndDateReport = (endDate, holidaysIncluded, daysOff) => {
-    setSuggestion(true);
-  };
+  function checkMonthDays (monthStr) {
+    let monthDays = 0;
+    /* If month is Feb, 28 days. */
+    if (monthStr === "02") {
+      monthDays = 28;
 
-  console.log("udapte");
+      /* If month is April, June, September, or November. 30 days. */
+    } else if (
+      monthStr === "04" ||
+      monthStr === "06" ||
+      monthStr === "09" ||
+      monthStr === "11"
+    ) {
+      monthDays = 30;
+
+      /* January, March, May, July, August, October, and December. 31 days */
+    } else {
+      monthDays = 31;
+    }
+
+    return monthDays;
+
+  }
 
   // On submit, insert the data.
   const submit = (data) => {
@@ -202,18 +282,19 @@ const AddEvent = () => {
                   </Row>
 
                   <Row className="mb-3">
-                    <Alert
-                      show={showButton && showSuggestion}
-                      variant="warning"
-                    >
-                      {showSuggestion && endDate.length != 0 ? (
+                    <Alert show={showAlert} variant="warning">
+                      {showSuggestion ? (
                         <>
                           <Alert.Heading>
-                            We found 1 holiday(s) within the range!
+                            Alert: We found conflicting non-working days within
+                            the range!
                           </Alert.Heading>
-                          <p>Total of Non-Working Days (1)</p>
                           <p>
-                            From {allStartHolidays} to {allEndHolidays}
+                            Total of {totalConflictOffDays} Non-Working Day(s)
+                          </p>
+                          <p>
+                            From {allDatesRange[conflictingRangesIndex[0]][0]}{" "}
+                            to {allDatesRange[conflictingRangesIndex[0]][1]}
                           </p>
                           <h6>Suggested End Date: {endDate}</h6>
                           <hr />
@@ -223,25 +304,24 @@ const AddEvent = () => {
                       )}
                       <div className="d-flex justify-content-end">
                         <Button
-                          onClick={() => setShowButton(false)}
+                          onClick={() => setShowAlert(false)}
                           variant="outline-warning"
                         >
                           Close
                         </Button>
                       </div>
                     </Alert>
-
-                    {!showButton && (
+                    {!showAlert && startDate && reqNumberDays != 0 ? (
                       <Button
                         onClick={() => {
                           calculateEndDate();
-                          showSuggestion
-                            ? setShowButton(true)
-                            : setShowButton(false);
+                          setShowAlert(true);
                         }}
                       >
                         Calculate End Date
                       </Button>
+                    ) : (
+                      <hr />
                     )}
                   </Row>
 
