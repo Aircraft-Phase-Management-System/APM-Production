@@ -70,9 +70,13 @@ const AddEvent = () => {
 
   const calculateEndDate = () => {
     /* Received inputs from the user using the form */
-    const recvStartYear = parseInt(startDate.substring(0, 4));
-    const recvStartMonth = parseInt(startDate.substring(5, 7));
-    const recvStartDay = parseInt(startDate.substring(8));
+    const strRecvStartYear = startDate.substring(0, 4);
+    const strRecvStartMonth = startDate.substring(5, 7);
+    const strRecvStartDay = startDate.substring(8);
+
+    const recvStartYear = parseInt(strRecvStartYear);
+    const recvStartMonth = parseInt(strRecvStartMonth);
+    const recvStartDay = parseInt(strRecvStartDay);
 
     /* Calculate possible end date */
     const calcDay = recvStartDay + reqNumberDays - 1;
@@ -100,67 +104,99 @@ const AddEvent = () => {
       let curStart = allDatesRange[offDay][0];
       let curEnd = allDatesRange[offDay][1];
 
-      const curStartYear = parseInt(curStart .substring(0, 4));
-      const curStartMonth = parseInt(curStart .substring(5, 7));
+      const curStartYear = parseInt(curStart.substring(0, 4));
+      const curStartMonth = parseInt(curStart.substring(5, 7));
       const curStartDay = parseInt(curStart.substring(8));
 
       /* If the there is only one off day (not a range) */
       if (!curEnd) {
         /* TO DO */
-        /* curStart = Date.parse(curStart);
-           curEnd = Date.parse(curEnd); */
+        curStart = Date.parse(curStart);
+        curEnd = Date.parse(curEnd);
+
+        if (curStart >= startDate && curStart <= possEndDate) {
+          console.log("1 OFF Day");
+          conflictingRangesIndex.push(offDay);
+          totalConflictOffDays++;
+
+          setEndDate(
+            strRecvStartYear +
+              "-" +
+              strRecvStartMonth +
+              "-" +
+              (calcDay + 1) + " " + " 15:50:00"
+          );
+          console.log(
+            strRecvStartYear +
+              "-" +
+              strRecvStartMonth +
+              "-" +
+              (calcDay + 1) + " " + " 15:50:00"
+          );
+          setSuggestion(true);
+        }
 
         /* If it is a range of off days */
       } else {
-
         /* Only get day, month, and year of current off day if end exists (a range exist) */
         const curEndYear = parseInt(curEnd.substring(0, 4));
         const curEndMonth = parseInt(curEnd.substring(5, 7));
         const curEndDay = parseInt(curEnd.substring(8));
         const curOffDays = Math.abs(curEndDay - curStartDay) + 1;
-      
+
         curStart = Date.parse(curStart);
         curEnd = Date.parse(curEnd);
 
         /* If current days off takes place within event range */
-        if ((curStart >= startDate  && curStart <= possEndDate ) && (curEnd >= startDate &&  curEnd  <= possEndDate)) {
-            conflictingRangesIndex.push(offDay);
-            //console.log(conflictingRangesIndex);
-            
-            /* if the current start month is not the same as the end month */
-            if (curStartMonth != curEndMonth) {
-              let curMonthDays = checkMonthDays(curStartMonth);
-              let otherMonOffDays = (curMonthDays - curStartDay + 1) + curEndDay;
-              totalConflictOffDays += otherMonOffDays;
-            } else {
-              totalConflictOffDays += curOffDays;
-            }
-            console.log(totalConflictOffDays);
+        if (
+          curStart >= startDate &&
+          curStart <= possEndDate &&
+          curEnd >= startDate &&
+          curEnd <= possEndDate
+        ) {
+          conflictingRangesIndex.push(offDay);
+          //console.log(conflictingRangesIndex);
 
-            setEndDate(recvStartYear + "-" + recvStartMonth + "-" + (recvStartDay + reqNumberDays - 1 + curOffDays));
-            setSuggestion(true);
-            console.log("LOOP 1");
+          /* if the current start month is not the same as the end month */
+          if (curStartMonth != curEndMonth) {
+            let curMonthDays = checkMonthDays(curStartMonth);
+            let otherMonOffDays = curMonthDays - curStartDay + 1 + curEndDay;
+            totalConflictOffDays += otherMonOffDays;
+          } else {
+            totalConflictOffDays += curOffDays;
+          }
+          console.log(totalConflictOffDays);
+
+          setEndDate(
+            recvStartYear +
+              "-" +
+              recvStartMonth +
+              "-" +
+              (recvStartDay + reqNumberDays - 1 + curOffDays) + " " + " 15:50:00"
+          );
+          setSuggestion(true);
+          console.log("LOOP 1");
 
           /* If current start off day is within  */
-        } else if (curStart >= startDate  && curStart <= possEndDate ) {
-            /* TODO */
-            conflictingRangesIndex.push(offDay);
-            setSuggestion(true);
-            console.log("LOOP 2");
+        } else if (curStart >= startDate && curStart <= possEndDate) {
+          /* TODO */
+          conflictingRangesIndex.push(offDay);
+          setSuggestion(true);
+          console.log("LOOP 2");
 
           /* If possible calculated date is within off day range */
-        } else if (curEnd >= startDate &&  curEnd  <= possEndDate) {
-            /* TODO */
-            let dayDiffLeft = possEndDate - curStartDay;
-            conflictingRangesIndex.push(offDay);
-            setSuggestion(true);
-            console.log("LOOP 3");
+        } else if (curEnd >= startDate && curEnd <= possEndDate) {
+          /* TODO */
+          let dayDiffLeft = possEndDate - curStartDay;
+          conflictingRangesIndex.push(offDay);
+          setSuggestion(true);
+          console.log("LOOP 3");
         }
       }
     }
   };
 
-  function checkMonthDays (monthStr) {
+  function checkMonthDays(monthStr) {
     let monthDays = 0;
     /* If month is Feb, 28 days. */
     if (monthStr === "02") {
@@ -181,7 +217,6 @@ const AddEvent = () => {
     }
 
     return monthDays;
-
   }
 
   // On submit, insert the data.
@@ -292,10 +327,18 @@ const AddEvent = () => {
                           <p>
                             Total of {totalConflictOffDays} Non-Working Day(s)
                           </p>
-                          <p>
-                            From {allDatesRange[conflictingRangesIndex[0]][0]}{" "}
-                            to {allDatesRange[conflictingRangesIndex[0]][1]}
-                          </p>
+                          {allDatesRange[conflictingRangesIndex[0]][1] !=
+                          null ? (
+                            <p>
+                              From {allDatesRange[conflictingRangesIndex[0]][0]}{" "}
+                              to {allDatesRange[conflictingRangesIndex[0]][1]}
+                            </p>
+                          ) : (
+                            <p>
+                              Date:{" "}
+                              {allDatesRange[conflictingRangesIndex[0]][0]}
+                            </p>
+                          )}
                           <h6>Suggested End Date: {endDate}</h6>
                           <hr />
                         </>
