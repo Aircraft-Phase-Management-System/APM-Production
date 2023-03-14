@@ -17,13 +17,14 @@ const NavBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand id={COMPONENT_IDS.NAVBAR_LANDING_PAGE} as={NavLink} to="/"><h1>APM</h1></Navbar.Brand>
+        <Navbar.Brand id={COMPONENT_IDS.NAVBAR_LANDING_PAGE} as={NavLink} to="/"><h1>APMS</h1></Navbar.Brand>
         <Navbar.Toggle aria-controls={COMPONENT_IDS.NAVBAR_COLLAPSE} />
         <Navbar.Collapse id={COMPONENT_IDS.NAVBAR_COLLAPSE}>
           <Nav className="me-auto justify-content-start">
             {currentUser ? ([
               <Nav.Link id={COMPONENT_IDS.NAVBAR_MAIN_CALENDAR} as={NavLink} to="/main-calendar" key="main-calendar">Calendar</Nav.Link>,
               <Nav.Link id={COMPONENT_IDS.NAVBAR_ADD_NON_WORKING_DAYS} as={NavLink} to="/non-working-days" key="non-working-days">Non-Working Days</Nav.Link>,
+              <Nav.Link id={COMPONENT_IDS.NAVBAR_CONTACT} as={NavLink} to='/contact' key="contact">Contact</Nav.Link>
             ]) : ''}
             {Roles.userIsInRole(Meteor.userId(), [ROLE.ADMIN]) ? (
               [<Nav.Link id={COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN} as={NavLink} to="/admin" key="admin">Admin</Nav.Link>,
