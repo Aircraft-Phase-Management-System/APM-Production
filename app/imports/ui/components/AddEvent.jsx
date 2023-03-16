@@ -26,9 +26,6 @@ const holidays = [
 const allStartHolidays = _.pluck(holidays, "start");
 const allEndHolidays = _.pluck(holidays, "end");
 
-console.log(allStartHolidays);
-console.log(allEndHolidays);
-
 const allDatesRange = _.zip(allStartHolidays, allEndHolidays);
 
 const schema = yup.object().shape({
@@ -79,13 +76,16 @@ const AddEvent = () => {
     const recvStartDay = parseInt(strRecvStartDay);
 
     /* Calculate possible end date */
-    const calcDay = recvStartDay + reqNumberDays - 1;
+    let calcDay = recvStartDay + reqNumberDays - 1;
     console.log("Calc Day: ", calcDay);
-    let monthDays = checkMonthDays(recvStartMonth);
+
+    let [monthName, monthDays] = findMonthNamesAndDays(strRecvStartMonth);
     let possEndDate = null;
 
+    /* If the day calculate is larger than the days within the current month */
     if (monthDays < calcDay) {
       /* TODO: Move to next month. */
+      moveNextMonth(recvStartDay, reqNumberDays);
     } else {
       possEndDate = recvStartYear + "-" + recvStartMonth + "-" + calcDay;
     }
@@ -104,6 +104,8 @@ const AddEvent = () => {
       let curStart = allDatesRange[offDay][0];
       let curEnd = allDatesRange[offDay][1];
 
+      let finalEndDate = null;
+
       const curStartYear = parseInt(curStart.substring(0, 4));
       const curStartMonth = parseInt(curStart.substring(5, 7));
       const curStartDay = parseInt(curStart.substring(8));
@@ -118,22 +120,12 @@ const AddEvent = () => {
           console.log("1 OFF Day");
           conflictingRangesIndex.push(offDay);
           totalConflictOffDays++;
-
-          setEndDate(
-            strRecvStartYear +
-              "-" +
-              strRecvStartMonth +
-              "-" +
-              (calcDay + 1) + " " + " 15:50:00"
-          );
-          console.log(
-            strRecvStartYear +
-              "-" +
-              strRecvStartMonth +
-              "-" +
-              (calcDay + 1) + " " + " 15:50:00"
-          );
+          calcDay++;
+          finalEndDate = strRecvStartYear + "-" + strRecvStartMonth +  "-" + (calcDay < 10 ? "0" + calcDay: calcDay) + " " + "15:50:00";
+          setEndDate(finalEndDate);
           setSuggestion(true);
+
+          console.log("Final End Date: ", finalEndDate);
         }
 
         /* If it is a range of off days */
@@ -196,27 +188,29 @@ const AddEvent = () => {
     }
   };
 
-  function checkMonthDays(monthStr) {
-    let monthDays = 0;
-    /* If month is Feb, 28 days. */
-    if (monthStr === "02") {
-      monthDays = 28;
+  function findMonthNamesAndDays(monthStr) {
+    let monthNamesAndDays = new Map([
+      ["01", ["Jan", 31]],
+      ["02", ["Feb", 28]],
+      ["03", ["Mar", 31]],
+      ["04", ["Apr", 30]],
+      ["05", ["May", 31]],
+      ["06", ["Jun", 30]],
+      ["07",["Jul", 31]],
+      ["08", ["Aug", 31]],
+      ["09", ["Sep", 30]],
+      ["10", ["Oct", 31]],
+      ["11", ["Nov", 30]],
+      ["12", ["Dec", 31]],
+    ]);
+    
+    return monthNamesAndDays.get(monthStr);
 
-      /* If month is April, June, September, or November. 30 days. */
-    } else if (
-      monthStr === "04" ||
-      monthStr === "06" ||
-      monthStr === "09" ||
-      monthStr === "11"
-    ) {
-      monthDays = 30;
+  }
 
-      /* January, March, May, July, August, October, and December. 31 days */
-    } else {
-      monthDays = 31;
-    }
+  function moveNextMonth(recvStartDay, reqNumberDays) {
 
-    return monthDays;
+    return 
   }
 
   // On submit, insert the data.
