@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Container, Nav, Row, Tab} from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
 
-import AddHoliday from './AddHoliday';
-import ListHoliday from './ListHoliday';
+import AddTimeout from './AddTimeout';
+import ListTimeout from './ListTimeout';
 import TotalNoneWorkingDays from './TotalNoneWorkingDays';
 
 function NonWorkingDays() {
@@ -14,7 +14,7 @@ function NonWorkingDays() {
         <Col sm={3}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Current Holidays</Nav.Link>
+              <Nav.Link eventKey="first">Current Timeouts</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="second">Current Training Days</Nav.Link>
@@ -27,15 +27,14 @@ function NonWorkingDays() {
         <Col sm={9}>
           <Tab.Content>
             <Tab.Pane eventKey="first">
-              <AddHoliday/>
-              <ListHoliday/>
+              <AddTimeout/>
+              <ListTimeout/>
             </Tab.Pane>
             <Tab.Pane eventKey="second">
-            <p>WILL MERGE WITH HOLIDAYS</p>
             </Tab.Pane>
             <Tab.Pane eventKey="third">
               <TotalNoneWorkingDays/>
-              <ListHoliday/>
+              <ListTimeout/>
             </Tab.Pane>
           </Tab.Content>
         </Col>

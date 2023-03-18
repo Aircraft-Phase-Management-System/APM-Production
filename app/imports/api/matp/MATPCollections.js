@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
-import { Holidays } from '../holiday/HolidayCollection';
+import { Timeouts } from '../timeout/TimeoutCollection';
 import { Events } from '../event_phase/EventCollection';
 import { Phases } from '../phase_lane/PhaseCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
@@ -17,7 +17,7 @@ class MATPClass {
     // list of all the MATPCollections collections
     this.collections = [
       AdminProfiles,
-      Holidays,
+      Timeouts,
       Events,
       Phases,
       Stuffs,
@@ -29,7 +29,7 @@ class MATPClass {
     this.collectionLoadSequence = [
       AdminProfiles,
       UserProfiles,
-      Holidays,
+      Timeouts,
       Events,
       Phases,
       Stuffs,

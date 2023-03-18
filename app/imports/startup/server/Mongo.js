@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
-import { Holidays } from '../../api/holiday/HolidayCollection'
+import { Timeouts } from '../../api/timeout/TimeoutCollection';
 import { Events  } from '../../api/event_phase/EventCollection';
 import { Phases } from '../../api/phase_lane/PhaseCollection';
 /* eslint-disable no-console */
@@ -19,17 +19,16 @@ if (Stuffs.count() === 0) {
   }
 }
 
-// Initialize the database with a default holiday data document.
-function addHoliday(data) {
-  console.log(`  Adding: ${data.title} (${data.owner})`);
-  Holidays.define(data);
+// Initialize the database with a default timeout data document.
+function addTimeout(data) {
+  console.log(`  Adding: ${data.title}`);
+  Timeouts.define(data);
 }
 
-
-if (Holidays.count() === 0) {
-  if (Meteor.settings.defaultHolidays) {
-    console.log('Creating default data for holidays.');
-    Meteor.settings.defaultHolidays.map(data => addHoliday(data));
+if (Timeouts.count() === 0) {
+  if (Meteor.settings.defaultTimeouts) {
+    console.log('Creating default data for Timeouts.');
+    Meteor.settings.defaultTimeouts.map(data => addTimeout(data));
   }
 }
 

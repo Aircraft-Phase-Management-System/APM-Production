@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
-import { Holidays } from "../../api/holiday/HolidayCollection";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { Events } from "../../api/event_phase/EventCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
@@ -13,34 +13,21 @@ import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddEvent from "../components/AddEvent";
 import AddPhaseLane from "../components/AddPhaseLane";
 
-const testEvents = [
-  {
-    title: "PMI 1",
-    start: "2023-03-20",
-    end: "2023-12-19",
-    bgColor: "#17C8E7",
-    owner: "john@foo.com",
-  },
-];
-
-console.log(testEvents);
-
 const Calendar = () => {
-  const { ready, holidays } = useTracker(() => {
-    let isHoliday = "";
 
-    // let hd = new FederalHolidays('US');
-    const subscription = Holidays.subscribeHoliday();
+  const { ready, timeouts } = useTracker(() => {
+
+    const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const holidayItems = Holidays.find(
+    const timeoutItems = Timeouts.find(
       {},
-      { sort: { holidayName: 1 } }
+      { sort: { title: 1 } }
     ).fetch();
 
     return {
-      holidays: holidayItems,
+      timeouts: timeoutItems,
       ready: rdy,
     };
   }, []);
@@ -93,16 +80,15 @@ const Calendar = () => {
     );
   };
 
-  const holidayDate = holidays[1]; // test
 
   handleDateClick = (clickInfo) => {
     // bind with an arrow function
 
     console.log(clickInfo.dateStr);
-    for (let n = 0; n < holidays.length; n++) {
-      if (clickInfo.dateStr == holidays[n].start) {
+    for (let n = 0; n < timeouts.length; n++) {
+      if (clickInfo.dateStr == timeouts[n].start) {
         alert(clickInfo.dateStr + " is a Holiday \n You can't edit this date");
-        console.log(holidays);
+        console.log(timeouts);
         return;
       }
     }
@@ -142,7 +128,7 @@ const Calendar = () => {
       )
     ) {
       clickInfo.event.remove();
-      holidays.removeIt(clickInfo.event.title);
+      timeouts.removeIt(clickInfo.event.title);
     }
   };
 

@@ -8,8 +8,9 @@ import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
 import ListStuff from '../pages/ListStuff';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
-import AddHoliday from '../pages/AddHoliday';
-import EditHoliday from '../pages/EditHoliday';
+
+import AddTimeout from '../pages/AddTimeout';
+import EditTimeout from '../pages/EditTimeout';
 import NonWorkingDays from '../pages/NonWorkingDays';
 import EditStuff from '../pages/EditStuff';
 import NotFound from '../pages/NotFound';
@@ -18,7 +19,7 @@ import SignOut from '../pages/SignOut';
 import NavBar from '../components/NavBar';
 import SignIn from '../pages/SignIn';
 import Calendar from '../pages/Calendar';
-import ListHoliday from '../pages/ListHoliday';
+import ListTimeout from '../pages/ListTimeout';
 import NotAuthorized from '../pages/NotAuthorized';
 import { ROLE } from '../../api/role/Role';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -44,10 +45,10 @@ const App = () => {
           <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
           <Route path="/main-calendar" element={<Calendar />} />
           <Route path="/non-working-days" element={<ProtectedRoute><NonWorkingDays /></ProtectedRoute>} />
-          <Route path="/list-holiday" element={<ProtectedRoute><ListHoliday /></ProtectedRoute>} />
+          <Route path="/list-timeout" element={<ProtectedRoute><ListTimeout /></ProtectedRoute>} />
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
-          <Route path="/add-holiday" element={<ProtectedRoute><AddHoliday /></ProtectedRoute>} />
-          <Route path="/edit/:_id" element={<ProtectedRoute><EditHoliday /></ProtectedRoute>} />
+          <Route path="/add-timeout" element={<ProtectedRoute><AddTimeout /></ProtectedRoute>} />
+          <Route path="/edit/:_id" element={<ProtectedRoute><EditTimeout /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
           <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="*" element={<NotFound />} />

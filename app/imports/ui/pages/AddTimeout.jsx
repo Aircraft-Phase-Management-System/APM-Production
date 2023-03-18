@@ -13,7 +13,7 @@ import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 import SimpleSchema from "simpl-schema";
-import { Holidays } from "../../api/holiday/HolidayCollection";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
@@ -29,18 +29,18 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddStuff page for adding a document. */
-const AddHoliday = () => {
+const AddTimeout = () => {
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { title, start } = data;
+    const { title, start, end, type, hours } = data;
     const owner = Meteor.user().username;
-    const collectionName = Holidays.getCollectionName();
-    const definitionData = { title, start, owner, type: "holiday" };
+    const collectionName = Timeouts.getCollectionName();
+    const definitionData = { title, start, end, type, hours, owner};
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
       .then(() => {
-        swal("Success", "Holiday added successfully", "success");
+        swal("Success", "Timeout added successfully", "success");
         formRef.reset();
       });
   };
@@ -48,9 +48,9 @@ const AddHoliday = () => {
   // Render the form. Use Uniforms: https://github.com/vazco/uniforms
   let fRef = null;
   return (
-    <Container id={PAGE_IDS.ADD_HOLIDAY} className="py-3">
+    <Container id={PAGE_IDS.ADD_TIMEOUT} className="py-3">
       <Card className="card-non-working-days">
-        <Card.Title>INSERT A NEW HOLIDAY</Card.Title>
+        <Card.Title>INSERT A NEW TIMEOUT</Card.Title>
       <AutoForm
         ref={(ref) => {
           fRef = ref;
@@ -60,7 +60,7 @@ const AddHoliday = () => {
       >
         <Row>
           <Col sm="6">
-            <TextField name="title" label="Holiday's Name" placeholder="Ex: Veteran's Day" />
+            <TextField name="title" label="Name" placeholder="Ex: Veteran's Day" />
           </Col>
           <Col sm="6">
             <DateField name="start" label="Date" />
@@ -75,4 +75,4 @@ const AddHoliday = () => {
   );
 };
 
-export default AddHoliday;
+export default AddTimeout;

@@ -12,15 +12,15 @@ import {
 import { useTracker } from "meteor/react-meteor-data";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 // import { useParams } from "react-router";
-import { Holidays } from "../../api/holiday/HolidayCollection";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { updateMethod } from "../../api/base/BaseCollection.methods";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 
-const bridge = new SimpleSchema2Bridge(Holidays._schema);
+const bridge = new SimpleSchema2Bridge(Timeouts._schema);
 
-/* Renders the EditHoliday page for editing a single document. */
-const EditHoliday = ({ holiday }) => {
+/* Renders the EditTimeout page for editing a single document. */
+const EditTimeout = ({ timeout }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -29,23 +29,23 @@ const EditHoliday = ({ holiday }) => {
   //const { _id } = useParams();
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { doc, ready } = useTracker(() => {
-    // Get access to Holiday documents.
-    const subscription = Holidays.subscribeHoliday();
+    // Get access to Timeout documents.
+    const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the document
-    const document = Holidays.findDoc(holiday._id);
+    const document = Timeouts.findDoc(timeout._id);
     return {
       doc: document,
       ready: rdy,
     };
-  }, [holiday._id]);
+  }, [timeout._id]);
 
   // On successful submit, insert the data.
   const submit = (data) => {
     const { title, start } = data;
-    const collectionName = Holidays.getCollectionName();
-    const updateData = { id: holiday._id, title, start };
+    const collectionName = Timeouts.getCollectionName();
+    const updateData = { id: timeout._id, title, start };
     updateMethod
       .callPromise({ collectionName, updateData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -63,10 +63,10 @@ const EditHoliday = ({ holiday }) => {
       <Modal show={show} onHide={handleClose}>
         <AutoForm schema={bridge} onSubmit={(data) => submit(data)} model={doc}>
           <Modal.Header closeButton>
-            <Modal.Title as="h5">Modify Holiday</Modal.Title>
+            <Modal.Title as="h5">Modify Timeout</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Container id={PAGE_IDS.EDIT_HOLIDAY} className="py-3">
+            <Container id={PAGE_IDS.EDIT_TIMEOUT} className="py-3">
               <TextField
                 name="title"
                 label="Name"
@@ -95,4 +95,4 @@ const EditHoliday = ({ holiday }) => {
   );
 };
 
-export default EditHoliday;
+export default EditTimeout;

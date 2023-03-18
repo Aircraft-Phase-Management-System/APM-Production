@@ -18,6 +18,7 @@ let conflictingRangesIndex = [];
 
 const holidays = [
   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
+   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
   { title: "Independece Day", start: "2023-07-04", end: null },
   { title: "Veterans Dar", start: "2023-11-11", end: null },
   { title: "Christmas Day", start: "2023-12-10", end: "2023-12-13" },
@@ -237,6 +238,11 @@ const AddEvent = () => {
 
       if(hasChangedMonth) {
         calcDay += totalConflictOffDays;
+
+        if(calcDay >= monthDays) {
+          [calcYear, calcMonth, calcDay] = moveNextMonth(recvStartYear, recvStartMonth, recvStartDay, reqNumberDays + totalConflictOffDays, monthName, monthDays);
+
+        }
         setEndDate(calcYear  + "-" +  calcMonth  + "-" + (calcDay < 10 ? "0" + calcDay : calcDay));
 
       } else {

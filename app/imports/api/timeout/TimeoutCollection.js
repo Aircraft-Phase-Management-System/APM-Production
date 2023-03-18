@@ -6,35 +6,48 @@ import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
-export const holidayPublications = {
-  holiday: 'Holiday',
-  holidayAdmin: 'HolidayAdmin',
+export const timeoutTypes = ['Holiday', 'Training Day', 'Mahalo Day'];
+
+export const timeoutPublications = {
+  timeout: 'Timeout',
+  timeoutAdmin: 'TimeoutAdmin',
 };
 
-class HolidayCollection extends BaseCollection {
+class TimeoutCollection extends BaseCollection {
   constructor() {
-    super('Holidays', new SimpleSchema({
+    super('Timeouts', new SimpleSchema({
       title: String,
-      start: Date,
+      start: String,
+      end: String,
+      type: {
+        type: String,
+        allowedValues: timeoutTypes,
+        defaultValue: 'Holiday',
+      },
+      /* how many hours out? used for training day and mahalo day. */
+      hours: Number,
       owner: String,
-      /*type: String,*/
     }));
   }
 
   /**
-   * Defines a new Holiday item.
+   * Defines a new Timeout item.
    * @param title the name of the item.
-   * @param start how many.
+   * @param start when the date starts.
+   * @param end when the date ends.
+   * @param hours how many hours out.
    * @param owner the owner of the item.
-   * @param type the type of the item
+   * @param type the type of the item.
    * @return {String} the docID of the new document.
    */
-  define({ title, start, owner/*, type*/}) {
+  define({ title, start, end, type, hours, owner}) {
     const docID = this._collection.insert({
       title,
       start,
+      end,
+      type,
+      hours,
       owner,
-      /*type,*/
     });
     return docID;
   }
@@ -55,6 +68,20 @@ class HolidayCollection extends BaseCollection {
     if (start) {
       updateData.start = start;
     }
+
+    if (end) {
+      updateData.end = end;
+    }
+
+    if (type) {
+      updateData.type = type;
+    }
+
+    // if (quantity) { NOTE: 0 is falsy so we need to check if the quantity is a number.
+    if (_.isNumber(hours)) {
+      updateData.hours= hours;
+    }
+
     this._collection.update(docID, { $set: updateData });
   }
 
@@ -79,7 +106,7 @@ class HolidayCollection extends BaseCollection {
       // get the StuffCollection instance.
       const instance = this;
       /** This subscription publishes only the documents associated with the logged in user */
-      Meteor.publish(holidayPublications.holiday, function publish() {
+      Meteor.publish(timeoutPublications.timeout, function publish() {
         if (this.userId) {
           const username = Meteor.users.findOne(this.userId).username;
           return instance._collection.find({ owner: username });
@@ -88,7 +115,7 @@ class HolidayCollection extends BaseCollection {
       });
 
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publish(holidayPublications.holidayAdmin, function publish() {
+      Meteor.publish(timeoutPublications.timeoutAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, ROLE.ADMIN)) {
           return instance._collection.find();
         }
@@ -98,11 +125,11 @@ class HolidayCollection extends BaseCollection {
   }
 
   /**
-   * Subscription method for holiday owned by the current user.
+   * Subscription method for timeout owned by the current user.
    */
-  subscribeHoliday() {
+  subscribeTimeout() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(holidayPublications.holiday);
+      return Meteor.subscribe(timeoutPublications.timeout);
     }
     return null;
   }
@@ -111,9 +138,9 @@ class HolidayCollection extends BaseCollection {
    * Subscription method for admin users.
    * It subscribes to the entire collection.
    */
-  subscribeHolidayAdmin() {
+  subscribeTimeoutAdmin() {
     if (Meteor.isClient) {
-      return Meteor.subscribe(holidayPublications.holidayAdmin);
+      return Meteor.subscribe(timeoutPublications.timeoutAdmin);
     }
     return null;
   }
@@ -137,6 +164,9 @@ class HolidayCollection extends BaseCollection {
     const doc = this.findDoc(docID);
     const title = doc.title;
     const start = doc.start;
+    const end = doc.end;
+    const type = doc.type;
+    const hours = doc.hours;
     const owner = doc.owner;
     return { title, start, owner };
   }
@@ -145,4 +175,4 @@ class HolidayCollection extends BaseCollection {
 /**
  * Provides the singleton instance of this class to all other entities.
  */
-export const Holidays = new HolidayCollection();
+export const Timeouts = new TimeoutCollection();
