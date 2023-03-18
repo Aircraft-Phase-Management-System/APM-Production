@@ -532,10 +532,11 @@ const AddEvent = () => {
                   </Row>
                   <Row className="mb-3">
                     <Form.Group controlId="validationFormik05">
-                      <Form.Label>Event Color</Form.Label>
+                      <Form.Label>Choose Event Color</Form.Label>
                       <Form.Control
-                        type="text"
+                        type="color"
                         name="color"
+                        defaultValue="#563d7c"
                         onChange={handleChange}
                         isValid={touched.color && !errors.color}
                       />
