@@ -1,26 +1,22 @@
 import React from 'react';
 import { Col, Container, Nav, Row, Tab} from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
-
+import { List, PlusSquare} from 'react-bootstrap-icons';
 import AddTimeout from './AddTimeout';
 import ListTimeout from './ListTimeout';
-import TotalNoneWorkingDays from './TotalNoneWorkingDays';
 
-function NonWorkingDays() {
+function TimeoutTabs() {
   return (
-    <Container id={PAGE_IDS.NON_WORKING_DAYS} className="card-non-working-days">
+    <Container id={PAGE_IDS.TIMEOUT_TABS} className="timeout-tabs-container">
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
       <Row>
         <Col sm={3}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Current Timeouts</Nav.Link>
+              <Nav.Link eventKey="first"><PlusSquare/> Add Timeouts</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">Current Training Days</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="third">Total Non-Working days</Nav.Link>
+              <Nav.Link eventKey="second"><List/> List Timeouts</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
@@ -28,13 +24,9 @@ function NonWorkingDays() {
           <Tab.Content>
             <Tab.Pane eventKey="first">
               <AddTimeout/>
-              <ListTimeout/>
             </Tab.Pane>
             <Tab.Pane eventKey="second">
-            </Tab.Pane>
-            <Tab.Pane eventKey="third">
-              <TotalNoneWorkingDays/>
-              <ListTimeout/>
+            <ListTimeout/>
             </Tab.Pane>
           </Tab.Content>
         </Col>
@@ -44,4 +36,4 @@ function NonWorkingDays() {
   );
 }
 
-export default NonWorkingDays;
+export default TimeoutTabs;

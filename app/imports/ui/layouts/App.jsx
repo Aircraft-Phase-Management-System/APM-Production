@@ -11,8 +11,7 @@ import ListStuffAdmin from '../pages/ListStuffAdmin';
 
 import AddTimeout from '../pages/AddTimeout';
 import EditTimeout from '../pages/EditTimeout';
-import NonWorkingDays from '../pages/NonWorkingDays';
-import EditStuff from '../pages/EditStuff';
+import TimeoutTabs from '../pages/TimeoutTabs';
 import NotFound from '../pages/NotFound';
 import SignUp from '../pages/SignUp';
 import SignOut from '../pages/SignOut';
@@ -44,7 +43,7 @@ const App = () => {
           <Route path="/signout" element={<SignOut />} />
           <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
           <Route path="/main-calendar" element={<Calendar />} />
-          <Route path="/non-working-days" element={<ProtectedRoute><NonWorkingDays /></ProtectedRoute>} />
+          <Route path="/total-timeouts" element={<ProtectedRoute><TimeoutTabs /></ProtectedRoute>} />
           <Route path="/list-timeout" element={<ProtectedRoute><ListTimeout /></ProtectedRoute>} />
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add-timeout" element={<ProtectedRoute><AddTimeout /></ProtectedRoute>} />

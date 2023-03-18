@@ -39,7 +39,8 @@ body {
   margin-top: 37px;
   width: 300px;
   line-height: 1.5;
-  border-right: 1px solid #d3e2e8;
+  border-right: 1px solid #ede9e1;
+
 }
 
 .demo-app-main {
@@ -47,20 +48,28 @@ body {
   padding: 3em;
 }
 
-/* Non-Working Days Card (add holiday) */
+/* Non-Working Days Card (add timeout) */
 .card-non-working-days {
   padding: 1em;
 }
 
-/* List holidays card */
-.card-list-holidays {
+/* List timeouts card */
+.card-list-timeouts {
   padding: 1em;
 }
 
-/* Row of Holiday Item */
-.holiday-item-row {
+/* Row of timeout Item */
+.timeout-item-row {
   margin-bottom: 4px;
   margin-top: 4px;
+}
+
+.card-list-row-timeouts {
+  background-color: #ECECEC;
+}
+
+.timeout-tabs-container {
+  margin-top: 40px;
 }
 
 

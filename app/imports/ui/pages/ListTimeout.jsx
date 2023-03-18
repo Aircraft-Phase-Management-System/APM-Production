@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Container, Row, Table, Card } from "react-bootstrap";
+import { List } from 'react-bootstrap-icons';
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import TimeoutItem from "../components/TimeoutItem";
@@ -26,10 +27,13 @@ const ListTimeout = () => {
   return ready ? (
     <Container id={PAGE_IDS.LIST_TIMEOUT} className="py-3">
       <Card className="card-list-timeouts">
-        <Card.Title>ALL CURRENT TIMEOUTS</Card.Title>
-        <Row>
-          <Col sm={8}><h6>Name</h6></Col>
-          <Col sm={3}><h6>Date</h6></Col>
+        <Card.Title><List/> All Current Timeouts ({timeouts.length})</Card.Title>
+        <Row className="card-list-row-timeouts">
+          <Col sm={3}><h6>Name</h6></Col>
+          <Col sm={2}><h6>Start Date</h6></Col>
+          <Col sm={2}><h6>End Date</h6></Col>
+          <Col sm={2}><h6>Type</h6></Col>
+          <Col sm={2}><h6>Hours</h6></Col>
           <Col sm={1}><h6>Modify</h6></Col>
           </Row>
           {timeouts.map((timeout) => (

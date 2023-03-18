@@ -59,7 +59,7 @@ class TimeoutCollection extends BaseCollection {
    * @param quantity the new quantity (optional).
    * @param condition the new condition (optional).
    */
-  update(docID, { title, start }) {
+  update(docID, { title, start, end, type, hours }) {
     const updateData = {};
     if (title) {
       updateData.title = title;
