@@ -71,53 +71,40 @@ const AddEvent = () => {
 
   const calculateEndDate = () => {
     /* Received inputs from the user using the form */
-    const strRecvStartYear = startDate.substring(0, 4);
-    let strRecvStartMonth = startDate.substring(5, 7);
-    const strRecvStartDay = startDate.substring(8);
+    const strStartYear = startDate.substring(0, 4);
+    const strStartMonth = startDate.substring(5, 7);
+    const strStartDay = startDate.substring(8);
 
-    let recvStartYear = parseInt(strRecvStartYear);
-    let recvStartMonth = parseInt(strRecvStartMonth);
-    let recvStartDay = parseInt(strRecvStartDay);
+    /* Transform the received inputs to an integer value and save. */
+    let startYear = parseInt(strStartYear);
+    let startMonth = parseInt(strStartMonth);
+    let startDay = parseInt(strStartDay);
 
     /* Calculate possible end date */
-    let calcYear = null;
-    let calcMonth = null;
-    let calcDay = recvStartDay + reqNumberDays - 1;
+    let endYear = null;
+    let endMonth = null;
+    let endDay = startDay + reqNumberDays - 1;
 
     let hasChangedMonth = false;
-
-    let [monthName, monthDays] = findMonthNamesAndDays(strRecvStartMonth);
     let possEndDate = null;
 
+    /* Get the name and number of days of the month */
+    let [monthName, monthDays] = findMonthNamesAndDays(strStartMonth);
+
     /* If the day calculated is larger than the days within the current month */
-    if (monthDays <= calcDay) {
-      /* TODO: Move to next month. */
-      console.log("Calc Day: ", calcDay);
-      console.log("Month Days: ", monthDays);
-      [calcYear, calcMonth, calcDay] = moveNextMonth(
-        recvStartYear,
-        recvStartMonth,
-        recvStartDay,
-        reqNumberDays,
-        monthName,
-        monthDays
-      );
-      possEndDate =
-        calcYear +
-        "-" +
-        calcMonth +
-        "-" +
-        (calcDay < 10 ? "0" + calcDay : calcDay);
+    if (monthDays < endDay) {
+      /* Move to next month. */
+      [endYear, endMonth, endDay] = moveNextMonth(startYear, startMonth, startDay, reqNumberDays, monthName, monthDays);
+      //possEndDate = endYear + "-" + endMonth + "-" + (endDay < 10 ? "0" + endDay : endDay);
       hasChangedMonth = true;
+
+      console.log("Calc Day: ", endDay);
+      console.log("Month Days: ", monthDays);
+
     } else {
-      calcYear = recvStartYear;
-      calcMonth = recvStartMonth;
-      possEndDate =
-        calcYear +
-        "-" +
-        calcMonth +
-        "-" +
-        (calcDay < 10 ? "0" + calcDay : calcDay);
+      endYear = startYear;
+      endMonth = startMonth;
+      possEndDate = endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay);
     }
 
     console.log("Start Date", startDate);
@@ -130,23 +117,20 @@ const AddEvent = () => {
     startDate = Date.parse(startDate);
     possEndDate = Date.parse(possEndDate);
 
-    const numOffDays = allDatesRange.length;
-    let curOffDays = 0;
-
     /* Loop through all the ranges of the off days*/
-    for (let offDay = 0; offDay < numOffDays; offDay++) {
+    for (let offDay = 0; offDay < allDatesRange.length; offDay++) {
       let curStart = allDatesRange[offDay][0];
       let curEnd = allDatesRange[offDay][1];
 
       let finalEndDate = null;
-
       let curMonthDays = 0;
+      let curOffDays = 0;
 
       const curStartYear = parseInt(curStart.substring(0, 4));
       const curStartMonth = parseInt(curStart.substring(5, 7));
       const curStartDay = parseInt(curStart.substring(8));
 
-      /* DONE: If the there is only one off day (it is not a range) */
+      /* If the there is only one off day (it is not a range) */
       if (!curEnd) {
         curStart = Date.parse(curStart);
 
@@ -154,19 +138,18 @@ const AddEvent = () => {
           console.log("1 Non Working Day Found Within Range");
           conflictingRangesIndex.push(offDay);
           totalConflictOffDays++;
-          calcDay++;
+          endDay++;
           finalEndDate =
-            calcYear +
+            endYear +
             "-" +
-            (calcMonth < 10 && typeof calcMonth != "string"
-              ? "0" + calcMonth
-              : calcMonth) +
+            (endMonth < 10 && typeof endMonth != "string"
+              ? "0" + endMonth
+              : endMonth) +
             "-" +
-            (calcDay < 10 ? "0" + calcDay : calcDay) +
+            (endDay < 10 ? "0" + endDay : endDay) +
             " " +
             "15:50:00";
           setEndDate(finalEndDate);
-          setSuggestion(true);
 
           console.log("Final End Date: ", finalEndDate);
         }
@@ -186,8 +169,6 @@ const AddEvent = () => {
         curEnd = Date.parse(curEnd);
 
         /* If current days off takes place within event range */
-        //console.log(curEnd >= startDate);
-        // console.log(curEnd <= possEndDate);
         if (
           curStart >= startDate &&
           curStart <= possEndDate &&
@@ -214,9 +195,10 @@ const AddEvent = () => {
           /* Update Possible End Date */
           console.log("totalConflictOffDays: ", totalConflictOffDays);
 
-          let year = recvStartYear;
-          let month = recvStartMonth;
-          let day = recvStartDay + reqNumberDays - 1 + curOffDays;
+          let year = startYear;
+          let month = startMonth;
+          //let day = startDay + reqNumberDays - 1 + curOffDays;
+          let day = startDay + reqNumberDays - 1 + totalConflictOffDays;
 
           let [monthName, monthDays] = findMonthNamesAndDays(
             curStartMonth < 10
@@ -226,41 +208,41 @@ const AddEvent = () => {
 
           //curMonthDays = findMonthNamesAndDays(curStartMonth < 10 ? "0" + curStartMonth.toString() : curStartMonth.toString())[1];
 
-          if (monthDays <= day && !hasChangedMonth) {
+          if (monthDays < day && !hasChangedMonth) {
             console.log("Current Month Days: ", monthDays);
-            console.log("recvStartYear", recvStartYear);
-            console.log("recvStartMonth", recvStartMonth);
-            console.log("recvStartDay", recvStartDay);
+            console.log("startYear", startYear);
+            console.log("startMonth", startMonth);
+            console.log("startDay", startDay);
             console.log("reqNumberDays", reqNumberDays);
             console.log("monthName", monthName);
             console.log("monthDays", monthDays);
-            [calcYear, calcMonth, calcDay] = moveNextMonth(
-              recvStartYear,
-              recvStartMonth,
-              recvStartDay,
+            [endYear, endMonth, endDay] = moveNextMonth(
+              startYear,
+              startMonth,
+              startDay,
               reqNumberDays,
               monthName,
               monthDays
             );
-            console.log("calcYear: ", calcYear);
-            console.log("calcMonth: ", calcMonth);
-            console.log("calcDay: ", calcDay);
-            calcDay += totalConflictOffDays;
+            console.log("endYear: ", endYear);
+            console.log("endMonth: ", endMonth);
+            console.log("endDay: ", endDay);
+            endDay += totalConflictOffDays;
 
             possEndDate =
-              calcYear +
+              endYear +
               "-" +
-              calcMonth +
+              endMonth +
               "-" +
-              (calcDay < 10 ? "0" + calcDay : calcDay);
+              (endDay < 10 ? "0" + endDay : endDay);
             setEndDate(possEndDate + " " + "15:50:00");
           } else {
             /*setEndDate(
-              recvStartYear +
+              startYear +
                 "-" +
-                recvStartMonth +
+                startMonth +
                 "-" +
-                (recvStartDay + reqNumberDays - 1 + curOffDays) + " " + " 15:50:00"
+                (startDay + reqNumberDays - 1 + curOffDays) + " " + " 15:50:00"
             );*/
           }
 
@@ -271,10 +253,10 @@ const AddEvent = () => {
           /* TODO */
 
           totalConflictOffDays += curStartDay - curStartDay + 1;
-          totalConflictOffDays += curEndDay - calcDay;
+          totalConflictOffDays += curEndDay - endDay;
           console.log("Range: Start Day Only");
           console.log("curStartDay: ", curStartDay);
-          console.log("Calc Day Possible End: ", calcDay);
+          console.log("Calc Day Possible End: ", endDay);
           console.log("totalConflictOffDays: ", totalConflictOffDays);
 
           conflictingRangesIndex.push(offDay);
@@ -282,7 +264,7 @@ const AddEvent = () => {
           /* If possible calculated end date is within off day range */
         } else if (curEnd >= startDate && curEnd <= possEndDate) {
           /* TODO */
-          totalConflictOffDays += curEndDay - recvStartDay + 1;
+          totalConflictOffDays += curEndDay - startDay + 1;
 
           console.log("Range: Start Day Only");
           console.log("totalConflictOffDays: ", totalConflictOffDays);
@@ -293,40 +275,46 @@ const AddEvent = () => {
     }
 
     if (hasChangedMonth) {
-      calcDay += totalConflictOffDays;
+      if (typeof endDay != "string") {
+        endDay += totalConflictOffDays;
 
-      if (calcDay >= monthDays) {
-        [calcYear, calcMonth, calcDay] = moveNextMonth(
-          recvStartYear,
-          recvStartMonth,
-          recvStartDay,
+      }
+
+      if (endDay >= monthDays) {
+        [endYear, endMonth, endDay] = moveNextMonth(
+          startYear,
+          startMonth,
+          startDay,
           reqNumberDays + totalConflictOffDays,
           monthName,
           monthDays
         );
       }
+      console.log("HERRRREEE");
       setEndDate(
-        calcYear +
+        endYear +
           "-" +
-          calcMonth +
+          endMonth +
           "-" +
-          (calcDay < 10 ? "0" + calcDay : calcDay)
+          (endDay < 10 ? "0" + endDay : endDay)
       );
     } else {
       /* No non-Working days and hours found, set data to initial calculated date. */
       /*setEndDate(
-        recvStartYear +
+        startYear +
           "-" +
-          recvStartMonth +
+          startMonth +
           "-" +
-          (recvStartDay + reqNumberDays - 1 + totalConflictOffDays) + " " + " 15:50:00");*/
-      setEndDate(strPossEndDate + " " + " 15:50:00");
+          (startDay + reqNumberDays - 1 + totalConflictOffDays) + " " + " 15:50:00");*/
+     
     }
 
     if(conflictingRangesIndex.length != 0) {
       setSuggestion(true);
+    } else {
+      setEndDate(strPossEndDate + " " + " 15:50:00");
+
     }
-    //setEndDate(possEndDate + " " + "15:50:00");
   };
 
   function findMonthNamesAndDays(monthStr) {
@@ -356,7 +344,7 @@ const AddEvent = () => {
     monthName,
     monthDays
   ) {
-    let calcDay = day + reqNumberDays - 1;
+    let endDay = day + reqNumberDays - 1;
     let daysLeft = 0;
     let wasMonthFound = false;
 
@@ -394,7 +382,7 @@ const AddEvent = () => {
       ["Dec", [31, "12"]],
     ]);
 
-    daysLeft = calcDay - monthDays;
+    daysLeft = endDay - monthDays;
     nextMonthName = getNextMonth.get(monthName)[0]; // remove [0] later
     [nextMonthDays, nextMonthNum] = getDaysNumAndName.get(nextMonthName);
 
@@ -440,8 +428,6 @@ const AddEvent = () => {
   for (let i = 0; i < conflictingRangesIndex.length; i++) {
     conflictingDates.push(allDatesRange[conflictingRangesIndex[i]]);
   }
-
-  console.log("Conflicting Dates :", conflictingDates);
 
   // On submit, insert the data.
   const submit = (data) => {
