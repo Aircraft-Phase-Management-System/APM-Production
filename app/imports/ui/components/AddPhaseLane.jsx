@@ -29,6 +29,7 @@ const formSchema = new SimpleSchema({
   issue: String,
 });
 
+
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddEvent page for adding a document. */
