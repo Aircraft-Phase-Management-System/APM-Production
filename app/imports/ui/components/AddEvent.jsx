@@ -20,10 +20,12 @@ let conflictingDates = [];
 const holidays = [
   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
+  { title: "Independece Day", start: "2023-07-01", end: null },
   { title: "Independece Day", start: "2023-07-04", end: null },
+  { title: "Independece Day1", start: "2023-07-07", end: null },
   { title: "Veterans Dar", start: "2023-11-11", end: null },
   { title: "Christmas Day", start: "2023-12-10", end: "2023-12-12" },
-  { title: "Christmas Day1", start: "2023-12-20", end: "2023-12-22" },
+  { title: "Christmas Day1", start: "2023-12-15", end: "2023-12-17" },
   /*{ title: "Christmas Day", start: "2023-12-25", end: "2023-12-27" },*/
 ];
 
@@ -87,6 +89,8 @@ const AddEvent = () => {
 
     let hasChangedMonth = false;
     let possEndDate = null;
+    let conflictingRangesIndexTemp = [];
+    let prevConflictingDays = 0;
 
     /* Get the name and number of days of the month */
     let [monthName, monthDays] = findMonthNamesAndDays(strStartMonth);
@@ -95,7 +99,7 @@ const AddEvent = () => {
     if (monthDays < endDay) {
       /* Move to next month. */
       [endYear, endMonth, endDay] = moveNextMonth(startYear, startMonth, startDay, reqNumberDays, monthName, monthDays);
-      //possEndDate = endYear + "-" + endMonth + "-" + (endDay < 10 ? "0" + endDay : endDay);
+      possEndDate = endYear + "-" + endMonth + "-" + (endDay < 10 ? "0" + endDay : endDay);
       hasChangedMonth = true;
 
       console.log("Calc Day: ", endDay);
@@ -110,9 +114,6 @@ const AddEvent = () => {
     console.log("Start Date", startDate);
     console.log("Possible End Date", possEndDate);
 
-    let strStartDate = startDate;
-    let strPossEndDate = possEndDate;
-
     /* Transform into date formart the start date from the and calculated possEnd end date. */
     startDate = Date.parse(startDate);
     possEndDate = Date.parse(possEndDate);
@@ -122,7 +123,6 @@ const AddEvent = () => {
       let curStart = allDatesRange[offDay][0];
       let curEnd = allDatesRange[offDay][1];
 
-      let finalEndDate = null;
       let curMonthDays = 0;
       let curOffDays = 0;
 
@@ -138,20 +138,7 @@ const AddEvent = () => {
           console.log("1 Non Working Day Found Within Range");
           conflictingRangesIndex.push(offDay);
           totalConflictOffDays++;
-          endDay++;
-          finalEndDate =
-            endYear +
-            "-" +
-            (endMonth < 10 && typeof endMonth != "string"
-              ? "0" + endMonth
-              : endMonth) +
-            "-" +
-            (endDay < 10 ? "0" + endDay : endDay) +
-            " " +
-            "15:50:00";
-          setEndDate(finalEndDate);
-
-          console.log("Final End Date: ", finalEndDate);
+          //endDay++;
         }
 
         /* If it is a range of off days */
@@ -169,12 +156,7 @@ const AddEvent = () => {
         curEnd = Date.parse(curEnd);
 
         /* If current days off takes place within event range */
-        if (
-          curStart >= startDate &&
-          curStart <= possEndDate &&
-          curEnd >= startDate &&
-          curEnd <= possEndDate
-        ) {
+        if (curStart >= startDate && curStart <= possEndDate && curEnd >= startDate && curEnd <= possEndDate) {
           console.log("Range: Start Day & End Date");
           conflictingRangesIndex.push(offDay);
 
@@ -190,15 +172,9 @@ const AddEvent = () => {
           } else {
             totalConflictOffDays += curOffDays;
           }
-          /* GET POSSIBLE END DATE AND ADD DAYS TO IT, CHECK IF OVERFLOW MONTH */
-          /* If overflow, get the month and check number of days*/
-          /* Update Possible End Date */
-          console.log("totalConflictOffDays: ", totalConflictOffDays);
 
-          let year = startYear;
-          let month = startMonth;
-          //let day = startDay + reqNumberDays - 1 + curOffDays;
-          let day = startDay + reqNumberDays - 1 + totalConflictOffDays;
+          endYear = hasChangedMonth ? endYear : startYear;
+          endMonth = hasChangedMonth ? endMonth : startMonth;
 
           let [monthName, monthDays] = findMonthNamesAndDays(
             curStartMonth < 10
@@ -207,8 +183,8 @@ const AddEvent = () => {
           );
 
           //curMonthDays = findMonthNamesAndDays(curStartMonth < 10 ? "0" + curStartMonth.toString() : curStartMonth.toString())[1];
-
-          if (monthDays < day && !hasChangedMonth) {
+            
+          if (monthDays < (startDay + reqNumberDays - 1 + totalConflictOffDays) && !hasChangedMonth) {
             console.log("Current Month Days: ", monthDays);
             console.log("startYear", startYear);
             console.log("startMonth", startMonth);
@@ -220,38 +196,19 @@ const AddEvent = () => {
               startYear,
               startMonth,
               startDay,
-              reqNumberDays,
+              reqNumberDays + totalConflictOffDays,
               monthName,
               monthDays
             );
             console.log("endYear: ", endYear);
             console.log("endMonth: ", endMonth);
             console.log("endDay: ", endDay);
-            endDay += totalConflictOffDays;
+            endDay -= curOffDays;
 
-            possEndDate =
-              endYear +
-              "-" +
-              endMonth +
-              "-" +
-              (endDay < 10 ? "0" + endDay : endDay);
-            setEndDate(possEndDate + " " + "15:50:00");
-          } else {
-            /*setEndDate(
-              startYear +
-                "-" +
-                startMonth +
-                "-" +
-                (startDay + reqNumberDays - 1 + curOffDays) + " " + " 15:50:00"
-            );*/
-          }
-
-          //setSuggestion(true);
+          } 
 
           /* If current start off day is within  */
         } else if (curStart >= startDate && curStart <= possEndDate) {
-          /* TODO */
-
           totalConflictOffDays += curStartDay - curStartDay + 1;
           totalConflictOffDays += curEndDay - endDay;
           console.log("Range: Start Day Only");
@@ -263,7 +220,6 @@ const AddEvent = () => {
 
           /* If possible calculated end date is within off day range */
         } else if (curEnd >= startDate && curEnd <= possEndDate) {
-          /* TODO */
           totalConflictOffDays += curEndDay - startDay + 1;
 
           console.log("Range: Start Day Only");
@@ -272,14 +228,31 @@ const AddEvent = () => {
           conflictingRangesIndex.push(offDay);
         }
       }
-    }
 
-    if (hasChangedMonth) {
-      if (typeof endDay != "string") {
+      if(totalConflictOffDays != 0 && conflictingRangesIndexTemp.length == 0) {
+        conflictingRangesIndexTemp = conflictingRangesIndex.slice();
+        console.log("here conflictingRangesIndexTemp:", conflictingRangesIndexTemp);
         endDay += totalConflictOffDays;
+        prevConflictingDays = totalConflictOffDays;
 
+        console.log("End Day Here: ", endDay);
+        console.log(endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay));
+        possEndDate = Date.parse(endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay));
+      } else if(conflictingRangesIndexTemp.length < conflictingRangesIndex.length) {
+        console.log("BIGGER THAN");
+        conflictingRangesIndexTemp = conflictingRangesIndex.slice();
+        endDay += totalConflictOffDays - prevConflictingDays;
+
+        console.log("End Day Here 1: ", endDay);
+        console.log(endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay));
+        possEndDate = Date.parse(endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay));
       }
 
+    }
+
+   // endDay += totalConflictOffDays;
+
+    if (hasChangedMonth && totalConflictOffDays!= 0) {
       if (endDay >= monthDays) {
         [endYear, endMonth, endDay] = moveNextMonth(
           startYear,
@@ -289,32 +262,19 @@ const AddEvent = () => {
           monthName,
           monthDays
         );
+        console.log("HERRRREEE");
       }
-      console.log("HERRRREEE");
-      setEndDate(
-        endYear +
-          "-" +
-          endMonth +
-          "-" +
-          (endDay < 10 ? "0" + endDay : endDay)
-      );
-    } else {
-      /* No non-Working days and hours found, set data to initial calculated date. */
-      /*setEndDate(
-        startYear +
-          "-" +
-          startMonth +
-          "-" +
-          (startDay + reqNumberDays - 1 + totalConflictOffDays) + " " + " 15:50:00");*/
-     
-    }
+      
 
-    if(conflictingRangesIndex.length != 0) {
-      setSuggestion(true);
-    } else {
-      setEndDate(strPossEndDate + " " + " 15:50:00");
+    } 
 
-    }
+    /* Start, Start & Multiple, Both Ranges, Both Ranges & Over Month-Year, Both Ranges & Over Month-Year & Multiple, No Conflict, No Conflict & Over Month-Year, 
+      */
+    console.log("totalConflictOffDays: ", totalConflictOffDays);
+    console.log("End Day", endDay);
+    possEndDate = endYear + "-" +  (endMonth < 10 && typeof endMonth != "string"? "0" + endMonth: endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay);
+    setEndDate(possEndDate + " " + "15:50:00");
+    setSuggestion(true);
   };
 
   function findMonthNamesAndDays(monthStr) {
@@ -531,7 +491,7 @@ const AddEvent = () => {
                       style={{ backgroundColor: "#eb9d0c" }}
                       show={showAlert}
                     >
-                      {showSuggestion ? (
+                      {showSuggestion && totalConflictOffDays!= 0 ? (
                         <>
                           <Alert.Heading>
                             <ExclamationDiamond /> Alert
