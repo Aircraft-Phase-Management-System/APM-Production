@@ -43,9 +43,9 @@ const EditPhaseLane = ({ phase }) => {
 
   // On successful submit, insert the data.
   const submit = (data) => {
-    const { name, author, color, issue } = data;
+    const { name, author, issue } = data;
     const collectionName = Phases.getCollectionName();
-    const updateData = { id: phase._id, name, author, color, issue };
+    const updateData = { id: phase._id, name, author, issue };
     updateMethod
       .callPromise({ collectionName, updateData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -56,7 +56,7 @@ const EditPhaseLane = ({ phase }) => {
 
   return ready ? (
     <>
-      <Button variant="outline-secondary" size="sm" onClick={handleShow}>
+      <Button variant="light" size="sm" onClick={handleShow}>
         <PencilFill />
       </Button>
 
@@ -90,7 +90,6 @@ const EditPhaseLane = ({ phase }) => {
                   placeholder="Ex: Team 1"
                 />
               </Row>
-              <SelectField name="color" />
               <ErrorsField />
               <HiddenField name="owner" />
             </Container>

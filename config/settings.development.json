@@ -17,57 +17,22 @@
     {
       "name": "Flight Lane 1",
       "author": "Team 1",
-      "color": "#3788d8",
+      "color": "#AF627F",
       "issue": "#1",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 2",
       "author": "Team 2",
-      "color": "#87aef5",
+      "color": "#6BA18F",
       "issue": "#2",
       "owner": "john@foo.com"
     },
     {
       "name": "Flight Lane 3",
       "author": "Team 3",
-      "color": "#3788d8",
+      "color": "#161C79",
       "issue": "#3",
-      "owner": "john@foo.com"
-    },
-    {
-      "name": "Flight Lane 4",
-      "author": "Team 4",
-      "color": "#87aef5",
-      "issue": "#4",
-      "owner": "john@foo.com"
-    },
-    {
-      "name": "Flight Lane 5",
-      "author": "Team 5",
-      "color": "#3788d8",
-      "issue": "#5",
-      "owner": "john@foo.com"
-    },
-    {
-      "name": "Flight Lane 6",
-      "author": "Team 6",
-      "color": "#87aef5",
-      "issue": "#6",
-      "owner": "john@foo.com"
-    },
-    {
-      "name": "Flight Lane 7",
-      "author": "Team 7",
-      "color": "#3788d8",
-      "issue": "#7",
-      "owner": "john@foo.com"
-    },
-    {
-      "name": "Flight Lane 8",
-      "author": "Team 8",
-      "color": "#87aef5",
-      "issue": "#8",
       "owner": "john@foo.com"
     }
   ],
@@ -105,42 +70,8 @@
       "end": "2023-03-19 23:30:00",
       "color": "#33E717",
       "owner": "john@foo.com"
-    },
-    {
-      "title": "PMI 5",
-      "start": "2022-11-20 15:50:00",
-      "days": 10,
-      "end": "2023-01-19 23:30:00",
-      "color": "#F5D120",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "PMI 6",
-      "start": "2023-10-20 15:50:00",
-      "days": 10,
-      "end": "2023-12-15 23:30:00",
-      "color": "#F3A928",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "PMI 7",
-      "start": "2023-12-10 15:50:00",
-      "days": 10,
-      "end": "2023-02-09 23:30:00",
-      "color": "#E5700F",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "PMI 8",
-      "start": "2023-01-20 15:50:00",
-      "days": 10,
-      "end": "2023-02-15 23:30:00",
-      "color": "#E5390F",
-      "owner": "john@foo.com"
     }
   ],
-
-
 
   "public": {
     "development": true

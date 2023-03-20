@@ -3,6 +3,7 @@ import { Col, Container, Row, Button } from "react-bootstrap";
 import {
   AutoForm,
   ErrorsField,
+  HiddenField,
   SelectField,
   SubmitField,
   TextField,
@@ -21,16 +22,20 @@ import Modal from "react-bootstrap/Modal";
 const formSchema = new SimpleSchema({
   name: String,
   author: String,
-  color: {
-    type: String,
-    allowedValues: ["#3788d8", "#87aef5"],
-    defaultValue: "#87aef5",
-  },
+  color: String,
   issue: String,
 });
 
-
 const bridge = new SimpleSchema2Bridge(formSchema);
+
+function setBg () {
+  //const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+  const randomColor = "hsl(" + 360 * Math.random() + ',' +
+  (10 + 80 * Math.random()) + '%,' + 
+  ( 20 + 40 * Math.random()) + '%)';
+  console.log(randomColor);
+  return randomColor;
+}
 
 /* Renders the AddEvent page for adding a document. */
 const AddPhaseLane = () => {
@@ -42,6 +47,7 @@ const AddPhaseLane = () => {
   // On submit, insert the data.
   const submit = (data, formRef) => {
     const { name, author, color, issue } = data;
+    console.log("color: ", color);
     const owner = Meteor.user().username;
     const collectionName = Phases.getCollectionName();
     const definitionData = { name, author, color, issue, owner };
@@ -86,7 +92,7 @@ const AddPhaseLane = () => {
               </Row>
               <Row><TextField name="author" label="Team" placeholder="Ex: Team 1"  />
               </Row>
-              <SelectField name="color" />
+              <HiddenField name="color" value={setBg()}/>
               <ErrorsField />
             </Container>
           </Modal.Body>
