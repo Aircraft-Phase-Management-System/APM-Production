@@ -1,6 +1,15 @@
-import React from "react";
-import { Col, Container, Row, Table, Card } from "react-bootstrap";
-import { List } from 'react-bootstrap-icons';
+import React, { useState } from "react";
+import {
+  Col,
+  Container,
+  Row,
+  Table,
+  Card,
+  InputGroup,
+  Form,
+  Dropdown,
+} from "react-bootstrap";
+import { List, Search, Funnel, SortNumericDown } from "react-bootstrap-icons";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import TimeoutItem from "../components/TimeoutItem";
@@ -9,6 +18,8 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 
 /* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 const ListTimeout = () => {
+  const [query, setQuery] = useState("");
+
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { ready, timeouts } = useTracker(() => {
     // Note that this subscription will get cleaned up
@@ -24,22 +35,52 @@ const ListTimeout = () => {
       ready: rdy,
     };
   }, []);
+
+  const filteredData = timeouts.filter((timeout) => {
+      const lowerCase = query.toLowerCase();
+      return timeout.title.toLowerCase().startsWith(lowerCase);
+  });
+
   return ready ? (
     <Container id={PAGE_IDS.LIST_TIMEOUT} className="py-3">
       <Card className="card-list-timeouts">
-        <Card.Title><List/> All Current Timeouts ({timeouts.length})</Card.Title>
+        <Card.Title>
+          <List /> All Current Timeouts ({timeouts.length})
+        </Card.Title>
+        <br />
+            <InputGroup>
+              <InputGroup.Text>
+                <Search></Search>
+              </InputGroup.Text>
+              <Form.Control
+                placeholder="Search by title..."
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </InputGroup>
+        <br />
         <Row className="card-list-row-timeouts">
-          <Col sm={3}><h6>Name</h6></Col>
-          <Col sm={2}><h6>Start Date</h6></Col>
-          <Col sm={2}><h6>End Date</h6></Col>
-          <Col sm={2}><h6>Type</h6></Col>
-          <Col sm={2}><h6>Hours</h6></Col>
-          <Col sm={1}><h6>Modify</h6></Col>
-          </Row>
-          {timeouts.map((timeout) => (
-            <TimeoutItem key={timeout._id} timeout={timeout} />
-          ))}
-
+          <Col sm={3}>
+            <h6>Title</h6>
+          </Col>
+          <Col sm={2}>
+            <h6>Start Date</h6>
+          </Col>
+          <Col sm={2}>
+            <h6>End Date</h6>
+          </Col>
+          <Col sm={2}>
+            <h6>Type</h6>
+          </Col>
+          <Col sm={2}>
+            <h6>Hours</h6>
+          </Col>
+          <Col sm={1}>
+            <h6>Modify</h6>
+          </Col>
+        </Row>
+        {filteredData.map((timeout) => (
+          <TimeoutItem key={timeout._id} timeout={timeout} />
+        ))}
       </Card>
     </Container>
   ) : (
