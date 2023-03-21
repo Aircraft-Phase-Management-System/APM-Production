@@ -7,11 +7,10 @@ import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const TimeoutItem = ({ timeout }) => (
-
   <tr>
   <td>{timeout.title}</td>
-  <td>{timeout.start}</td>
-  <td>{timeout.end}</td>
+  <td>{timeout.start.substring(0,10)}</td>
+  <td>{timeout.end.substring(0,10)}</td>
   <td>{timeout.type}</td>
   <td>{timeout.hours}</td>
   <td><EditTimeout key={timeout._id} timeout={timeout}/></td>

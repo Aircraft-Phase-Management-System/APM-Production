@@ -57,19 +57,21 @@ const AddEvent = () => {
   /* Save the suggestion date after found.  */
   const [endDate, setEndDate] = useState("");
 
-  /* To calculate the end date */
-  const setValsforCalc = (e) => {
-    const date = e.target.value;
-    const numberOfDays = e.target.valueAsNumber;
-
-    if (date.length === 10) {
+  /* Save value for start date */
+  const setStartDateVal = (e) => {
+      const date = e.target.value;
       startDate = date;
-    }
-
-    if (numberOfDays) {
-      reqNumberDays = numberOfDays;
-    }
+      console.log("Date: ", date);
+   
   };
+
+    /* Save value for required number of days. */
+    const setRequiredDaysVal = (e) => {
+        const numberOfDays = e.target.valueAsNumber;
+        reqNumberDays = numberOfDays;
+        console.log("Required Number: ", reqNumberDays);
+      
+    };
 
   const calculateEndDate = () => {
     /* Received inputs from the user using the form */
@@ -274,6 +276,7 @@ const AddEvent = () => {
     console.log("End Day", endDay);
     possEndDate = endYear + "-" +  (endMonth < 10 && typeof endMonth != "string"? "0" + endMonth: endMonth) + "-" + (endDay < 10 ? "0" + endDay : endDay);
     setEndDate(possEndDate + " " + "15:50:00");
+    console.log(endDate);
     setSuggestion(true);
   };
 
@@ -391,8 +394,8 @@ const AddEvent = () => {
 
   // On submit, insert the data.
   const submit = (data) => {
-    console.log(data);
     const { title, start, days, end, color } = data;
+    console.log("end date: ", end);
     const owner = Meteor.user().username;
     const collectionName = Events.getCollectionName();
     const definitionData = { title, start, days, end, color, owner };
@@ -457,11 +460,11 @@ const AddEvent = () => {
                     <Form.Group as={Col} md="6" controlId="validationFormik02">
                       <Form.Label>Start Date</Form.Label>
                       <Form.Control
-                        type="text"
+                        type="date"
                         name="start"
                         placeholder="Ex: 2023-03-15"
                         onChange={(e) => {
-                          setValsforCalc(e);
+                          setStartDateVal(e);
                           handleChange(e);
                         }}
                         isValid={touched.start && !errors.start}
@@ -475,7 +478,7 @@ const AddEvent = () => {
                         name="days"
                         placeholder="Ex: 20"
                         onChange={(e) => {
-                          setValsforCalc(e);
+                          setRequiredDaysVal(e);
                           handleChange(e);
                         }}
                         isValid={touched.days && !errors.days}

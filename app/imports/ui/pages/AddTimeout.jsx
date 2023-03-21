@@ -34,9 +34,13 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddStuff page for adding a document. */
 const AddTimeout = () => {
+
+
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { title, start, end, type, hours } = data;
+    let { title, start, end, type, hours } = data;
+    start = moment(start).format('YYYY-MM-DD');
+    end = moment(end).format('YYYY-MM-DD') + " 15:00:00";
     const owner = Meteor.user().username;
     const collectionName = Timeouts.getCollectionName();
     const definitionData = { title, start, end, type, hours, owner};
@@ -70,7 +74,6 @@ const AddTimeout = () => {
             <SelectField name="type" label="Type" />
           </Col>
         </Row>
-
         <Row>
           <Col sm="4">
             <DateField name="start" label="Start Date"/>
@@ -83,7 +86,6 @@ const AddTimeout = () => {
           </Col>
             <SubmitField value="Submit" />
         </Row>
-
         <ErrorsField />
       </AutoForm>
       </Card>
