@@ -7,16 +7,15 @@ import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const TimeoutItem = ({ timeout }) => (
-  <div className="timeout-item-row">
-  <Row>
-    <Col sm={3}>{timeout.title}</Col>
-    <Col sm={2}>{timeout.start}</Col>
-    <Col sm={2}>{timeout.end}</Col>
-    <Col sm={2}>{timeout.type}</Col>
-    <Col sm={2}>{timeout.hours}</Col>
-    <Col sm={1}><EditTimeout key={timeout._id} timeout={timeout}/></Col>
-  </Row>
-  </div>
+
+  <tr>
+  <td>{timeout.title}</td>
+  <td>{timeout.start}</td>
+  <td>{timeout.end}</td>
+  <td>{timeout.type}</td>
+  <td>{timeout.hours}</td>
+  <td><EditTimeout key={timeout._id} timeout={timeout}/></td>
+</tr>
 );
 
 // Require a document to be passed to this component.

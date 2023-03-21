@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
-import { PencilFill, XSquare, Download } from "react-bootstrap-icons";
-import { Card, Col, Container, Row, Modal, Button } from "react-bootstrap";
+import { PencilFill, XSquare, ExclamationOctagon } from "react-bootstrap-icons";
+import { Col, Container, Row, Modal, Button, Alert } from "react-bootstrap";
 import {
   AutoForm,
   ErrorsField,
   HiddenField,
   SubmitField,
   TextField,
+  SelectField,
+  NumField,
 } from "uniforms-bootstrap5";
 import { useTracker } from "meteor/react-meteor-data";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
@@ -43,9 +45,9 @@ const EditTimeout = ({ timeout }) => {
 
   // On successful submit, insert the data.
   const submit = (data) => {
-    const { title, start } = data;
+    const { title, start, end, type, hours } = data;
     const collectionName = Timeouts.getCollectionName();
-    const updateData = { id: timeout._id, title, start };
+    const updateData = { id: timeout._id, title, start, end, type, hours };
     updateMethod
       .callPromise({ collectionName, updateData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -63,27 +65,58 @@ const EditTimeout = ({ timeout }) => {
       <Modal show={show} onHide={handleClose}>
         <AutoForm schema={bridge} onSubmit={(data) => submit(data)} model={doc}>
           <Modal.Header closeButton>
-            <Modal.Title as="h5">Modify Timeout</Modal.Title>
+            <Modal.Title as="h5" centered>
+              Edit Timeout
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container id={PAGE_IDS.EDIT_TIMEOUT} className="py-3">
+              <Alert key="warning" variant="warning">
+                <ExclamationOctagon /> Include an end date for a holiday range.
+              </Alert>
               <TextField
                 name="title"
-                label="Name"
+                label="Title"
                 placeholder="Ex: Veteran's Day"
               />
-              <TextField
-                name="start"
-                label="Date"
-                placeholder="Ex: YYYY-MM-DD"
-              />
+              <Row>
+                <Col>
+                  <TextField
+                    name="start"
+                    label="Start Date"
+                    placeholder="Ex: YYYY-MM-DD"
+                  />
+                </Col>
+                <Col>
+                  <TextField
+                    name="end"
+                    label="End Date"
+                    placeholder="Ex: YYYY-MM-DD"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={8}>
+                  <SelectField name="type" label="Select Type" />
+                </Col>
+                <Col>
+                  <NumField
+                    name="hours"
+                    label="Required Hours"
+                    decimal={null}
+                    min={0}
+                    placeholder="How many unavailable hours?"
+                  />
+                </Col>
+              </Row>
               <ErrorsField />
               <HiddenField name="owner" />
             </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleClose}>
-              <XSquare style={{marginBottom: '4px', marginRight: '6px'}}/>Close
+              <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
+              Close
             </Button>
             <SubmitField value="Save Changes" onClick={handleClose} />
           </Modal.Footer>

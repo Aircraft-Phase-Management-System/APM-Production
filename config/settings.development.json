@@ -5,11 +5,11 @@
     { "email": "john@foo.com", "password": "changeme", "role": "USER" , "firstName": "John", "lastName": "Doe" }
   ],
   "defaultTimeouts": [
-    { "title": "New Year's Day", "start": "2023-01-01", "end": "2023-12-27", "type": "Holiday", "hours": 0, "owner": "john@foo.com"},
-    { "title": "Independece Day", "start": "2023-07-04", "end": "2023-12-27", "type": "Holiday", "hours": 0, "owner": "john@foo.com"},
-    { "title": "Veterans Dar", "start": "2023-11-11", "end": "2023-12-27", "type": "Holiday", "hours": 0,"owner": "john@foo.com"},
+    { "title": "New Year's Day", "start": "2023-12-29", "end": "2024-01-02", "type": "Holiday", "hours": 0, "owner": "john@foo.com"},
+    { "title": "Independece Day", "start": "2023-07-04", "end": "-", "type": "Holiday", "hours": 0, "owner": "john@foo.com"},
+    { "title": "Veterans Dar", "start": "2023-11-11", "end": "-", "type": "Holiday", "hours": 0,"owner": "john@foo.com"},
     { "title": "Christmas Day","start": "2023-12-24", "end": "2023-12-27", "type": "Holiday","hours": 0, "owner": "john@foo.com"},
-    { "title": "Basic Combat Training","start": "2023-12-24", "end": "-", "type": "Training Day","hours": 4, "owner": "john@foo.com"},
+    { "title": "Basic Combat Training","start": "2023-04-24", "end": "-", "type": "Training Day","hours": 4, "owner": "john@foo.com"},
     { "title": "Mahalo Day I","start": "2023-04-14", "end": "-", "type": "Mahalo Day","hours": 2, "owner": "john@foo.com"}
   ],
 
@@ -37,7 +37,6 @@
     }
   ],
 
-
   "defaultEvents": [
     {
       "title": "PMI 1",
@@ -57,9 +56,9 @@
     },
     {
       "title": "PMI 3",
-      "start": "2023-10-21 15:50:00",
+      "start": "2023-10-02 15:50:00",
       "days": 10,
-      "end": "2023-12-19 23:30:00",
+      "end": "2023-10-19 23:30:00",
       "color": "#17E7AB",
       "owner": "john@foo.com"
     },

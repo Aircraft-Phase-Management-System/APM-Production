@@ -57,6 +57,17 @@ const Calendar = () => {
     };
   }, []);
 
+  timeouts.forEach(function (element) {
+    element.color = "#c22f25";
+  });
+  
+  const mergedData = events.reduce((arr, item) => {
+    arr.push(item);
+    return arr;    
+}, timeouts);
+
+console.log(mergedData);
+
   const renderSideBar = () => {
     return (
       <div className="app-sidebar">
@@ -78,6 +89,9 @@ const Calendar = () => {
       </div>
     );
   };
+
+  console.log(events);
+  console.log(timeouts);
 
 
   handleDateClick = (clickInfo) => {
@@ -150,16 +164,14 @@ const Calendar = () => {
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            /*right: "dayGridMonth,timeGridWeek,timeGridDay", */
           }}
           initialView="dayGridMonth"
           editable={true}
-          events={events}
+          events={mergedData}
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
           dateClick={handleDateClick}
-          //select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
         />

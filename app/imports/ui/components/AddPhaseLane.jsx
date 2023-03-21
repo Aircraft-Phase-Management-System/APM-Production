@@ -33,7 +33,6 @@ function setBg () {
   const randomColor = "hsl(" + 360 * Math.random() + ',' +
   (20 + 60 * Math.random()) + '%,' + 
   ( 25 + 40 * Math.random()) + '%)';
-  console.log(randomColor);
   return randomColor;
 }
 

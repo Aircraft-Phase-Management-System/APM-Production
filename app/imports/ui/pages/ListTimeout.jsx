@@ -59,28 +59,24 @@ const ListTimeout = () => {
             </InputGroup>
         <br />
         <Row className="card-list-row-timeouts">
-          <Col sm={3}>
-            <h6>Title</h6>
-          </Col>
-          <Col sm={2}>
-            <h6>Start Date</h6>
-          </Col>
-          <Col sm={2}>
-            <h6>End Date</h6>
-          </Col>
-          <Col sm={2}>
-            <h6>Type</h6>
-          </Col>
-          <Col sm={2}>
-            <h6>Hours</h6>
-          </Col>
-          <Col sm={1}>
-            <h6>Modify</h6>
-          </Col>
-        </Row>
-        {filteredData.map((timeout) => (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Type</th>
+                <th>Hours</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+            {filteredData.map((timeout) => (
           <TimeoutItem key={timeout._id} timeout={timeout} />
         ))}
+            </tbody>
+          </Table>
+      </Row>
       </Card>
     </Container>
   ) : (
