@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Button, Form, Card, Table } from "react-bootstrap";
-import { XSquare, ExclamationDiamond } from "react-bootstrap-icons";
+import { XSquare, ExclamationDiamond, PlusSquare } from "react-bootstrap-icons";
 import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../../api/event_phase/EventCollection";
@@ -408,8 +408,8 @@ const AddEvent = () => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Event
+      <Button variant="outline-primary" size="sm" onClick={handleShow}><PlusSquare></PlusSquare>
+        {' '} Add New Event
       </Button>
 
       <Modal show={show} onHide={handleClose}>

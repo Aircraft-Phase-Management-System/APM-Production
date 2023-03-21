@@ -10,7 +10,6 @@ import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
-import AddEvent from "../components/AddEvent";
 import AddPhaseLane from "../components/AddPhaseLane";
 
 const Calendar = () => {
@@ -62,10 +61,10 @@ const Calendar = () => {
     return (
       <div className="app-sidebar">
         <Container>
-          {/* ROW TO BE REMOVED */}
+        {/* 
           <Row>
          <AddEvent/>
-          </Row>
+          </Row> */}
           {/* ROW TO BE REMOVED */}
           <Row>
             <AddPhaseLane/>

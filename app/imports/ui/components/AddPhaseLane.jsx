@@ -31,8 +31,8 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 function setBg () {
   //const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
   const randomColor = "hsl(" + 360 * Math.random() + ',' +
-  (10 + 80 * Math.random()) + '%,' + 
-  ( 20 + 40 * Math.random()) + '%)';
+  (20 + 60 * Math.random()) + '%,' + 
+  ( 25 + 40 * Math.random()) + '%)';
   console.log(randomColor);
   return randomColor;
 }
