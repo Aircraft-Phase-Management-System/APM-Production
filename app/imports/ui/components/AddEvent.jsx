@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Col, Container, Row, Button, Form, Card, Table } from "react-bootstrap";
 import { XSquare, ExclamationDiamond, PlusSquare } from "react-bootstrap-icons";
 import swal from "sweetalert";
+import { useTracker } from "meteor/react-meteor-data";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { Meteor } from "meteor/meteor";
 import { Events } from "../../api/event_phase/EventCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
@@ -17,22 +19,19 @@ let totalConflictOffDays = 0;
 let conflictingRangesIndex = [];
 let conflictingDates = [];
 
+/*
 const holidays = [
   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
   /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
-  { title: "Independece Day", start: "2023-07-01", end: null },
+  /*{ title: "Independece Day", start: "2023-07-01", end: null },
   { title: "Independece Day", start: "2023-07-04", end: null },
   { title: "Independece Day1", start: "2023-07-07", end: null },
   { title: "Veterans Dar", start: "2023-11-11", end: null },
   { title: "Christmas Day", start: "2023-12-10", end: "2023-12-12" },
-  { title: "Christmas Day1", start: "2023-12-15", end: "2023-12-17" },
-  /*{ title: "Christmas Day", start: "2023-12-25", end: "2023-12-27" },*/
+  { title: "Christmas Day1", start: "2023-12-15", end: "2023-12-17" },*/
+  /*{ title: "Christmas Day", start: "2023-12-25", end: "2023-12-27" },
 ];
-
-const allStartHolidays = _.pluck(holidays, "start");
-const allEndHolidays = _.pluck(holidays, "end");
-
-const allDatesRange = _.zip(allStartHolidays, allEndHolidays);
+*/
 
 const schema = yup.object().shape({
   title: yup.string().required(),
@@ -44,7 +43,31 @@ const schema = yup.object().shape({
 
 /* Renders the AddEvent page for adding a document. */
 const AddEvent = () => {
-  //console.log(holidays);
+
+  const { ready, timeouts } = useTracker(() => {
+
+    const subscription = Timeouts.subscribeTimeout();
+    // Determine if the subscription is ready
+    const rdy = subscription.ready();
+    // Get the Stuff documents
+    const timeoutItems = Timeouts.find(
+      {},
+      { sort: { title: 1 } }
+    ).fetch();
+
+    return {
+      timeouts: timeoutItems,
+      ready: rdy,
+    };
+  }, []);
+
+  console.log(timeouts);
+
+  const allStartTimeouts = _.pluck(timeouts, "start");
+  const allEndTimeouts = _.pluck(timeouts, "end");
+
+  const allDatesRange = _.zip(allStartTimeouts, allEndTimeouts);
+
   /* To open and close modal */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -132,8 +155,10 @@ const AddEvent = () => {
       const curStartMonth = parseInt(curStart.substring(5, 7));
       const curStartDay = parseInt(curStart.substring(8));
 
+      console.log("Current End: ", curEnd);
       /* If the there is only one off day (it is not a range) */
-      if (!curEnd) {
+      if (curEnd === '-') {
+        console.log("hereeee");
         curStart = Date.parse(curStart);
 
         if (curStart >= startDate && curStart <= possEndDate) {
