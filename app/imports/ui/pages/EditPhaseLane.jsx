@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
-import { PencilFill, XSquare, Download } from "react-bootstrap-icons";
+import { PencilFill, XSquare, Download, Trash } from "react-bootstrap-icons";
 import { Card, Col, Container, Row, Modal, Button } from "react-bootstrap";
 import {
   AutoForm,
@@ -14,6 +14,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { updateMethod } from "../../api/base/BaseCollection.methods";
+import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 
@@ -53,6 +54,22 @@ const EditPhaseLane = ({ phase }) => {
         swal("Success", "Phase Lane updated successfully", "success")
       );
   };
+
+  const handleDelete = () => {
+    const collectionName = Phases.getCollectionName();
+    const instance = Phases.findDoc(phase._id);
+    console.log(doc._id)
+    console.log(instance)
+    removeItMethod
+      .callPromise({ collectionName, instance })
+      .catch((error) => swal("Error", error.message, "error"))
+      .then(() => {
+        swal("Success", "Phase Lane deleted successfully", "success");
+        handleClose();
+      });
+      
+  };
+  
 
   return ready ? (
     <>
@@ -96,10 +113,15 @@ const EditPhaseLane = ({ phase }) => {
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleClose}>
+            <Button variant="dark" onClick={handleClose}>
               <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
               Close
             </Button>
+            <Button variant="danger" onClick={handleDelete} >
+              <Trash style={{ marginBottom: "4px", marginRight: "6px" }} />
+              Delete
+            </Button>
+          
             <SubmitField value="Save Changes" onClick={handleClose} />
           </Modal.Footer>
         </AutoForm>
