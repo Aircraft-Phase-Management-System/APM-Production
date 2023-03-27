@@ -57,16 +57,17 @@ const Calendar = () => {
     };
   }, []);
 
+  /* Add another field to the timeouts named color with a standard color red. */
   timeouts.forEach(function (element) {
     element.color = "#c22f25";
   });
   
+  /* Merge the events and the timeouts together */
   const mergedData = events.reduce((arr, item) => {
     arr.push(item);
     return arr;    
 }, timeouts);
 
-console.log(mergedData);
 
   const renderSideBar = () => {
     return (
@@ -90,8 +91,6 @@ console.log(mergedData);
     );
   };
 
-  console.log(events);
-  console.log(timeouts);
 
 
   handleDateClick = (clickInfo) => {

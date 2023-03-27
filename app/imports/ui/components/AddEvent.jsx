@@ -19,20 +19,6 @@ let totalConflictOffDays = 0;
 let conflictingRangesIndex = [];
 let conflictingDates = [];
 
-/*
-const holidays = [
-  /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
-  /*{ title: "New Year's Day", start: "2023-12-30", end: "2024-01-02" },*/
-  /*{ title: "Independece Day", start: "2023-07-01", end: null },
-  { title: "Independece Day", start: "2023-07-04", end: null },
-  { title: "Independece Day1", start: "2023-07-07", end: null },
-  { title: "Veterans Dar", start: "2023-11-11", end: null },
-  { title: "Christmas Day", start: "2023-12-10", end: "2023-12-12" },
-  { title: "Christmas Day1", start: "2023-12-15", end: "2023-12-17" },*/
-  /*{ title: "Christmas Day", start: "2023-12-25", end: "2023-12-27" },
-];
-*/
-
 const schema = yup.object().shape({
   title: yup.string().required(),
   start: yup.string().required(),
@@ -42,7 +28,7 @@ const schema = yup.object().shape({
 });
 
 /* Renders the AddEvent page for adding a document. */
-const AddEvent = () => {
+const AddEvent = ({laneID}) => {
 
   const { ready, timeouts } = useTracker(() => {
 
@@ -84,7 +70,6 @@ const AddEvent = () => {
   const setStartDateVal = (e) => {
       const date = e.target.value;
       startDate = date;
-      console.log("Date: ", date);
    
   };
 
@@ -92,7 +77,6 @@ const AddEvent = () => {
     const setRequiredDaysVal = (e) => {
         const numberOfDays = e.target.valueAsNumber;
         reqNumberDays = numberOfDays;
-        console.log("Required Number: ", reqNumberDays);
       
     };
 
@@ -423,7 +407,7 @@ const AddEvent = () => {
     console.log("end date: ", end);
     const owner = Meteor.user().username;
     const collectionName = Events.getCollectionName();
-    const definitionData = { title, start, days, end, color, owner };
+    const definitionData = { title, start, days, end, color, laneID, owner };
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))

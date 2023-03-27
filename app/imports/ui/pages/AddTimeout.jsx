@@ -16,7 +16,6 @@ import SimpleSchema from "simpl-schema";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { PAGE_IDS } from "../utilities/PageIDs";
-// import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { PlusSquare } from 'react-bootstrap-icons';
 
 export const timeoutTypes = ['Holiday', 'Training Day', 'Mahalo Day'];
@@ -25,9 +24,9 @@ export const timeoutTypes = ['Holiday', 'Training Day', 'Mahalo Day'];
 const formSchema = new SimpleSchema({
   title: String,
   start: String,
-  end: String,
+  end: {type: String, optional: true },
   type: {type: String, allowedValues: timeoutTypes, defaultValue: "Holiday" },
-  hours: Number,
+  hours: {type: Number, defaultValue: 2},
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
@@ -35,12 +34,13 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 /* Renders the AddStuff page for adding a document. */
 const AddTimeout = () => {
 
-
   // On submit, insert the data.
   const submit = (data, formRef) => {
     let { title, start, end, type, hours } = data;
+    console.log(end);
     start = moment(start).format('YYYY-MM-DD');
-    end = moment(end).format('YYYY-MM-DD') + " 15:00:00";
+    end = end != undefined? moment(end).format('YYYY-MM-DD') + " 15:00:00" : "-";
+    console.log(end);
     const owner = Meteor.user().username;
     const collectionName = Timeouts.getCollectionName();
     const definitionData = { title, start, end, type, hours, owner};

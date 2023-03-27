@@ -1,16 +1,6 @@
-import React, { useState } from "react";
-import {
-  Col,
-  Container,
-  Row,
-  Button,
-  Form,
-  Card,
-  Table,
-  Accordion,
-  ProgressBar,
-} from "react-bootstrap";
-import { CalendarRange, PencilSquare, Trash } from "react-bootstrap-icons";
+import React from "react";
+import { Col, Row, Button } from "react-bootstrap";
+import { PencilSquare, Trash } from "react-bootstrap-icons";
 
 const EventItem = ({ event }) => (
   <>
