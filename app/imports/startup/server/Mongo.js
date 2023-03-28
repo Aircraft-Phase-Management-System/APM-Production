@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Timeouts } from '../../api/timeout/TimeoutCollection';
 import { Events  } from '../../api/event_phase/EventCollection';
+import { EventsDay } from '../../api/event_day/EventCollection';
 import { Phases } from '../../api/phase_lane/PhaseCollection';
 /* eslint-disable no-console */
 
@@ -32,12 +33,24 @@ if (Timeouts.count() === 0) {
   }
 }
 
+// Initialize the database with a default event day data document.
+function addEventDay(data) {
+  console.log(`  Adding: ${data.title} (${data.owner})`);
+  EventsDay.define(data);
+}
+
+if (EventsDay.count() === 0) {
+  if (Meteor.settings.defaultEventsDay) {
+    console.log('Creating default data daily events.');
+    Meteor.settings.defaultEventsDay.map(data => addEventDay(data));
+  }
+}
+
 // Initialize the database with a default event data document.
 function addEvent(data) {
   console.log(`  Adding: ${data.title} (${data.owner})`);
   Events.define(data);
 }
-
 
 if (Events.count() === 0) {
   if (Meteor.settings.defaultEvents) {
