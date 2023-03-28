@@ -15,6 +15,9 @@ import { Events } from "../../api/event_phase/EventCollection";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import { useTracker } from "meteor/react-meteor-data";
 import LoadingSpinner from "../components/LoadingSpinner";
+import React from "react";
+import { Col, Row, Button } from "react-bootstrap";
+import { PencilSquare, Trash } from "react-bootstrap-icons";
 
 
 

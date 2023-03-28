@@ -19,6 +19,7 @@ class EventCollection extends BaseCollection {
       days : Number,
       end: String,
       color: String,
+      laneID: String,
       owner: String,
     }));
   }
@@ -31,13 +32,14 @@ class EventCollection extends BaseCollection {
    * @param bgColor the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ title, start, days, end, color, owner }) {
+  define({ title, start, days, end, color, laneID, owner }) {
     const docID = this._collection.insert({
       title,
       start, 
       days,
       end,
       color,
+      laneID,
       owner,
     });
     return docID;
@@ -68,6 +70,9 @@ class EventCollection extends BaseCollection {
     }
     if (color) {
       updateData.color = color;
+    }
+    if (laneID) {
+      updateData.laneID = laneID;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -154,8 +159,9 @@ class EventCollection extends BaseCollection {
     const days = doc.days;
     const end = doc.start;
     const color = doc.start;
+    const laneID = doc.laneID;
     const owner = doc.owner;
-    return { title, start, days, end, color, owner };
+    return { title, start, days, end, color, laneID, owner };
   }
 }
 

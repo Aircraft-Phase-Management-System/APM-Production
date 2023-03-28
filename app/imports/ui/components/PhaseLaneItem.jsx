@@ -5,8 +5,6 @@ import {
   Container,
   Row
 } from "react-bootstrap";
-// import { Link } from "react-router-dom";
-// import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditPhaseLane from "../pages/EditPhaseLane";
 import { AirplaneFill } from "react-bootstrap-icons";
 import ListEvent from "../pages/ListEvent";
@@ -23,7 +21,7 @@ const PhaseLaneItem = ({ phase }) => (
         </Col>
       </Row>
       <p style={textColor}><AirplaneFill style={{ transform: "rotate(90deg)" }} /> {phase.name} ({phase.author})</p>
-    <ListEvent/>
+    <ListEvent laneID={phase.issue}/>
   </Container>
 );
 
