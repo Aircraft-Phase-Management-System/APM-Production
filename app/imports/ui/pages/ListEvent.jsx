@@ -1,5 +1,5 @@
 import React from "react";
-import { Accordion, Row } from "react-bootstrap";
+import { Accordion, Row, Button, Col } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { Events } from "../../api/event_phase/EventCollection";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -33,11 +33,18 @@ const ListEvent = ({laneID}) => {
       <Accordion.Item eventKey="0" >
         <Accordion.Header>Events</Accordion.Header>
         <Accordion.Body>
-          <Row>
+        <Row>
+          <Col>
+        <Button href="/list-eventsday" variant="outline-primary" size="sm">
+        {' '} All Current Events
+      </Button>
+      </Col>
+      <Col>
           <AddEvent laneID={laneID}/>
+          </Col>
           </Row>
           <br />
-          <h6><List></List> Phase Lane Current Events</h6>
+          <h6><List></List> Today's Events</h6>
           {eventsFromLane.map((event) => (
             <EventItem key={event._id} event={event} />
           ))}

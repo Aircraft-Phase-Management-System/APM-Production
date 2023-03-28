@@ -420,7 +420,7 @@ const AddEvent = ({laneID}) => {
 
   return (
     <>
-      <Button variant="outline-primary" size="sm" onClick={handleShow}><PlusSquare></PlusSquare>
+      <Button variant="outline-primary" size="sm" onClick={handleShow}>
         {' '} Add New Event
       </Button>
 
