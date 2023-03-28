@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Timeouts } from '../../api/timeout/TimeoutCollection';
 import { Events  } from '../../api/event_phase/EventCollection';
-import { EventsDay } from '../../api/event_day/EventCollection';
+import { EventsDay } from '../../api/event_day/EventDayCollection';
 import { Phases } from '../../api/phase_lane/PhaseCollection';
 /* eslint-disable no-console */
 
@@ -35,7 +35,7 @@ if (Timeouts.count() === 0) {
 
 // Initialize the database with a default event day data document.
 function addEventDay(data) {
-  console.log(`  Adding: ${data.title} (${data.owner})`);
+  console.log(`  Adding: ${data.title}`);
   EventsDay.define(data);
 }
 

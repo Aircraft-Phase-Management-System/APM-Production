@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../stuff/StuffCollection';
 import { Timeouts } from '../timeout/TimeoutCollection';
 import { Events } from '../event_phase/EventCollection';
-import { EventsDay } from '../event_day/EventCollection';
+import { EventsDay } from '../event_day/EventDayCollection';
 import { Phases } from '../phase_lane/PhaseCollection';
 import { AdminProfiles } from '../user/AdminProfileCollection';
 import { UserProfiles } from '../user/UserProfileCollection';

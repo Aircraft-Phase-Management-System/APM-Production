@@ -23,11 +23,11 @@ class EventDayCollection extends BaseCollection {
       ml1: Number,
       ml2: Number,
       ml3: Number,
-      section: String,
-      remarks: String,
-      color: String,
-      laneID: String,
-      owner: String,
+      section: {type: String, optional: true },
+      remarks: {type: String, optional: true },
+      /*color: {type: String, optional: true },
+      laneID: {type: String, optional: true },
+      owner: {type: String, optional: true },*/
     }));
   }
 
@@ -40,9 +40,9 @@ class EventDayCollection extends BaseCollection {
    * @param color the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, color, laneID, owner }) {
+  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks /*, color, laneID, owner*/ }) {
     const docID = this._collection.insert({
-      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, color, laneID, owner,
+      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/,
     });
     return docID;
   }
@@ -191,10 +191,10 @@ class EventDayCollection extends BaseCollection {
     const ml3 = doc.ml3;
     const section = doc.section;
     const remarks = doc.remarks;
-    const color = doc.start;
+    /*const color = doc.start;
     const laneID = doc.laneID;
-    const owner = doc.owner;
-    return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, color, laneID, owner };
+    const owner = doc.owner;*/
+    return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/ };
   }
 }
 
