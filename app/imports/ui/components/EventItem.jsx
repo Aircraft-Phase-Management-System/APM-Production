@@ -49,6 +49,8 @@ const EventItem = ({ event }) => {
       .then(() => {
         swal("Success", "Event deleted successfully", "success");
       });
+    event._id.event.remove();
+    timeouts.removeIt(event._id.event.title);
       
   };
 
