@@ -11,8 +11,49 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 import { CalendarRange, PencilSquare, Trash } from "react-bootstrap-icons";
+import { Events } from "../../api/event_phase/EventCollection";
+import { removeItMethod } from "../../api/base/BaseCollection.methods";
+import { useTracker } from "meteor/react-meteor-data";
+import LoadingSpinner from "../components/LoadingSpinner";
 
-const EventItem = ({ event }) => (
+
+
+
+const EventItem = ({ event }) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const { doc, ready } = useTracker(() => {
+    // Get access to Holiday documents.
+    const subscription = Events.subscribeEvent();
+    // Determine if the subscription is ready
+    const rdy = subscription.ready();
+    // Get the document
+    const document = Events.findDoc(event._id);
+    return {
+      doc: document,
+      ready: rdy,
+    };
+  }, [event._id]);
+
+  const handleDelete = () => {
+    const collectionName = Events.getCollectionName();
+    const owner = Meteor.user().username;
+    const instance = Events.findDoc(event._id);
+    console.log(event._id)
+    console.log(instance)
+    removeItMethod
+      .callPromise({ collectionName, instance })
+      .catch((error) => swal("Error", error.message, "error"))
+      .then(() => {
+        swal("Success", "Event deleted successfully", "success");
+      });
+      
+  };
+
+
+  return ready ? (
   <>
     <br />
     <Row>
@@ -32,17 +73,21 @@ const EventItem = ({ event }) => (
 
     <br />
     <div className="d-grid gap-2">
-      <Button variant="primary" size="sm">
+      <Button variant="primary" size="sm" >
         <PencilSquare />{" "}
         Edit
       </Button>
-      <Button variant="danger" size="sm">
+      <Button variant="danger" size="sm" onClick={handleDelete}>
         <Trash />{" "}
         Delete
       </Button>
     </div>
     <hr />
   </>
-);
+  ) : (
+    <LoadingSpinner />
+  );
+};
+
 
 export default EventItem;
