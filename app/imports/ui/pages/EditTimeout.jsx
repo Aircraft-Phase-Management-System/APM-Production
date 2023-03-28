@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
-import { PencilFill, XSquare, ExclamationOctagon } from "react-bootstrap-icons";
+import { PencilFill, XSquare, ExclamationOctagon, Trash } from "react-bootstrap-icons";
 import { Col, Container, Row, Modal, Button, Alert } from "react-bootstrap";
 import {
   AutoForm,
@@ -16,6 +16,8 @@ import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 // import { useParams } from "react-router";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { updateMethod } from "../../api/base/BaseCollection.methods";
+import { removeItMethod } from "../../api/base/BaseCollection.methods";
+
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 
@@ -52,6 +54,21 @@ const EditTimeout = ({ timeout }) => {
       .callPromise({ collectionName, updateData })
       .catch((error) => swal("Error", error.message, "error"))
       .then(() => swal("Success", "Date updated successfully", "success"));
+  };
+
+  const handleDelete = () => {
+    const collectionName = Timeouts.getCollectionName();
+    const instance = Timeouts.findDoc(timeout._id);
+    console.log(timeout._id)
+    console.log(instance)
+    removeItMethod
+      .callPromise({ collectionName, instance })
+      .catch((error) => swal("Error", error.message, "error"))
+      .then(() => {
+        swal("Success", "Timeout deleted successfully", "success");
+        handleClose();
+      });
+      
   };
 
   return ready ? (
@@ -114,9 +131,13 @@ const EditTimeout = ({ timeout }) => {
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="danger" onClick={handleClose}>
+          <Button variant="dark" onClick={handleClose}>
               <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
               Close
+            </Button>
+            <Button variant="danger" onClick={handleDelete} >
+              <Trash style={{ marginBottom: "4px", marginRight: "6px" }} />
+              Delete
             </Button>
             <SubmitField value="Save Changes" onClick={handleClose} />
           </Modal.Footer>
