@@ -5,31 +5,17 @@ import {
   Button,
 } from "react-bootstrap";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
-import { Events } from "../../api/event_phase/EventCollection";
+import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import { useTracker } from "meteor/react-meteor-data";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "./LoadingSpinner";
 
-const EventItem = ({ event }) => {
-  const { doc, ready } = useTracker(() => {
-    // Get access to Holiday documents.
-    const subscription = Events.subscribeEvent();
-    // Determine if the subscription is ready
-    const rdy = subscription.ready();
-    // Get the document
-    const document = Events.findDoc(event._id);
-    return {
-      doc: document,
-      ready: rdy,
-    };
-  }, [event._id]);
+const EventSameDayItem = ({ event }) => {
 
   const handleDelete = () => {
-    const collectionName = Events.getCollectionName();
+    const collectionName = EventsDay.getCollectionName();
     const owner = Meteor.user().username;
-    const instance = Events.findDoc(event._id);
-    console.log(event._id)
-    console.log(instance)
+    const instance = EventsDay.findDoc(event._id);
     removeItMethod
       .callPromise({ collectionName, instance })
       .catch((error) => swal("Error", error.message, "error"))
@@ -41,22 +27,31 @@ const EventItem = ({ event }) => {
       
   };
 
-
-  return ready ? (
+  return (
   <>
     <br />
     <Row>
-      <Col md={2}>
+      <Col md={3}>
+        <Row>Date:</Row>
         <Row>Title:</Row>
         <Row>Start:</Row>
         <Row>End:</Row>
-        <Row>Days:</Row>
+        <Row>Time:</Row>
+        <Row>Type:</Row>
+        <Row>ML1:</Row>
+        <Row>ML2:</Row>
+        <Row>ML3:</Row>
       </Col>
       <Col md={8}>
+        <Row>{event.day}</Row>
         <Row>{event.title}</Row>
-        <Row>{event.start.substring(0, 10)}</Row>
-        <Row>{event.end.substring(0, 10)}</Row>
-        <Row>{event.days}</Row>
+        <Row>{event.start}</Row>
+        <Row>{event.end}</Row>
+        <Row>{event.min}</Row>
+        <Row>{event.type}</Row>
+        <Row>{event.ml1}</Row>
+        <Row>{event.ml2}</Row>
+        <Row>{event.ml3}</Row>
       </Col>
     </Row>
 
@@ -73,10 +68,8 @@ const EventItem = ({ event }) => {
     </div>
     <hr />
   </>
-  ) : (
-    <LoadingSpinner />
-  );
+  )
 };
 
 
-export default EventItem;
+export default EventSameDayItem;

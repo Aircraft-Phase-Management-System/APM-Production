@@ -7,11 +7,12 @@ import LoadingSpinner from "./LoadingSpinner";
 import EventItem from "./EventItem";
 import { List } from "react-bootstrap-icons";
 import AddEventDay from "./AddEventDay";
+import EventSameDayItem from "./EventSameDayItem";
 
 /* Renders a table containing all of the Event documents. Use <EventItem> to render each row. */
 const ListEvent = ({ laneID }) => {
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready, events } = useTracker(() => {
+  const { ready, eventsDay } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
     // Get access to EventsDay documents.
@@ -19,15 +20,18 @@ const ListEvent = ({ laneID }) => {
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const eventItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
+    const eventsDayItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
     return {
-      events: eventItems,
+      eventsDay: eventsDayItems,
       ready: rdy,
     };
   }, []);
 
-  /* Get only the Events that belong to the Phase Lane. */
-  //const eventsFromLane = _.filter(events, function(event){ return event.laneID === laneID; });
+  /* Get only the Events that belong to the Phase Lane and from today. */
+  const todayDate = new Date();
+  const offset = todayDate.getTimezoneOffset();
+  const formattedDate = new Date(todayDate.getTime() - (offset*60*1000)).toISOString().split('T')[0]
+  const eventsFromLane = _.filter(eventsDay, function(event){ return event.day === formattedDate; });
 
   return ready ? (
     <Accordion flush>
@@ -52,11 +56,14 @@ const ListEvent = ({ laneID }) => {
           </Row>
           <br />
           <h6>
-            <List></List> Today's Events
+            <List/> Today's Events
           </h6>
           {/*events.map((event) => (
             <EventItem key={event._id} event={event} />
           ))*/}
+          {eventsFromLane.map((event) => (
+            <EventSameDayItem key={event._id} event={event} />
+          ))}
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
