@@ -5,7 +5,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import { Events } from "../../api/event_phase/EventCollection";
+//import { Events } from "../../api/event_phase/EventCollection";
+import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
@@ -31,13 +32,14 @@ const Calendar = () => {
     };
   }, []);
 
+  /* Get all the day events */
   const { ready1, events } = useTracker(() => {
     // Get access to Stuff documents.
-    const subscription = Events.subscribeEvent();
+    const subscription = EventsDay.subscribeEventDay();
     // Determine if the subscription is ready
     const rdy1 = subscription.ready();
     // Get the Stuff documents
-    const eventItems = Events.find({}, { sort: { title: 1 } }).fetch();
+    const eventItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
     return {
       events: eventItems,
       ready1: rdy1,
@@ -63,10 +65,13 @@ const Calendar = () => {
   });
   
   /* Merge the events and the timeouts together */
-  const mergedData = events.reduce((arr, item) => {
+  /*const mergedData = events.reduce((arr, item) => {
     arr.push(item);
     return arr;    
-}, timeouts);
+}, timeouts);*/
+
+  let newEvents = events[0];
+  console.log(newEvents);
 
 
   const renderSideBar = () => {
@@ -166,7 +171,7 @@ const Calendar = () => {
           }}
           initialView="dayGridMonth"
           editable={true}
-          events={mergedData}
+          events={events[0]}
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}

@@ -7,7 +7,7 @@ import {
 } from "react-bootstrap";
 import EditPhaseLane from "../pages/EditPhaseLane";
 import { AirplaneFill } from "react-bootstrap-icons";
-import ListEvent from "../pages/ListEvent";
+import ListEvent from "./ListEvent";
 
 const textColor = { color: '#ebe9e6' } ;
 

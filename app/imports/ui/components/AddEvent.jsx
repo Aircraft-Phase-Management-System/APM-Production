@@ -30,6 +30,18 @@ const schema = yup.object().shape({
 /* Renders the AddEvent page for adding a document. */
 const AddEvent = ({laneID}) => {
 
+    /* To open and close modal */
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    /* Show alert after providing start date and required number of days. */
+    const [showAlert, setShowAlert] = useState(false);
+    /* Show suggestion if a non-working days was found.  */
+    const [showSuggestion, setSuggestion] = useState(false);
+    /* Save the suggestion date after found.  */
+    const [endDate, setEndDate] = useState("");
+
   const { ready, timeouts } = useTracker(() => {
 
     const subscription = Timeouts.subscribeTimeout();
@@ -53,18 +65,6 @@ const AddEvent = ({laneID}) => {
   const allEndTimeouts = _.pluck(timeouts, "end");
 
   const allDatesRange = _.zip(allStartTimeouts, allEndTimeouts);
-
-  /* To open and close modal */
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  /* Show alert after providing start date and required number of days. */
-  const [showAlert, setShowAlert] = useState(false);
-  /* Show suggestion if a non-working days was found.  */
-  const [showSuggestion, setSuggestion] = useState(false);
-  /* Save the suggestion date after found.  */
-  const [endDate, setEndDate] = useState("");
 
   /* Save value for start date */
   const setStartDateVal = (e) => {
