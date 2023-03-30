@@ -7,8 +7,6 @@ import {
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
-import { useTracker } from "meteor/react-meteor-data";
-import LoadingSpinner from "./LoadingSpinner";
 
 const EventSameDayItem = ({ event }) => {
 
@@ -70,6 +68,5 @@ const EventSameDayItem = ({ event }) => {
   </>
   )
 };
-
 
 export default EventSameDayItem;
