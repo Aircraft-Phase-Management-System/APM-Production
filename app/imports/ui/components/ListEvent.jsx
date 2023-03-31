@@ -87,8 +87,7 @@ const ListEvent = ({ laneID }) => {
               </Button>
             </Col>
             <Col>
-              {/*<AddEvent laneID={laneID}/>*/}
-              <AddEventDay />
+              <AddEventDay laneID={laneID} eventsDay={eventsDay} />
             </Col>
           </Row>
           <br />

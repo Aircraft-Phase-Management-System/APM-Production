@@ -66,6 +66,7 @@ const AddEvent = ({laneID}) => {
 
   const allDatesRange = _.zip(allStartTimeouts, allEndTimeouts);
 
+  /* Improve code, check for many inputs: a, aa, aaa, aaa, etc.*/
   /* Save value for start date */
   const setStartDateVal = (e) => {
       const date = e.target.value;

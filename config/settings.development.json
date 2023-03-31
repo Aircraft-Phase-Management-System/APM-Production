@@ -261,46 +261,6 @@
     }
   ],
 
-  "defaultEvents": [
-    {
-      "title": "PMI 1",
-      "start": "2023-10-20 15:50:00",
-      "days": 10,
-      "end": "2023-12-19 23:30:00",
-      "color": "#17C8E7", 
-      "owner": "john@foo.com",
-      "laneID" : "#1"
-    },
-    {
-      "title": "PMI 2",
-      "start": "2023-09-20 15:50:00",
-      "days": 10,
-      "end": "2023-11-19 23:30:00",
-      "color": "#17E7E1",
-      "owner": "john@foo.com",
-      "laneID" : "#2"
-    },
-    {
-      "title": "PMI 3",
-      "start": "2023-10-02 15:50:00",
-      "days": 10,
-      "end": "2023-10-19 23:30:00",
-      "color": "#17E7AB",
-      "owner": "john@foo.com",
-      "laneID" : "#3"
-    },
-    {
-      "title": "PMI 4",
-      "start": "2023-01-20 15:50:00",
-      "days": 10,
-      "end": "2023-03-19 23:30:00",
-      "color": "#33E717",
-      "owner": "john@foo.com",
-      "laneID" : "#1"
-    }
-  ],
- 
-
   "public": {
     "development": true
   }

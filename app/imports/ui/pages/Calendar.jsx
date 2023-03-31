@@ -70,19 +70,10 @@ const Calendar = () => {
     return arr;    
 }, timeouts);*/
 
-  let newEvents = events[0];
-  console.log(newEvents);
-
-
   const renderSideBar = () => {
     return (
       <div className="app-sidebar">
         <Container>
-        {/* 
-          <Row>
-         <AddEvent/>
-          </Row> */}
-          {/* ROW TO BE REMOVED */}
           <Row>
             <AddPhaseLane/>
           </Row>

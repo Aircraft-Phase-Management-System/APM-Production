@@ -5,9 +5,16 @@ import {
   Row,
   Button,
   Form,
-  Alert
+  Alert,
+  Card,
+  Table,
 } from "react-bootstrap";
-import { XSquare, ExclamationDiamond, PlusSquare, ClockHistory } from "react-bootstrap-icons";
+import {
+  XSquare,
+  ExclamationDiamond,
+  PlusSquare,
+  ClockHistory,
+} from "react-bootstrap-icons";
 import swal from "sweetalert";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
@@ -35,9 +42,11 @@ const schema = yup.object().shape({
 
 let eventDate = null;
 let timeSpent = 0;
+let startHour = null;
+let endHour = null;
 
 /* Renders the AddEvent page for adding a document. */
-const AddEventDay = ({ laneID }) => {
+const AddEventDay = ({ laneID, eventsDay }) => {
   /* To open and close modal */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -48,6 +57,9 @@ const AddEventDay = ({ laneID }) => {
   /* Show suggestion if a non-working days was found.  */
   const [showSuggestion, setSuggestion] = useState(false);
   /* Save the suggestion date after found.  */
+
+  console.log(laneID);
+  console.log(eventsDay);
 
   const { ready, timeouts } = useTracker(() => {
     const subscription = Timeouts.subscribeTimeout();
@@ -67,17 +79,47 @@ const AddEventDay = ({ laneID }) => {
 
   const allDatesRange = _.zip(allStartTimeouts, allEndTimeouts);
 
-  /* UNUSED */
-  /* Save value for start date */
+  /* Save value for date */
   const setEventDate = (e) => {
-    const date = e.target.value;
-    eventDate = date;
+    eventDate = e.target.value;
+  };
+
+  /* Save value for the start hour. */
+  const setStartHour = (e) => {
+    if (e.target.value.length === 4) {
+      startHour = e.target.value;
+    }
   };
 
   /* Save value for number of hours. */
   const setTimeSpent = (e) => {
-    const minutes = e.target.valueAsNumber;
-    timeSpent = minutes;
+    if (e.target.value.length >= 2) {
+      timeSpent = e.target.valueAsNumber;
+    }
+  };
+
+  /* Save value for the end hour. */
+  const setEndHour = (e) => {
+    if (e.target.value.length === 4) {
+      endHour = e.target.value;
+    }
+  };
+
+  console.log("eventDate: ", eventDate);
+  console.log("startHour: ", startHour);
+  console.log("timeSpent: ", timeSpent);
+  console.log("endHour: ", endHour);
+
+  /* Const to check how much time is available. */
+  const checkTimeAvailability = () => {
+    if (eventDate != null && timeSpent != 0 && startHour != null && endHour != null) {
+      console.log("here");
+      const sameDayEvents = _.filter(eventsDay, function(event){ return event.day === eventDate});
+      const allTimesSpent = _.pluck(sameDayEvents, "min");
+      const sumTimesSpent = _.reduce(allTimesSpent, function(a, b){ return a + b}, 0);
+      console.log(sumTimesSpent);
+      
+    }
   };
 
   // On submit, insert the data.
@@ -132,12 +174,12 @@ const AddEventDay = ({ laneID }) => {
           validationSchema={schema}
           onSubmit={submit}
           initialValues={{
-            day: "2023-05-02",
-            title: "INSTALL WINDOW (PLT)",
-            start: "0700",
-            end: "0730",
-            min: 30,
-            type: "Unexpected",
+            day: " ",
+            title: " ",
+            start: " ",
+            end: " ",
+            min: 0,
+            type: " ",
             ml1: 0,
             ml2: 0,
             ml3: 0,
@@ -155,30 +197,28 @@ const AddEventDay = ({ laneID }) => {
             errors,
           }) => (
             <Form noValidate onSubmit={handleSubmit}>
-              
               <Modal.Header closeButton>
                 <Modal.Title as="h5">Add New Event</Modal.Title>
               </Modal.Header>
 
               <Modal.Body>
                 <Container id={PAGE_IDS.ADD_EVENT_DAY} className="py-3">
-                <Alert key={"info"} variant={"info"}>
-          Click on the button <ClockHistory/> <b>Check Availability</b> to inspect how many hours are left for the day.
-        </Alert>
-
-
+                  <Alert key={"info"} variant={"info"}>
+                    Click on the button <ClockHistory />{" "}
+                    <b>Check Availability</b> to inspect how many hours are left
+                    for the day.
+                  </Alert>
                   <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="validationFormik01">
                       <Form.Label>Event Date</Form.Label>
                       <Form.Control
                         type="date"
-                        s
                         name="day"
                         onChange={(e) => {
                           setEventDate(e);
                           handleChange(e);
                         }}
-                        isValid={touched.title && !errors.title}
+                        isValid={touched.day && !errors.day}
                       />
                     </Form.Group>
 
@@ -205,7 +245,10 @@ const AddEventDay = ({ laneID }) => {
                         <Form.Control
                           type="text"
                           name="start"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            setStartHour(e);
+                            handleChange(e);
+                          }}
                           isValid={touched.start && !errors.start}
                         />
                       </Form.Group>
@@ -225,7 +268,7 @@ const AddEventDay = ({ laneID }) => {
                             setTimeSpent(e);
                             handleChange(e);
                           }}
-                          isValid={touched.days && !errors.days}
+                          isValid={touched.min && !errors.min}
                         />
                         <Form.Control.Feedback type="invalid">
                           Please provide a valid number.
@@ -242,18 +285,76 @@ const AddEventDay = ({ laneID }) => {
                           required
                           type="text"
                           name="end"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            setEndHour(e);
+                            handleChange(e);
+                          }}
                           isValid={touched.end && !errors.end}
                         />
                       </Form.Group>
                     </Row>
 
-                    <Row>
-                      <div>
-                        <Button variant="primary" size="sm">
-                        <ClockHistory/> Check Availability
-                        </Button>
-                      </div>
+                    <Row className="mb-3">
+                      <Alert
+                        style={{ backgroundColor: "#eb9d0c" }}
+                        show={showAlert}
+                      >
+                        <>
+                          <Alert.Heading>
+                            <ExclamationDiamond /> Alert
+                          </Alert.Heading>
+                          <p>We found conflicting timeouts within the range!</p>
+                          <Card>
+                            <Card.Header>
+                              Total Amount of Available Time in Minutes:{" "}
+                            </Card.Header>
+                            <Table striped bordered hover>
+                              <thead>
+                                <tr>
+                                  <th>Start Date</th>
+                                  <th>End Date</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {/*conflictingDates.map((date) => (
+                                    <ConflictingDate date={date} />
+                                  ))*/}
+                              </tbody>
+                            </Table>
+                            <Card.Footer>
+                              <h6>Suggested End Date:</h6>
+                            </Card.Footer>
+                          </Card>
+                          <hr />
+                        </>
+
+                        <div className="d-flex justify-content-end">
+                          <Button
+                            onClick={() => setShowAlert(false)}
+                            variant="primary"
+                          >
+                            Close
+                          </Button>
+                        </div>
+                      </Alert>
+                      {!showAlert ? (
+                        <Row>
+                          <div>
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              onClick={() => {
+                                checkTimeAvailability();
+                                setShowAlert(true);
+                              }}
+                            >
+                              <ClockHistory /> Check Availability
+                            </Button>
+                          </div>
+                        </Row>
+                      ) : (
+                        <hr />
+                      )}
                     </Row>
                   </Container>
 
