@@ -12,19 +12,15 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddPhaseLane from "../components/AddPhaseLane";
+import { date } from "yup";
 
 const Calendar = () => {
-
   const { ready, timeouts } = useTracker(() => {
-
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const timeoutItems = Timeouts.find(
-      {},
-      { sort: { title: 1 } }
-    ).fetch();
+    const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
 
     return {
       timeouts: timeoutItems,
@@ -63,31 +59,82 @@ const Calendar = () => {
   timeouts.forEach(function (element) {
     element.color = "#c22f25";
   });
-  
-  /* Merge the events and the timeouts together */
-  /*const mergedData = events.reduce((arr, item) => {
-    arr.push(item);
-    return arr;    
-}, timeouts);*/
+
+  /* Modify the eventsDay collection to fit the calendar format */
+  events.forEach(function (event) {
+    let date = event.day;
+    let len = date.length;
+    let indexDash = [];
+    let day = null;
+    let month = null;
+    let year = null;
+
+    /* If the data comes from .json file, format. */
+    if (date.includes("/")) {
+      date = date.split("/").join("-");
+      for (let i = 0; i < len - 4; i++) {
+        if (date.charAt(i) === "-") {
+          indexDash.push(i);
+        }
+      }
+      year = date.substring(len - 4);
+      month = date.substring(0, indexDash[0]);
+      day = date.substring(indexDash[0] + 1, indexDash[1]);
+
+      month = month.length === 1 ? "0" + month : month;
+      day = day.length === 1 ? "0" + day : day;
+
+      date = year + "-" + month + "-" + day;
+    }
+
+    if (event.start && event.end) {
+      if (!event.start.includes(":")) {
+        event.start =
+          event.start.substring(0, 2) + ":" + event.start.substring(2);
+        event.end = event.end.substring(0, 2) + ":" + event.end.substring(2);
+      }
+    }
+
+    event.day = date;
+  });
+
+  //console.log(events);
+  /*  const formattedCalendarEvents = events.map(({ start: startHour, day: start, ...rest }) => ({
+    startHour,
+    start,
+    ...rest,
+  })); */
+
+  //const dateWithHour = events.map(event => ({day: event.day + " " + event.hour, ...rest}));
+  // console.log(dateWithHour);
+
+  /* Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
+  const formattedCalendarEvents = events.map(({ day: start, title }) => ({
+    start,
+    title,
+  }));
+
+  Array.prototype.push.apply(formattedCalendarEvents, timeouts);
+
+  console.log(formattedCalendarEvents);
+  console.log(events);
 
   const renderSideBar = () => {
     return (
       <div className="app-sidebar">
         <Container>
           <Row>
-            <AddPhaseLane/>
+            <AddPhaseLane />
           </Row>
           <Row>
             {phases.map((phase) => (
-              <PhaseLaneItem key={phase._id} phase={phase} />
+              <PhaseLaneItem key={phase._id} phase={phase} eventsDay={events} />
             ))}
           </Row>
         </Container>
       </div>
     );
   };
-
-
 
   handleDateClick = (clickInfo) => {
     // bind with an arrow function
@@ -140,16 +187,6 @@ const Calendar = () => {
     }
   };
 
-  const eventRender = (clickInfo) => {
-    if (clickInfo.event.type === "holidays") {
-      clickInfo.el.classList.add("fc-nonbusiness");
-      clickInfo.el.setAttribute("title", "Unavailable");
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   return (
     <div className="demo-app">
       {renderSideBar()}
@@ -162,7 +199,7 @@ const Calendar = () => {
           }}
           initialView="dayGridMonth"
           editable={true}
-          events={events[0]}
+          events={formattedCalendarEvents}
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
@@ -183,20 +220,4 @@ function renderEventContent(eventInfo) {
     </>
   );
 }
-
-function renderSidebarEvent(event) {
-  return (
-    <li key={event.id}>
-      <b>
-        {formatDate(event.start, {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
-      </b>
-      <i>{event.title}</i>
-    </li>
-  );
-}
-
 export default Calendar;

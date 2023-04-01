@@ -16,8 +16,8 @@ class EventDayCollection extends BaseCollection {
     super('EventsDay', new SimpleSchema({
       day: String,
       title: String,
-      start: String,
-      end: String,
+      start: {type: String, optional: true },
+      end: {type: String, optional: true },
       min: Number,
       type: String,
       ml1: Number,
@@ -41,6 +41,7 @@ class EventDayCollection extends BaseCollection {
    * @return {String} the docID of the new document.
    */
   define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks /*, color, laneID, owner*/ }) {
+
     const docID = this._collection.insert({
       day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/,
     });
@@ -91,14 +92,8 @@ class EventDayCollection extends BaseCollection {
     if (section) {
       updateData.section = section;
     }
-    if (color) {
-      updateData.color = color;
-    }
     if (remarks) {
       updateData.remarks = remarks;
-    }
-    if (laneID) {
-      updateData.laneID = laneID;
     }
     this._collection.update(docID, { $set: updateData });
   }

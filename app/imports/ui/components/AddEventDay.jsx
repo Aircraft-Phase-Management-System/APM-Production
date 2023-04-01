@@ -58,9 +58,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   const [showSuggestion, setSuggestion] = useState(false);
   /* Save the suggestion date after found.  */
 
-  console.log(laneID);
-  console.log(eventsDay);
-
   const { ready, timeouts } = useTracker(() => {
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
@@ -105,18 +102,17 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     }
   };
 
-  console.log("eventDate: ", eventDate);
+  /*console.log("eventDate: ", eventDate);
   console.log("startHour: ", startHour);
   console.log("timeSpent: ", timeSpent);
-  console.log("endHour: ", endHour);
-
+  console.log("endHour: ", endHour);*/
   /* Const to check how much time is available. */
   const checkTimeAvailability = () => {
     if (eventDate != null && timeSpent != 0 && startHour != null && endHour != null) {
-      console.log("here");
       const sameDayEvents = _.filter(eventsDay, function(event){ return event.day === eventDate});
       const allTimesSpent = _.pluck(sameDayEvents, "min");
       const sumTimesSpent = _.reduce(allTimesSpent, function(a, b){ return a + b}, 0);
+      
       console.log(sumTimesSpent);
       
     }

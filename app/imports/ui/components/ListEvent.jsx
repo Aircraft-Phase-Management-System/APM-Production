@@ -10,55 +10,7 @@ import AddEventDay from "./AddEventDay";
 import EventSameDayItem from "./EventSameDayItem";
 
 /* Renders a table containing all of the Event documents. Use <EventItem> to render each row. */
-const ListEvent = ({ laneID }) => {
-  // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready, eventsDay } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to EventsDay documents.
-    const subscription = EventsDay.subscribeEventDay();
-    // Determine if the subscription is ready
-    const rdy = subscription.ready();
-    // Get the Stuff documents
-    const eventsDayItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
-    return {
-      eventsDay: eventsDayItems,
-      ready: rdy,
-    };
-  }, []);
-
-  /* Modify date format from DD/MM/YYYY to YYYY-MM-DD */
-  //let formattedEventsDay = _.forEach(eventsDay, function(event){ return event.day.split('/').join('-')});
-
-  /* Add another field to the timeouts named color with a standard color red. */
-  eventsDay.forEach(function (event) {
-    let date = event.day;
-    let len = date.length;
-    let indexDash = [];
-    let day = null;
-    let month = null;
-    let year = null;
-
-    /* If the data comes from .json file, format. */
-    if (date.includes("/")) {
-      date = date.split("/").join("-");
-      for (let i = 0; i < len - 4; i++) {
-        if (date.charAt(i) === "-") {
-          indexDash.push(i);
-        }
-      }
-      year = date.substring(len - 4);
-      month = date.substring(0, indexDash[0]);
-      day = date.substring(indexDash[0] + 1, indexDash[1]);
-
-      month = (month.length === 1) ? "0" + month : month;
-      day = (day.length === 1) ? "0" + day: day;
-
-      date = year + "-" + month + "-" + day;
-    }
-
-    event.day = date;
-  });
+const ListEvent = ({ laneID, eventsDay }) => {
 
   /* Get only the Events that belong to the Phase Lane and from today. */
   const todayDate = new Date();
@@ -70,7 +22,8 @@ const ListEvent = ({ laneID }) => {
     return event.day === formattedDate;
   });
 
-  return ready ? (
+
+  return (
     <Accordion flush>
       <Accordion.Item eventKey="0">
         <Accordion.Header>Events</Accordion.Header>
@@ -103,8 +56,6 @@ const ListEvent = ({ laneID }) => {
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <LoadingSpinner message="Loading Event" />
   );
 };
 

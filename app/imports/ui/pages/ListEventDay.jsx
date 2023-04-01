@@ -27,7 +27,7 @@ const ListEventDay = () => {
     // Determine if the subscription is ready
     const rdy = subscription.ready();
     // Get the Stuff documents
-    const eventsDayItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
+    const eventsDayItems = EventsDay.find({}, { sort: { day: 1 } }).fetch();
     console.log(eventsDayItems);
     return {
       eventsday: eventsDayItems,
