@@ -7,8 +7,8 @@ import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
 export const eventDayPublications = {
-  eventDay: 'EventDay',
-  eventDayAdmin: 'EventDayAdmin',
+  eventDay: 'EventsDay',
+  eventDayAdmin: 'EventsDayAdmin',
 };
 
 class EventDayCollection extends BaseCollection {

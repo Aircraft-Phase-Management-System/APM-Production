@@ -11,6 +11,7 @@ import { PAGE_IDS } from "../utilities/PageIDs";
 import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddPhaseLane from "../components/AddPhaseLane";
+import ImportButton from "../components/ImportButton";
 
 const Calendar = () => {
 
@@ -73,11 +74,9 @@ const Calendar = () => {
     return (
       <div className="app-sidebar">
         <Container>
-        {/* 
           <Row>
-         <AddEvent/>
-          </Row> */}
-          {/* ROW TO BE REMOVED */}
+         <ImportButton/>
+          </Row> 
           <Row>
             <AddPhaseLane/>
           </Row>

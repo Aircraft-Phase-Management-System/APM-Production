@@ -63,7 +63,7 @@ const AddPhaseLane = () => {
   let fRef = null;
   return (
     <>
-      <Button variant="light" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow}>
         <PlusSquare />
         <Col>Create New Phase Lane</Col>
       </Button>
