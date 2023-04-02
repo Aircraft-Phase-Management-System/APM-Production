@@ -58,7 +58,7 @@ const EditPhaseLane = ({ phase }) => {
   const handleDelete = () => {
     const collectionName = Phases.getCollectionName();
     const instance = Phases.findDoc(phase._id);
-    console.log(doc._id)
+    console.log(phase._id)
     console.log(instance)
     removeItMethod
       .callPromise({ collectionName, instance })

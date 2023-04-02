@@ -7,8 +7,8 @@ import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
 export const eventDayPublications = {
-  eventDay: 'EventDay',
-  eventDayAdmin: 'EventDayAdmin',
+  eventDay: 'EventsDay',
+  eventDayAdmin: 'EventsDayAdmin',
 };
 
 class EventDayCollection extends BaseCollection {
@@ -30,6 +30,7 @@ class EventDayCollection extends BaseCollection {
       owner: {type: String, optional: true },*/
     }));
   }
+
 
     /**
    * Defines a new Event Day item.
@@ -192,7 +193,10 @@ class EventDayCollection extends BaseCollection {
     const owner = doc.owner;*/
     return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/ };
   }
+
+  
 }
+
 
 /**
  * Provides the singleton instance of this class to all other entities.

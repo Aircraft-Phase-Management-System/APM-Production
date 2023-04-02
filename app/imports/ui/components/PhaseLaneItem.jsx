@@ -5,6 +5,8 @@ import {
   Container,
   Row
 } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+// import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditPhaseLane from "../pages/EditPhaseLane";
 import { AirplaneFill } from "react-bootstrap-icons";
 import ListEvent from "./ListEvent";
@@ -15,7 +17,7 @@ const textColor = { color: '#ebe9e6' } ;
 const PhaseLaneItem = ({ phase, eventsDay }) => (
   <Container className="container-phase-item" style={{ backgroundColor: phase.color, padding: '20px' }}>
       <Row>
-        <Col><h6 style={textColor}>{phase.issue} PHASE LANES</h6></Col>{" "}
+        <Col><h6 style={textColor}>{phase.issue} PHASE LANE</h6></Col>{" "}
         <Col xs={2}>
           <EditPhaseLane key={phase._id} phase={phase}/>
         </Col>

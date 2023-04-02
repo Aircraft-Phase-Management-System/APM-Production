@@ -13,6 +13,7 @@ import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddPhaseLane from "../components/AddPhaseLane";
 import { date } from "yup";
+import ImportButton from "../components/ImportButton";
 
 const Calendar = () => {
   const { ready, timeouts } = useTracker(() => {
@@ -124,7 +125,10 @@ const Calendar = () => {
       <div className="app-sidebar">
         <Container>
           <Row>
-            <AddPhaseLane />
+         <ImportButton/>
+          </Row> 
+          <Row>
+            <AddPhaseLane/>
           </Row>
           <Row>
             {phases.map((phase) => (
