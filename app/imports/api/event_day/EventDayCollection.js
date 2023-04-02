@@ -31,6 +31,7 @@ class EventDayCollection extends BaseCollection {
     }));
   }
 
+
     /**
    * Defines a new Event Day item.
    * @param day the name of the item.
@@ -197,7 +198,10 @@ class EventDayCollection extends BaseCollection {
     const owner = doc.owner;*/
     return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/ };
   }
+
+  
 }
+
 
 /**
  * Provides the singleton instance of this class to all other entities.

@@ -25,6 +25,7 @@ const ImportButton = () => {
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
+    console.log("button pressed")
   }
 
   const handleFileUpload = () => {
@@ -44,10 +45,10 @@ const ImportButton = () => {
         trimHeaders: true,
         transformHeader: (header) => header.replace(/ /g, '_'),
       }).data;
-      console.log(parsedData[0]);
+      // console.log(parsedData[0]);
       // Save the parsed data to the collection
       parsedData.forEach((item) => {
-        // EventDayCollection.insert(item);
+        //console.log(item);
         const collectionName = EventsDay.getCollectionName();
         const definitionData = { 
           day: item.Date,
@@ -62,18 +63,35 @@ const ImportButton = () => {
            section: item.Section_Number, 
            remarks: item.Remarks
           };
-        defineMethod
+          
+
+
+          EventsDay.define(definitionData, (error, result) => {
+            if (error) {
+              swal("Error", error.message, "error");
+            } else {
+              swal("Success", "File imported successfully", "success");
+              console.log(EventsDay.find().fetch());
+              console.log(item);
+            }
+          });
+          /*
+          defineMethod
           .callPromise({ collectionName, definitionData })
           .catch((error) => swal("Error", error.message, "error"))
           .then(() => {
             swal("Success", "Phase Lane added successfully", "success");
-            console.log(EventsDay.find().fetch());
-            console.log(item);
+            //console.log(item);
 
           });
+          */
+          
+
       });
     
       setShow(false);
+      console.log(EventsDay.find().fetch());
+
     };
   }
 

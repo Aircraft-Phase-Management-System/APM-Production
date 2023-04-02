@@ -10,8 +10,6 @@ import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import { useTracker } from "meteor/react-meteor-data";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-
-
 const EventItem = ({ event }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
