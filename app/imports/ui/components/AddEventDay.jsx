@@ -100,23 +100,163 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     if (e.target.value.length === 4) {
       endHour = e.target.value;
     }
+    console.log(endHour);
   };
 
-  /*console.log("eventDate: ", eventDate);
+  console.log("eventDate: ", eventDate);
   console.log("startHour: ", startHour);
   console.log("timeSpent: ", timeSpent);
-  console.log("endHour: ", endHour);*/
-  /* Const to check how much time is available. */
-  const checkTimeAvailability = () => {
-    if (eventDate != null && timeSpent != 0 && startHour != null && endHour != null) {
-      const sameDayEvents = _.filter(eventsDay, function(event){ return event.day === eventDate});
-      const allTimesSpent = _.pluck(sameDayEvents, "min");
-      const sumTimesSpent = _.reduce(allTimesSpent, function(a, b){ return a + b}, 0);
-      
-      console.log(sumTimesSpent);
-      
+  console.log("endHour: ", endHour);
+
+  function calculateTimeAvailability() {
+    /* Only maintain the eventsDay that are equal to the input from the user. */
+    const allSameDayEvents = _.filter(eventsDay, function (event) {
+      return event.day === eventDate;
+    });
+
+    console.log("Same Day Events: ", allSameDayEvents);
+    /* Only main the title, start and end hour keys. */
+    const eventsSchedule = allSameDayEvents.map(
+      ({ title, start, end, min, ...rest }) => ({
+        title,
+        start,
+        end,
+        min,
+      })
+    );
+
+    /* Convert schedule from string to integer. */
+    const convertStringtoInt = eventsSchedule.map((event) => {
+      return {
+        ...event, //copies all items first...
+        start: parseInt(event.start),
+        end: parseInt(event.end),
+      };
+    });
+
+    /* Sort array of objects by key 'min'. */
+    let sortedEventsSchedule = _.sortBy(convertStringtoInt, "min").reverse();
+
+    /* Remove events that start and end at the same time. */
+    sortedEventsSchedule = sortedEventsSchedule.reduce((unique, o) => {
+      if (!unique.some((obj) => obj.start === o.start && obj.end === o.end)) {
+        unique.push(o);
+      }
+      return unique;
+    }, []);
+
+    console.log("Sorted by Minutes Spent: ", sortedEventsSchedule);
+    console.log("------REMOVE OVERLAPPING EVENTS--------");
+    /* Call function to remove overlapping events and save. */
+    sortedEventsSchedule = removeOverlappingEvents(sortedEventsSchedule);
+    /* Sort array of objects by key 'start' after overlapped events were deleted. */
+    sortedEventsSchedule = _.sortBy(sortedEventsSchedule, "start");
+    console.log("Sorted by Start Time: ", sortedEventsSchedule);
+    console.log("------CALCULATE TIME LEFT--------");
+    /* Call function to time how much time is left. */
+    console.log(calculateTimeLeft(sortedEventsSchedule));
+  }
+
+  /* Function to remove smaller overalapping events.
+   * Ex: remove task 7:30-8:00 if there is a task 7:00-8:00.
+   * Keep the task with larger time spent. */
+  function removeOverlappingEvents(sortedEventsSchedule) {
+    for (let i = 0; i < sortedEventsSchedule.length; i++) {
+      const startHour = sortedEventsSchedule[i].start;
+      const endHour = sortedEventsSchedule[i].end;
+      //console.log("startHour: " + startHour + " endHour: " + endHour);
+
+      for (let j = i + 1; j < sortedEventsSchedule.length; j++) {
+        //console.log("j: ", j);
+        const nextStartHour = sortedEventsSchedule[j].start;
+        const nextEndHour = sortedEventsSchedule[j].end;
+        const nextTitle = sortedEventsSchedule[j].title;
+
+        //console.log("nextStartHour: " + nextStartHour + " nextEndHour: " + nextEndHour);*/
+
+        if (startHour <= nextStartHour && endHour >= nextEndHour) {
+          //console.log(nextTitle);
+          sortedEventsSchedule = _.filter(
+            sortedEventsSchedule,
+            function (event) {
+              return event.title != nextTitle;
+            }
+          );
+          //console.log(sortedEventsSchedule.length);
+          j--;
+        }
+      }
     }
-  };
+    /* Returns array with the overlapping shorter events removed. */
+    return sortedEventsSchedule;
+  }
+
+  /* Functio to check if there is available time to add a new event in the same day. */
+  function calculateTimeLeft(sortedEventsSchedule) {
+    let minutesWorkedSum = [];
+    let didRemain = false;
+
+    /* Iterate over all the objects in the array */
+    for (let i = 0; i < sortedEventsSchedule.length - 1; i++) {
+      const title = sortedEventsSchedule[i].title;
+      const startHour = sortedEventsSchedule[i].start;
+      const endHour = sortedEventsSchedule[i].end;
+
+      //const nextTitle = sortedEventsSchedule[i + 1].title;
+      const nextStartHour = sortedEventsSchedule[i + 1].start;
+      const nextEndHour = sortedEventsSchedule[i + 1].end;
+
+      console.log(title);
+
+      /* if it is the first event of the day, save minutes.*/
+      if (i === 0 || didRemain) {
+        minutesWorkedSum.push(calculateHours(startHour, endHour, false));
+      } else {
+        /*const prevTitle = sortedEventsSchedule[i - 1].title;
+      const prevStartHour = sortedEventsSchedule[i - 1].start;
+      const prevEndHour = sortedEventsSchedule[i - 1].end;*/
+      }
+
+      /* if the end hour overlaps with the start hour of the next event.  */
+      if (endHour > nextStartHour) {
+        // do nothing
+        if (endHour >= nextEndHour) {
+          // do nothing: move to the next of the next event
+        } else {
+          /* if the end hour of the next event is later than the end hour of the current. */
+          minutesWorkedSum += nextEndHour - endHour;
+        }
+        didRemain = false;
+        /* if the end hour does not overlap with the start hour of the next event.  */
+      } else if (endHour < nextStartHour) {
+        minutesWorkedSum.push(calculateHours(endHour, nextStartHour, true));
+        didRemain = true;
+      } else {
+        /* if equal, do nothing */
+      }
+
+      /* If the last event*/
+      if (i + 1 === sortedEventsSchedule.length - 1) {
+        minutesWorkedSum.push(
+          calculateHours(nextStartHour, nextEndHour, false)
+        );
+      }
+    }
+  }
+
+  /* Function to calculate hours between a range of hours. */
+  function calculateHours(start, end, isFlipped) {
+    let hour = 0;
+    let min = 0;
+
+    hour = (end - (end % 100)) / 100 - (start - (start % 100)) / 100;
+    min = hour * 60 + (end % 100) - (start % 100);
+
+    hour = Math.floor(min / 60);
+    min = min % 60;
+
+    return [hour, min, isFlipped, start, end];
+  }
 
   // On submit, insert the data.
   const submit = (data) => {
@@ -297,7 +437,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                       >
                         <>
                           <Alert.Heading>
-                            <ExclamationDiamond /> Alert
+                            <ExclamationDiamond /> Event Report
                           </Alert.Heading>
                           <p>We found conflicting timeouts within the range!</p>
                           <Card>
@@ -307,6 +447,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                             <Table striped bordered hover>
                               <thead>
                                 <tr>
+                                  <th>Title</th>
                                   <th>Start Date</th>
                                   <th>End Date</th>
                                 </tr>
@@ -333,14 +474,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                           </Button>
                         </div>
                       </Alert>
-                      {!showAlert ? (
+                      {!showAlert && eventDate && startHour && endHour && timeSpent!= 0 ? (
                         <Row>
                           <div>
                             <Button
                               variant="primary"
                               size="sm"
                               onClick={() => {
-                                checkTimeAvailability();
+                                calculateTimeAvailability();
                                 setShowAlert(true);
                               }}
                             >
