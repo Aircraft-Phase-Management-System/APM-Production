@@ -19,15 +19,16 @@ class EventDayCollection extends BaseCollection {
       start: {type: String, optional: true },
       end: {type: String, optional: true },
       min: Number,
-      type: String,
+      type: {
+        type: String,
+        allowedValues: ['Planned', 'Unexpected', 'Plan Incurred'],
+        defaultValue: 'Planned',
+      },
       ml1: Number,
       ml2: Number,
       ml3: Number,
       section: {type: String, optional: true },
       remarks: {type: String, optional: true },
-      /*color: {type: String, optional: true },
-      laneID: {type: String, optional: true },
-      owner: {type: String, optional: true },*/
     }));
   }
 
@@ -41,10 +42,10 @@ class EventDayCollection extends BaseCollection {
    * @param color the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks /*, color, laneID, owner*/ }) {
+  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks }) {
 
     const docID = this._collection.insert({
-      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/,
+      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks,
     });
     return docID;
   }
@@ -57,7 +58,7 @@ class EventDayCollection extends BaseCollection {
    * @param end the new condition (optional).
    * @param color the new condition (optional).
    */
-  update(docID, { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, color }) {
+  update(docID, { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks }) {
     const updateData = {};
     if (day) {
       updateData.day = day;
