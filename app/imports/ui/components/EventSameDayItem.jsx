@@ -30,26 +30,26 @@ const EventSameDayItem = ({ event }) => {
     <br />
     <Row>
       <Col md={3}>
-        <Row>Date:</Row>
-        <Row>Title:</Row>
-        <Row>Start:</Row>
-        <Row>End:</Row>
-        <Row>Time:</Row>
-        <Row>Type:</Row>
-        <Row>ML1:</Row>
-        <Row>ML2:</Row>
-        <Row>ML3:</Row>
+        <Row><p>Date:</p></Row>
+        <Row><p>Title:</p></Row>
+        <Row><p>Start:</p></Row>
+        <Row><p>End:</p></Row>
+        <Row><p>Time:</p></Row>
+        <Row><p>Type:</p></Row>
+        <Row><p>ML1:</p></Row>
+        <Row><p>ML2:</p></Row>
+        <Row><p>ML3:</p></Row>
       </Col>
       <Col md={8}>
-        <Row>{event.day}</Row>
-        <Row>{event.title}</Row>
-        <Row>{event.start}</Row>
-        <Row>{event.end}</Row>
-        <Row>{event.min}</Row>
-        <Row>{event.type}</Row>
-        <Row>{event.ml1}</Row>
-        <Row>{event.ml2}</Row>
-        <Row>{event.ml3}</Row>
+        <Row><p>{event.day}</p></Row>
+        <Row><p>{event.title}</p></Row>
+        <Row><p>{event.start}</p></Row>
+        <Row><p>{event.end}</p></Row>
+        <Row><p>{event.min}</p></Row>
+        <Row><p>{event.type}</p></Row>
+        <Row><p>{event.ml1}</p></Row>
+        <Row><p>{event.ml2}</p></Row>
+        <Row><p>{event.ml3}</p></Row>
       </Col>
     </Row>
 
