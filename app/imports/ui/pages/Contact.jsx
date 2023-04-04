@@ -26,11 +26,11 @@ class Contact extends React.Component {
               for further assistance
             </p>
 
-            /*<Header>If you encounter to any bugs or issues and would like to contact us, please email: 
+            {/*<Header>If you encounter to any bugs or issues and would like to contact us, please email: 
                 (<a target='_blank' href=''>jingzhef@hawaii.edu </a>)  
                 or 
                 (<a target='_blank' href=''>acoa@hawaii.edu </a>) 
-    </Header> */
+    </Header> */}
 
             <Header>For Instructions and more details about the site, Please visit
               <a target="_blank" href="http://ics-software-engineering.github.io/meteor-application-template-production/" rel="noreferrer"> Meteor-Application-Template-React</a>
