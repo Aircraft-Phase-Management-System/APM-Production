@@ -15,18 +15,18 @@ class EventDayCollection extends BaseCollection {
   constructor() {
     super('EventsDay', new SimpleSchema({
       day: String,
-      title: String,
+      title: {type: String, optional: true },
       start: {type: String, optional: true },
       end: {type: String, optional: true },
-      min: Number,
+      min: {type: Number, optional: true},
       type: {
         type: String,
         allowedValues: ['Planned', 'Unexpected', 'Plan Incurred'],
         defaultValue: 'Planned',
       },
-      ml1: Number,
-      ml2: Number,
-      ml3: Number,
+      ml1: {type: Number, optional: true},
+      ml2: {type: Number, optional: true},
+      ml3: {type: Number, optional: true},
       section: {type: String, optional: true },
       remarks: {type: String, optional: true },
     }));
@@ -43,21 +43,7 @@ class EventDayCollection extends BaseCollection {
    * @return {String} the docID of the new document.
    */
   define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks }) {
-    Meteor.users.allow({
-      insert: function (userId, doc) {
-             //Normally I would check if (this.userId) to see if the method is called by logged in user or guest
-             //you can also add some checks here like user role based check etc.,
-             return true;
-      },
-      update: function (userId, doc, fieldNames, modifier) {
-             //similar checks like insert
-             return true;
-      },
-      remove: function (userId, doc) {
-             //similar checks like insert
-             return true;
-      }
-  });
+
     const docID = this._collection.insert({
       day, title, start, end, min, type, ml1, ml2, ml3, section, remarks,
     });
@@ -126,8 +112,6 @@ class EventDayCollection extends BaseCollection {
     return true;
   }
 
-
-  
   /**
    * Default publication method for entities.
    * It publishes the entire collection for admin and just the stuff associated to an owner.
@@ -145,8 +129,6 @@ class EventDayCollection extends BaseCollection {
         }
         return this.ready();
       });
-
-      
 
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
       Meteor.publish(eventDayPublications.eventDayAdmin, function publish() {

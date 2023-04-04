@@ -45,8 +45,10 @@ const ImportButton = () => {
         trimHeaders: true,
         transformHeader: (header) => header.replace(/ /g, '_'),
       }).data;
+      // console.log(parsedData[0]);
       // Save the parsed data to the collection
       parsedData.forEach((item) => {
+        //console.log(item);
         const collectionName = EventsDay.getCollectionName();
         const definitionData = { 
           day: item.Date,
@@ -63,23 +65,14 @@ const ImportButton = () => {
           };
           
 
+
           defineMethod
             .callPromise({ collectionName, definitionData })
             .catch((error) => swal("Error", error.message, "error"))
             .then(() => {
               swal("Success", "Phase Lane added successfully", "success");
           });
-          /*
-          EventsDay.define(definitionData, (error, result) => {
-            if (error) {
-              swal("Error", error.message, "error");
-            } else {
-              swal("Success", "File imported successfully", "success");
-              console.log(EventsDay.find().fetch());
-              console.log(item);
-            }
-          });
-          */
+          
 
       });
     

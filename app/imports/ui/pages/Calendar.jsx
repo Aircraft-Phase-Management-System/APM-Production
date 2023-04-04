@@ -117,8 +117,8 @@ const Calendar = () => {
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
 
- // console.log(formattedCalendarEvents);
-  // console.log(events);
+  console.log(formattedCalendarEvents);
+  console.log(events);
 
   const renderSideBar = () => {
     return (
