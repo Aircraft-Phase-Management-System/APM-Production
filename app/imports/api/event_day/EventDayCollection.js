@@ -14,19 +14,19 @@ export const eventDayPublications = {
 class EventDayCollection extends BaseCollection {
   constructor() {
     super('EventsDay', new SimpleSchema({
-      day: String,
-      title: String,
+      day: {type: String, optional: true },
+      title: {type: String, optional: true },
       start: {type: String, optional: true },
       end: {type: String, optional: true },
-      min: Number,
+      min: {type: Number, optional: true },
       type: {
         type: String,
         allowedValues: ['Planned', 'Unexpected', 'Plan Incurred'],
         defaultValue: 'Planned',
       },
-      ml1: Number,
-      ml2: Number,
-      ml3: Number,
+      ml1: {type: Number, optional: true },
+      ml2: {type: Number, optional: true },
+      ml3: {type: Number, optional: true },
       section: {type: String, optional: true },
       remarks: {type: String, optional: true },
     }));
