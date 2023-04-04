@@ -83,6 +83,8 @@ const EditEventDay = ({ event }) => {
   const handleDelete = () => {
     const collectionName = EventsDay.getCollectionName();
     const instance = EventsDay.findDoc(event._id);
+    console.log(event._id);
+    console.log(instance);
     removeItMethod
       .callPromise({ collectionName, instance })
       .catch((error) => swal("Error", error.message, "error"))
@@ -127,12 +129,7 @@ const EditEventDay = ({ event }) => {
                   />
                 </Col>
                 <Col>
-                  <NumField
-                    name="min"
-                    label="Time Spent"
-                    decimal={null}
-                    min={0}
-                  />
+                  <NumField name="min" label="Time Spent" decimal={null} min={0} />
                 </Col>
                 <Col>
                   <TextField
@@ -145,19 +142,39 @@ const EditEventDay = ({ event }) => {
 
               <Row>
                 <Col>
-                  <NumField name="ml1" label="ML1" decimal={null} min={0} />
+                  <NumField
+                    name="ml1"
+                    label="ML1"
+                    decimal={null}
+                    min={0}
+                  />
                 </Col>
                 <Col>
-                  <NumField name="ml2" label="ML2" decimal={null} min={0} />
+                  <NumField
+                    name="ml2"
+                    label="ML2"
+                    decimal={null}
+                    min={0}
+                  />
                 </Col>
                 <Col>
-                  <NumField name="ml3" label="ML3" decimal={null} min={0} />
+                  <NumField
+                    name="ml3"
+                    label="ML3"
+                    decimal={null}
+                    min={0}
+                  />
                 </Col>
               </Row>
 
+               {/* day, title, start, end, min, type, ml1, ml2, ml3, section, remarks */}
+
               <Row>
                 <Col>
-                  <SelectField name="type" label="Event Type" />
+                  <SelectField
+                    name="type"
+                    label="Event Type"
+                  />
                 </Col>
                 <Col>
                   <TextField

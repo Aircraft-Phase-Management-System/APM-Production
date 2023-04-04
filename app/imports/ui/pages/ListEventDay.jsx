@@ -58,6 +58,7 @@ const ListEventDay = () => {
               />
             </InputGroup>
         <br />
+        <Row className="card-list-row-eventsday">
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -81,6 +82,7 @@ const ListEventDay = () => {
         ))}
             </tbody>
           </Table>
+      </Row>
       </Card>
     </Container>
   ) : (

@@ -47,6 +47,9 @@ const ListEvent = ({ laneID, eventsDay }) => {
           <h6>
             <List /> Today's Events
           </h6>
+          {/*events.map((event) => (
+            <EventItem key={event._id} event={event} />
+          ))*/}
           {eventsFromLane.map((event) => (
             <EventSameDayItem key={event._id} event={event} />
           ))}

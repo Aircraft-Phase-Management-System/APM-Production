@@ -1,10 +1,9 @@
 /* Use Open Sans as the default sans serif font. */
-@import url("http://fonts.googleapis.com/css?family=Oswald:400,300,700");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700|Source+Code+Pro:300,400,500,700");
 
 /* Set up some CSS variables to theme the application. */
 :root {
   --matr-navbar-bg: #ECECEC;
-  --bs-body-font-family: 'Oswald', sans-serif !important;
 }
 
 /* Change bootstrap variable values.
@@ -38,14 +37,6 @@ body {
 .app-sidebar {
   margin-top: 37px;
   width: 300px;
-  line-height: 1.5;
-  border-right: 1px solid #ede9e1;
-
-}
-
-.app-sidebar-item {
-  margin-top: 37px;
-  width: 400px;
   line-height: 1.5;
   border-right: 1px solid #ede9e1;
 
@@ -86,7 +77,3 @@ body {
   margin-bottom: 20px;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
-  font-family: 'Oswald', sans-serif !important;;
-}
- 
