@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { COMPONENT_IDS } from "../utilities/ComponentIDs";
+import EditEventDay from "../pages/EditEventDay";
 //import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
@@ -18,7 +19,7 @@ const EventDayItem = ({ event }) => (
   <td>{event.ml3}</td>
   <td>{event.section}</td>
   <td>{event.remarks}</td>
-  {/*<td><EditTimeout key={timeout._id} timeout={timeout}/></td>*/}
+  <td><EditEventDay key={event._id} event={event}/></td>
 </tr>
 );
 
