@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Button, InputGroup, Form } from "react-bootstrap";
 import swal from "sweetalert";
-import { PlusSquare, Airplane } from "react-bootstrap-icons";
+import { Airplane, FileEarmarkArrowDown } from "react-bootstrap-icons";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import Modal from "react-bootstrap/Modal";
 
@@ -85,8 +85,8 @@ const ImportButton = () => {
   return (
     <>
       <Button variant="secondary" onClick={handleShow}>
-        <PlusSquare />
-        <Col>Import</Col>
+        <FileEarmarkArrowDown />
+        <Col><p>IMPORT CSV</p></Col>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -105,7 +105,7 @@ const ImportButton = () => {
             />
           </InputGroup>
 
-          <p>Select a file to upload:</p>
+          <p>Select a .csv file to upload:</p>
           <input type="file" onChange={handleFileSelect} />
         </Modal.Body>
 

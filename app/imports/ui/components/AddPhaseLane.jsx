@@ -28,11 +28,16 @@ const formSchema = new SimpleSchema({
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
-function setBg () {
+function setBg() {
   //const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
-  const randomColor = "hsl(" + 360 * Math.random() + ',' +
-  (20 + 60 * Math.random()) + '%,' + 
-  ( 25 + 40 * Math.random()) + '%)';
+  const randomColor =
+    "hsl(" +
+    360 * Math.random() +
+    "," +
+    (20 + 60 * Math.random()) +
+    "%," +
+    (25 + 40 * Math.random()) +
+    "%)";
   return randomColor;
 }
 
@@ -65,7 +70,9 @@ const AddPhaseLane = () => {
     <>
       <Button variant="primary" onClick={handleShow}>
         <PlusSquare />
-        <Col>Create New Phase Lane</Col>
+        <Col>
+          <p>ADD PHASE LANE</p>
+        </Col>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -83,21 +90,35 @@ const AddPhaseLane = () => {
             <Container id={PAGE_IDS.ADD_PHASE_LANE} className="py-3">
               <Row>
                 <Col>
-                  <TextField name="issue" label="Issue Number" placeholder="Ex: #1" />
+                  <TextField
+                    name="issue"
+                    label="Issue Number"
+                    placeholder="Ex: #1"
+                  />
                 </Col>
                 <Col xs={8}>
-                <TextField name="name" label="Phase Lane Name" placeholder="Ex: Flight Lane 1"  />
+                  <TextField
+                    name="name"
+                    label="Phase Lane Name"
+                    placeholder="Ex: Flight Lane 1"
+                  />
                 </Col>
               </Row>
-              <Row><TextField name="author" label="Team" placeholder="Ex: Team 1"  />
+              <Row>
+                <TextField
+                  name="author"
+                  label="Team"
+                  placeholder="Ex: Team 1"
+                />
               </Row>
-              <HiddenField name="color" value={setBg()}/>
+              <HiddenField name="color" value={setBg()} />
               <ErrorsField />
             </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" onClick={handleClose}>
-              <XSquare style={{marginBottom: '4px', marginRight: '6px'}}/>Close
+              <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
+              Close
             </Button>
             <SubmitField value="Save" onClick={handleClose} />
           </Modal.Footer>
