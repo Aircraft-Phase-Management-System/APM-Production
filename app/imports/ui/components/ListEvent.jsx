@@ -1,13 +1,10 @@
 import React from "react";
 import { Accordion, Row, Button, Col } from "react-bootstrap";
-import { useTracker } from "meteor/react-meteor-data";
-//import { Events } from "../../api/event_phase/EventCollection";
-import { EventsDay } from "../../api/event_day/EventDayCollection";
-import LoadingSpinner from "./LoadingSpinner";
-import EventItem from "./EventItem";
 import { List } from "react-bootstrap-icons";
 import AddEventDay from "./AddEventDay";
 import EventSameDayItem from "./EventSameDayItem";
+import { Link } from 'react-router-dom';
+
 
 /* Renders a table containing all of the Event documents. Use <EventItem> to render each row. */
 const ListEvent = ({ laneID, eventsDay }) => {
@@ -31,14 +28,16 @@ const ListEvent = ({ laneID, eventsDay }) => {
           <Row>
             <Col>
               <Button
-                href="/list-eventsday"
+                href={`/list-eventsday/${laneID._id}`}
                 variant="outline-primary"
                 size="sm"
+                state={laneID}
               >
                 {" "}
                 All Current Events
               </Button>
             </Col>
+      
             <Col>
               <AddEventDay laneID={laneID} eventsDay={eventsDay} />
             </Col>
@@ -55,5 +54,6 @@ const ListEvent = ({ laneID, eventsDay }) => {
     </Accordion>
   );
 };
+
 
 export default ListEvent;

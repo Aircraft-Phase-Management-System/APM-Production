@@ -45,7 +45,7 @@ const App = () => {
           <Route path="/main-calendar" element={<Calendar />} />
           <Route path="/total-timeouts" element={<ProtectedRoute><TimeoutTabs /></ProtectedRoute>} />
           <Route path="/list-timeout" element={<ProtectedRoute><ListTimeout /></ProtectedRoute>} />
-          <Route path="/list-eventsday" element={<ProtectedRoute><ListEventDay /></ProtectedRoute>} />
+          <Route path="/list-eventsday/:_id" element={<ProtectedRoute><ListEventDay /></ProtectedRoute>} />
           <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add-timeout" element={<ProtectedRoute><AddTimeout /></ProtectedRoute>} />
           <Route path="/edit/:_id" element={<ProtectedRoute><EditTimeout /></ProtectedRoute>} />

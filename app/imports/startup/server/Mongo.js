@@ -33,32 +33,6 @@ if (Timeouts.count() === 0) {
   }
 }
 
-// Initialize the database with a default event day data document.
-function addEventDay(data) {
-  console.log(`  Adding: ${data.title}`);
-  EventsDay.define(data);
-}
-
-if (EventsDay.count() === 0) {
-  if (Meteor.settings.defaultEventsDay) {
-    console.log('Creating default data daily events.');
-    Meteor.settings.defaultEventsDay.map(data => addEventDay(data));
-  }
-}
-
-// Initialize the database with a default event data document.
-function addEvent(data) {
-  console.log(`  Adding: ${data.title} (${data.owner})`);
-  Events.define(data);
-}
-
-if (Events.count() === 0) {
-  if (Meteor.settings.defaultEvents) {
-    console.log('Creating default data for events for Phase Lanes.');
-    Meteor.settings.defaultEvents.map(data => addEvent(data));
-  }
-}
-
 // Initialize the database with a default event data document.
 function addPhase(data) {
   console.log(`  Adding: ${data.name} (${data.owner})`);

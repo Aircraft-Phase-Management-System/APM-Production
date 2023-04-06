@@ -4,7 +4,6 @@ import {
   Container,
   Row
 } from "react-bootstrap";
-// import { Link } from "react-router-dom";
 // import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditPhaseLane from "../pages/EditPhaseLane";
 import { AirplaneFill, Calendar } from "react-bootstrap-icons";
@@ -26,8 +25,9 @@ const PhaseLaneItem = ({ phase, eventsDay }) => (
         </Col>
       </Row>
       <p style={textColor}><AirplaneFill style={{ transform: "rotate(90deg)" }} /> {phase.name} ({phase.author})</p>
-    <ListEvent laneID={phase.issue} eventsDay={eventsDay}/>
+    <ListEvent laneID={phase} eventsDay={eventsDay}/>
   </Container>
 );
+
 
 export default PhaseLaneItem;

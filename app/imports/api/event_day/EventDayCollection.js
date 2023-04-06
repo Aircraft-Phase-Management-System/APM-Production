@@ -14,7 +14,7 @@ export const eventDayPublications = {
 class EventDayCollection extends BaseCollection {
   constructor() {
     super('EventsDay', new SimpleSchema({
-      day: String,
+      day: {type: String, optional: true },
       title: {type: String, optional: true },
       start: {type: String, optional: true },
       end: {type: String, optional: true },
@@ -29,6 +29,7 @@ class EventDayCollection extends BaseCollection {
       ml3: {type: Number, optional: true},
       section: {type: String, optional: true },
       remarks: {type: String, optional: true },
+      laneID: {type: String, optional: true },
     }));
   }
 
@@ -42,10 +43,10 @@ class EventDayCollection extends BaseCollection {
    * @param color the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks }) {
+  define({ day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, laneID }) {
 
     const docID = this._collection.insert({
-      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks,
+      day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, laneID
     });
     return docID;
   }
@@ -58,7 +59,7 @@ class EventDayCollection extends BaseCollection {
    * @param end the new condition (optional).
    * @param color the new condition (optional).
    */
-  update(docID, { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks }) {
+  update(docID, { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, laneID }) {
     const updateData = {};
     if (day) {
       updateData.day = day;
@@ -96,6 +97,10 @@ class EventDayCollection extends BaseCollection {
     }
     if (remarks) {
       updateData.remarks = remarks;
+    }
+
+    if (laneID) {
+      updateData.laneID = laneID;
     }
     this._collection.update(docID, { $set: updateData });
   }
@@ -189,10 +194,8 @@ class EventDayCollection extends BaseCollection {
     const ml3 = doc.ml3;
     const section = doc.section;
     const remarks = doc.remarks;
-    /*const color = doc.start;
     const laneID = doc.laneID;
-    const owner = doc.owner;*/
-    return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks/*, color, laneID, owner*/ };
+    return { day, title, start, end, min, type, ml1, ml2, ml3, section, remarks, laneID };
   }
 
   
