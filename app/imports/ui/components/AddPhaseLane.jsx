@@ -93,7 +93,7 @@ const AddPhaseLane = () => {
                   <TextField
                     name="issue"
                     label="Issue Number"
-                    placeholder="Ex: #1"
+                    placeholder="Ex: #01"
                   />
                 </Col>
                 <Col xs={8}>

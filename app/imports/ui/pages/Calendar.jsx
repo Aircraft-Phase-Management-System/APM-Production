@@ -5,7 +5,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
-//import { Events } from "../../api/event_phase/EventCollection";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { PAGE_IDS } from "../utilities/PageIDs";
@@ -61,44 +60,6 @@ const Calendar = () => {
     element.color = "#c22f25";
   });
 
-  /* Modify the eventsDay collection to fit the calendar format */
-  events.forEach(function (event) {
-    let date = event.day;
-    let len = date.length;
-    let indexDash = [];
-    let day = null;
-    let month = null;
-    let year = null;
-
-    /* If the data comes from .json file, format. */
-    if (date.includes("/")) {
-      date = date.split("/").join("-");
-      for (let i = 0; i < len - 4; i++) {
-        if (date.charAt(i) === "-") {
-          indexDash.push(i);
-        }
-      }
-      year = date.substring(len - 4);
-      month = date.substring(0, indexDash[0]);
-      day = date.substring(indexDash[0] + 1, indexDash[1]);
-
-      month = month.length === 1 ? "0" + month : month;
-      day = day.length === 1 ? "0" + day : day;
-
-      date = year + "-" + month + "-" + day;
-    }
-
-    if (event.start && event.end) {
-      if (!event.start.includes(":")) {
-        event.start =
-          event.start.substring(0, 2) + ":" + event.start.substring(2);
-        event.end = event.end.substring(0, 2) + ":" + event.end.substring(2);
-      }
-    }
-
-    event.day = date;
-  });
-
   //console.log(events);
   /*  const formattedCalendarEvents = events.map(({ start: startHour, day: start, ...rest }) => ({
     startHour,
@@ -110,15 +71,13 @@ const Calendar = () => {
   // console.log(dateWithHour);
 
   /* Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
-  const formattedCalendarEvents = events.map(({ day: start, title }) => ({
+  const formattedCalendarEvents = events.map(({ day: start, title, _id }) => ({
     start,
     title,
+    _id
   }));
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
-
-  console.log(formattedCalendarEvents);
-  console.log(events);
 
   const renderSideBar = () => {
     return (

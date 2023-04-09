@@ -46,7 +46,6 @@ const ListEventDay = () => {
     };
   }, []);
 
-  //const eventsFromLane = eventsday.filter((eventday) => { return eventday.laneID === ; });
 
   const getLaneIssueNumber = () => {
     const location = useLocation();

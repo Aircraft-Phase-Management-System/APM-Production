@@ -10,7 +10,7 @@ import { EventsDay } from "../../api/event_day/EventDayCollection";
 
 const ImportButton = () => {
   const [show, setShow] = useState(false);
-  const [lane, setLane] = useState('');
+  const [lane, setLane] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,10 +20,16 @@ const ImportButton = () => {
   const handleLane = (e) => {
     const laneValue = e.target.value;
     const number = parseInt(laneValue[1]);
-    if (laneValue.length === 2 && laneValue[0] === "#" && Number.isInteger(number)) {
+    if (
+      laneValue.length === 3 &&
+      laneValue[0] === "#" &&
+      Number.isInteger(number)
+    ) {
       setLane(e.target.value);
     }
   };
+
+  console.log(lane);
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -47,11 +53,51 @@ const ImportButton = () => {
         transformHeader: (header) => header.replace(/ /g, "_"),
       }).data;
 
-      const data = parsedData.map(v => ({...v, laneID: lane}));
-      console.log(data);
+      const events = parsedData.map((v) => ({ ...v, laneID: lane }));
+
+      /* Modify the event data to fit the calendar format */
+      events.forEach((event) => {
+        let date = event.Date;
+        let len = date.length;
+        let indexDash = [];
+        let day = null;
+        let month = null;
+        let year = null;
+
+        /* Modify the date to be in the format of YYYY-MM-DD */
+        if (date.includes("/")) {
+          date = date.split("/").join("-");
+          for (let i = 0; i < len - 4; i++) {
+            if (date.charAt(i) === "-") {
+              indexDash.push(i);
+            }
+          }
+          year = date.substring(len - 4);
+          month = date.substring(0, indexDash[0]);
+          day = date.substring(indexDash[0] + 1, indexDash[1]);
+
+          month = month.length === 1 ? "0" + month : month;
+          day = day.length === 1 ? "0" + day : day;
+
+          date = year + "-" + month + "-" + day;
+        }
+
+        /* Modify hour to be 07:00 instead of 0700 */
+        if (event.Time_Start && event.Time_End) {
+          if (!event.Time_Start.includes(":")) {
+            event.Time_Start =
+              event.Time_Start.substring(0, 2) + ":" + event.Time_Start.substring(2);
+            event.Time_End =
+              event.Time_End.substring(0, 2) + ":" + event.Time_End.substring(2);
+          }
+        }
+
+        event.Date = date;
+      });
+
 
       // Save the parsed data to the collection
-      data.forEach((item) => {
+      events.forEach((item) => {
         const collectionName = EventsDay.getCollectionName();
         const definitionData = {
           day: item.Date,
@@ -68,6 +114,7 @@ const ImportButton = () => {
           laneID: item.laneID,
         };
 
+        console.log(definitionData);
 
         defineMethod
           .callPromise({ collectionName, definitionData })
@@ -86,7 +133,9 @@ const ImportButton = () => {
     <>
       <Button variant="secondary" onClick={handleShow}>
         <FileEarmarkArrowDown />
-        <Col><p>IMPORT CSV</p></Col>
+        <Col>
+          <p>IMPORT CSV</p>
+        </Col>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -97,12 +146,10 @@ const ImportButton = () => {
         <Modal.Body>
           <p>Phase Lane ID:</p>
           <InputGroup className="mb-3">
-            <InputGroup.Text><Airplane size={22}/></InputGroup.Text>
-            <Form.Control
-              placeholder="Ex: #1"
-              onChange={handleLane}
-
-            />
+            <InputGroup.Text>
+              <Airplane size={22} />
+            </InputGroup.Text>
+            <Form.Control placeholder="Ex: #01" onChange={handleLane} />
           </InputGroup>
 
           <p>Select a .csv file to upload:</p>

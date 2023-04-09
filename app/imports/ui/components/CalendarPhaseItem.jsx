@@ -4,14 +4,25 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import { XSquare, Calendar, HandIndex } from "react-bootstrap-icons";
+import { XSquare, Calendar, HandIndex, Search } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
-import { Container, Row, Modal, Button, Table, Alert } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Modal,
+  Button,
+  Table,
+  Alert,
+  InputGroup,
+  Form,
+} from "react-bootstrap";
 
 const CalendarPhaseItem = ({ phase, events }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [query, setQuery] = useState("");
 
   const letterColor = { color: "white" };
 
@@ -33,53 +44,28 @@ const CalendarPhaseItem = ({ phase, events }) => {
     element.color = "#c22f25";
   });
 
-  /* Modify the eventsDay collection to fit the calendar format */
-  events.forEach(function (event) {
-    let date = event.day;
-    let len = date.length;
-    let indexDash = [];
-    let day = null;
-    let month = null;
-    let year = null;
-
-    /* If the data comes from .json file, format. */
-    if (date.includes("/")) {
-      date = date.split("/").join("-");
-      for (let i = 0; i < len - 4; i++) {
-        if (date.charAt(i) === "-") {
-          indexDash.push(i);
-        }
-      }
-      year = date.substring(len - 4);
-      month = date.substring(0, indexDash[0]);
-      day = date.substring(indexDash[0] + 1, indexDash[1]);
-
-      month = month.length === 1 ? "0" + month : month;
-      day = day.length === 1 ? "0" + day : day;
-
-      date = year + "-" + month + "-" + day;
-    }
-
-    if (event.start && event.end) {
-      if (!event.start.includes(":")) {
-        event.start =
-          event.start.substring(0, 2) + ":" + event.start.substring(2);
-        event.end = event.end.substring(0, 2) + ":" + event.end.substring(2);
-      }
-    }
-
-    event.day = date;
-  });
-
+  /* LIST: List events from the current phase lane and apply filter is needed by user. */
   events = _.sortBy(events, "day").reverse();
 
-  /* Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
-  const formattedCalendarEvents = events.map(({ day: start, title }) => ({
+  const eventsFromLane = events.filter((event) => {
+    return event.laneID === phase.issue;
+  });
+
+  const filteredData = eventsFromLane.filter((eventday) => {
+    const lowerCase = query.toLowerCase();
+    return eventday.title.toLowerCase().startsWith(lowerCase);
+  });
+
+  /* CALENDAR: Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
+  const formattedCalendarEvents = eventsFromLane.map(({ day: start, title, _id }) => ({
     start,
     title,
+    _id,
   }));
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
+
+  console.log(eventsFromLane);
 
   const renderSideBar = () => {
     return (
@@ -90,13 +76,24 @@ const CalendarPhaseItem = ({ phase, events }) => {
               {phase.issue} {phase.name}
             </h6>
           </Row>
-            <Alert variant={"light"}>
-              <p>
-                Click{" "}<HandIndex/>{" "}
-                <Link to="/list-eventsday"> here</Link> to see all of the events.
-              </p>
-            </Alert>
-            <h6 style={letterColor}>The 10 Most Recent Events</h6>
+          <Alert variant={"light"}>
+            <p>
+              Click <HandIndex />{" "}
+              <Link to={`/list-eventsday/${phase._id}`}> here</Link> to see all
+              of the events.
+            </p>
+          </Alert>
+
+          <InputGroup>
+            <InputGroup.Text>
+              <Search></Search>
+            </InputGroup.Text>
+            <Form.Control
+              placeholder="Search by title..."
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </InputGroup>
+
           <Table striped borderless hover variant="dark">
             <thead>
               <tr>
@@ -105,11 +102,11 @@ const CalendarPhaseItem = ({ phase, events }) => {
               </tr>
             </thead>
             <tbody>
-              {events.slice(0, 10).map((event) => (
+              {filteredData.slice(0, 20).map((event) => (
                 <CalendarPhaseRow key={event._id} event={event} />
               ))}
             </tbody>
-          </Table>
+          </Table> 
         </Container>
       </div>
     );
