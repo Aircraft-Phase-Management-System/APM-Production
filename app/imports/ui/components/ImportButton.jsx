@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Col, Button, InputGroup, Form } from "react-bootstrap";
 import swal from "sweetalert";
+import { useTracker } from "meteor/react-meteor-data";
 import { Airplane, FileEarmarkArrowDown } from "react-bootstrap-icons";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import Modal from "react-bootstrap/Modal";
 
 import Papa from "papaparse";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 
 const ImportButton = () => {
   const [show, setShow] = useState(false);
@@ -16,6 +18,19 @@ const ImportButton = () => {
   const handleShow = () => setShow(true);
 
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const { ready, timeouts } = useTracker(() => {
+    const subscription = Timeouts.subscribeTimeout();
+    // Determine if the subscription is ready
+    const rdy = subscription.ready();
+    // Get the Stuff documents
+    const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
+
+    return {
+      timeouts: timeoutItems,
+      ready: rdy,
+    };
+  }, []);
 
   const handleLane = (e) => {
     const laneValue = e.target.value;
@@ -29,11 +44,9 @@ const ImportButton = () => {
     }
   };
 
-  console.log(lane);
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log("button pressed");
   };
 
   const handleFileUpload = () => {
@@ -86,13 +99,129 @@ const ImportButton = () => {
         if (event.Time_Start && event.Time_End) {
           if (!event.Time_Start.includes(":")) {
             event.Time_Start =
-              event.Time_Start.substring(0, 2) + ":" + event.Time_Start.substring(2);
+              event.Time_Start.substring(0, 2) +
+              ":" +
+              event.Time_Start.substring(2);
             event.Time_End =
-              event.Time_End.substring(0, 2) + ":" + event.Time_End.substring(2);
+              event.Time_End.substring(0, 2) +
+              ":" +
+              event.Time_End.substring(2);
           }
         }
 
         event.Date = date;
+      });
+
+
+      /* Const to find the number of conflicting days for a holiday range. */
+      const getOverlappingRangeDays = (eventStrDate, holsRngDates) => {
+        let conflictingDays = 0;
+        const eventDate = Date.parse(eventStrDate.Date);
+
+        /* Iterate over holidays with a range of days (start and end). */
+        for (let i = 0; i < holsRngDates.length; i++) {
+          /* Get the start and end dates of the current holiday. */
+          const holStartStr = holsRngDates[i][0];
+          const holEndStr = holsRngDates[i][1];
+
+          /* Convert to Date format. */
+          const holStart = Date.parse(holStartStr);
+          const holEnd = Date.parse(holEndStr);
+
+          /* Get the day of the event and the end holiday - to calculate conflicting days.*/
+          const eventIntDay = parseInt(eventStrDate.Date.substring(8));
+          const holEndDay = parseInt(holEndStr.substring(8));
+
+          if (holStart <= eventDate && eventDate <= holEnd) {
+            conflictingDays += holEndDay - eventIntDay + 1;
+          }
+        }
+
+        return conflictingDays;
+      };
+
+      /* Const to find the number of conflicting days for a single holiday. */
+      const getOverlappingSingleDays = (event, holsDate) => {
+        let conflictingDays = 0;
+
+        /* Iterate over holidays with single of days (start only). */
+        for (let i = 0; i < holsDate.length; i++) {
+          /* Get the start and end dates of the current holiday. */
+          const holDateCurrent = holsDate[i];
+
+          if (event.Date === holDateCurrent) {
+            conflictingDays += 1;
+          }
+        }
+
+        return conflictingDays;
+      };
+
+      const checkWeekendDays = (event) => {
+        let year = parseInt(event.Date.substring(0, 4));
+        let month = parseInt(event.Date.substring(5, 7)) - 1; // 0-11 months
+        let day = parseInt(event.Date.substring(8));
+
+        let date = new Date();
+        date.setFullYear(year);
+        date.setMonth(month);
+        date.setDate(day);
+
+        let weekendDaysCounter = 0;
+
+        while (date.getDay() == 6 || date.getDay() == 0) {
+          weekendDaysCounter += 1;
+          date.setDate(day + weekendDaysCounter);
+        }
+
+        return weekendDaysCounter;
+      };
+
+      const extractHoldays = (timeouts) => {
+        /* Filter all the holidays to check if the parsed dates are the same. */
+        const onlyHolidays = _.filter(timeouts, (timeout) => {
+          return timeout.type === "Holiday";
+        });
+
+        /* Filter all the holidays that have a start and end day - more than one day. */
+        const allHolsWithRng = _.filter(onlyHolidays, (holiday) => {
+          return holiday.start.length === 10 && holiday.end.length === 10;
+        });
+
+        /* Zip all the start and end days together for each holiday. */
+        const holsRngDates = _.zip(
+          _.pluck(allHolsWithRng, "start"),
+          _.pluck(allHolsWithRng, "end")
+        );
+
+        /* Filter all the single holidays that doesn't have a end date. */
+        const allSingleHols = _.filter(onlyHolidays, (holiday) => {
+          return holiday.start.length === 10 && holiday.end === "-";
+        });
+
+        /* Get all the start dates for single holidays.. */
+        const holsSingleDates = _.pluck(allSingleHols, "start");
+
+        return [holsSingleDates, holsRngDates];
+      };
+
+      const [holsSingleDates, holsRngDates] = extractHoldays(timeouts);
+
+      events.forEach((event) => {
+        let date = event.Date;
+        let day = parseInt(date.substring(8));
+        let conflictingDays = 0;
+        conflictingDays += getOverlappingRangeDays(event, holsRngDates);
+        conflictingDays += getOverlappingSingleDays(event, holsSingleDates);
+        conflictingDays += checkWeekendDays(event);
+
+        if(conflictingDays!= 0) {
+          day += conflictingDays;
+          date = date.substring(0, 4) + "-" + date.substring(5, 7) + "-" +(day < 10 ? "0" + day: day);
+        }
+
+        event.Date = date;
+
       });
 
 
@@ -114,7 +243,6 @@ const ImportButton = () => {
           laneID: item.laneID,
         };
 
-        console.log(definitionData);
 
         defineMethod
           .callPromise({ collectionName, definitionData })
