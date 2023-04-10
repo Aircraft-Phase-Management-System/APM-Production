@@ -44,7 +44,6 @@ const ImportButton = () => {
     }
   };
 
-
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -112,7 +111,6 @@ const ImportButton = () => {
         event.Date = date;
       });
 
-
       /* Const to find the number of conflicting days for a holiday range. */
       const getOverlappingRangeDays = (eventStrDate, holsRngDates) => {
         let conflictingDays = 0;
@@ -177,6 +175,44 @@ const ImportButton = () => {
         return weekendDaysCounter;
       };
 
+      const findMonthNamesAndDays = (monthStr) => {
+        let monthNamesAndDays = new Map([
+          ["01", ["Jan", 31]],
+          ["02", ["Feb", 28]],
+          ["03", ["Mar", 31]],
+          ["04", ["Apr", 30]],
+          ["05", ["May", 31]],
+          ["06", ["Jun", 30]],
+          ["07", ["Jul", 31]],
+          ["08", ["Aug", 31]],
+          ["09", ["Sep", 30]],
+          ["10", ["Oct", 31]],
+          ["11", ["Nov", 30]],
+          ["12", ["Dec", 31]],
+        ]);
+
+        return monthNamesAndDays.get(monthStr);
+      };
+
+      const getNextMonth = (monthStr) => {
+        let nextMonth = new Map([
+          ["Jan", ["Feb", "02"]],
+          ["Feb", ["Mar", "03"]],
+          ["Mar", ["Apr", "04"]],
+          ["Apr", ["May", "05"]],
+          ["May", ["Jun", "06"]],
+          ["Jun", ["Jul", "07"]],
+          ["Jul", ["Aug", "08"]],
+          ["Aug", ["Sep", "09"]],
+          ["Sep", ["Oct", "10"]],
+          ["Oct", ["Nov", "11"]],
+          ["Nov", ["Dec", "12"]],
+          ["Dec", ["Jan", "01"]],
+        ]);
+
+        return nextMonth.get(monthStr);
+      };
+
       const extractHoldays = (timeouts) => {
         /* Filter all the holidays to check if the parsed dates are the same. */
         const onlyHolidays = _.filter(timeouts, (timeout) => {
@@ -209,21 +245,48 @@ const ImportButton = () => {
 
       events.forEach((event) => {
         let date = event.Date;
-        let day = parseInt(date.substring(8));
         let conflictingDays = 0;
+
+         /* split the date in day, month, year. */
+        let day = parseInt(date.substring(8));
+        let month = date.substring(5, 7);
+        let year = (date = date.substring(0, 4));
+
+        /* Add all the conflicting days together. */
         conflictingDays += getOverlappingRangeDays(event, holsRngDates);
         conflictingDays += getOverlappingSingleDays(event, holsSingleDates);
         conflictingDays += checkWeekendDays(event);
 
-        if(conflictingDays!= 0) {
+        /* If there are conflicting days, add to the original date. */
+        if (conflictingDays != 0) {
           day += conflictingDays;
-          date = date.substring(0, 4) + "-" + date.substring(5, 7) + "-" +(day < 10 ? "0" + day: day);
+          date = year + "-" + month + "-" + (day < 10 ? "0" + day : day);
+
+          /* Get name and number of days from the month */
+          let [monthName, monthDays] = findMonthNamesAndDays(month);
+
+          /* If the day is bigger than the number of days within that month. */
+          if (monthDays < day) {
+            let [nextMonthName, nextMonthNmb] = getNextMonth(monthName);
+            day = day - monthDays;
+
+            /* If the month is Jan, increment a year. */
+            if (nextMonthName === "Jan") {
+              nextYear = parseInt(year) + 1;
+              date =
+                nextYear +
+                "-" +
+                nextMonthNmb +
+                "-" +
+                (day < 10 ? "0" + day : day);
+            } else {
+              date = year + "-" + nextMonthNmb + "-" + (day < 10 ? "0" + day : day);
+            }
+          }
         }
 
         event.Date = date;
-
       });
-
 
       // Save the parsed data to the collection
       events.forEach((item) => {
@@ -242,7 +305,6 @@ const ImportButton = () => {
           remarks: item.Remarks,
           laneID: item.laneID,
         };
-
 
         defineMethod
           .callPromise({ collectionName, definitionData })
