@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Timeouts } from '../../api/timeout/TimeoutCollection';
-import { Events  } from '../../api/event_phase/EventCollection';
-import { EventsDay } from '../../api/event_day/EventDayCollection';
 import { Phases } from '../../api/phase_lane/PhaseCollection';
 /* eslint-disable no-console */
 
@@ -30,20 +28,6 @@ if (Timeouts.count() === 0) {
   if (Meteor.settings.defaultTimeouts) {
     console.log('Creating default data for Timeouts.');
     Meteor.settings.defaultTimeouts.map(data => addTimeout(data));
-  }
-}
-
-// Initialize the database with a default event data document.
-function addPhase(data) {
-  console.log(`  Adding: ${data.name} (${data.owner})`);
-  Phases.define(data);
-}
-
-
-if (Phases.count() === 0) {
-  if (Meteor.settings.defaultPhaseLanes) {
-    console.log('Creating default data for Phase Lanes.');
-    Meteor.settings.defaultPhaseLanes.map(data => addPhase(data));
   }
 }
 
