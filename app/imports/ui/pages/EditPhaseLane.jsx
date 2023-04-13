@@ -108,7 +108,6 @@ const EditPhaseLane = ({ phase }) => {
                 />
               </Row>
               <ErrorsField />
-              <HiddenField name="owner" />
             </Container>
           </Modal.Body>
           <Modal.Footer>

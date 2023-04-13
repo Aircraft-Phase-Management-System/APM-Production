@@ -18,7 +18,6 @@ class PhaseCollection extends BaseCollection {
       author: String,
       color: String,
       issue: String,
-      owner: String,
     }));
   }
 
@@ -30,13 +29,12 @@ class PhaseCollection extends BaseCollection {
    * @param issue the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ name, author, color, issue, owner }) {
+  define({ name, author, color, issue }) {
     const docID = this._collection.insert({
       name,
       author, 
       color,
-      issue,
-      owner,
+      issue
     });
     return docID;
   }
@@ -46,10 +44,9 @@ class PhaseCollection extends BaseCollection {
    * @param docID the id of the document to update.
    * @param name the new name (optional).
    * @param author the new quantity (optional).
-   * @param color the new condition (optional).
    * @param issue the new condition (optional).
    */
-  update(docID, { name, author, color, issue }) {
+  update(docID, { name, author, issue }) {
     const updateData = {};
     if (name) {
       updateData.name = name;
@@ -57,9 +54,6 @@ class PhaseCollection extends BaseCollection {
     if (author) {
       updateData.author = author;
     }
-    /*if (color) {
-      updateData.color = color;
-    }*/
     if (issue) {
       updateData.issue = issue;
     }
@@ -89,8 +83,7 @@ class PhaseCollection extends BaseCollection {
       /** This subscription publishes only the documents associated with the logged in user */
       Meteor.publish(phasePublications.phase, function publish() {
         if (this.userId) {
-          const username = Meteor.users.findOne(this.userId).username;
-          return instance._collection.find({ owner: username });
+          return instance._collection.find();
         }
         return this.ready();
       });
@@ -147,8 +140,7 @@ class PhaseCollection extends BaseCollection {
     const author = doc.author;
     const color = doc.color;
     const issue = doc.issue;
-    const owner = doc.owner;
-    return { name, author, color, issue, owner };
+    return { name, author, color, issue };
   }
 }
 

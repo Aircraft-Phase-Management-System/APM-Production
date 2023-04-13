@@ -274,7 +274,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       remarks,
     } = data;
     console.log(title);
-    const owner = Meteor.user().username;
     const collectionName = EventsDay.getCollectionName();
     const definitionData = {
       day,
@@ -287,8 +286,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       ml2,
       ml3,
       section,
-      remarks,
-      owner,
+      remarks
     };
     defineMethod
       .callPromise({ collectionName, definitionData })

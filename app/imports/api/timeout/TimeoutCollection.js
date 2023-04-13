@@ -25,8 +25,7 @@ class TimeoutCollection extends BaseCollection {
         defaultValue: 'Holiday',
       },
       /* how many hours out? used for training day and mahalo day. */
-      hours: Number,
-      owner: String,
+      hours: Number
     }));
   }
 
@@ -36,18 +35,16 @@ class TimeoutCollection extends BaseCollection {
    * @param start when the date starts.
    * @param end when the date ends.
    * @param hours how many hours out.
-   * @param owner the owner of the item.
    * @param type the type of the item.
    * @return {String} the docID of the new document.
    */
-  define({ title, start, end, type, hours, owner}) {
+  define({ title, start, end, type, hours}) {
     const docID = this._collection.insert({
       title,
       start,
       end,
       type,
-      hours,
-      owner,
+      hours
     });
     return docID;
   }
@@ -79,7 +76,7 @@ class TimeoutCollection extends BaseCollection {
 
     // if (quantity) { NOTE: 0 is falsy so we need to check if the quantity is a number.
     if (_.isNumber(hours)) {
-      updateData.hours= hours;
+      updateData.hours = hours;
     }
 
     this._collection.update(docID, { $set: updateData });
@@ -108,8 +105,7 @@ class TimeoutCollection extends BaseCollection {
       /** This subscription publishes only the documents associated with the logged in user */
       Meteor.publish(timeoutPublications.timeout, function publish() {
         if (this.userId) {
-          const username = Meteor.users.findOne(this.userId).username;
-          return instance._collection.find({ owner: username });
+          return instance._collection.find();
         }
         return this.ready();
       });
@@ -167,8 +163,7 @@ class TimeoutCollection extends BaseCollection {
     const end = doc.end;
     const type = doc.type;
     const hours = doc.hours;
-    const owner = doc.owner;
-    return { title, start, owner };
+    return { title, start, end, type, hours };
   }
 }
 

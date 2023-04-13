@@ -41,9 +41,8 @@ const AddTimeout = () => {
     start = moment(start).format('YYYY-MM-DD');
     end = end != undefined? moment(end).format('YYYY-MM-DD') + " 15:00:00" : "-";
     console.log(end);
-    const owner = Meteor.user().username;
     const collectionName = Timeouts.getCollectionName();
-    const definitionData = { title, start, end, type, hours, owner};
+    const definitionData = { title, start, end, type, hours };
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
