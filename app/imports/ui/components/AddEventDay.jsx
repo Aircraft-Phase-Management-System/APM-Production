@@ -8,17 +8,18 @@ import {
   Alert,
   Card,
   Table,
+  InputGroup,
 } from "react-bootstrap";
 import {
   XSquare,
   ExclamationDiamond,
   PlusSquare,
   ClockHistory,
+  Save,
 } from "react-bootstrap-icons";
 import swal from "sweetalert";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import { Meteor } from "meteor/meteor";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { PAGE_IDS } from "../utilities/PageIDs";
@@ -47,7 +48,6 @@ let endHour = null;
 
 /* Renders the AddEvent page for adding a document. */
 const AddEventDay = ({ laneID, eventsDay }) => {
-
   laneID = laneID.issue;
   /* To open and close modal */
   const [show, setShow] = useState(false);
@@ -88,13 +88,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     if (e.target.value.length === 4) {
       startHour = e.target.value;
     }
-  };
-
-  /* Save value for number of hours. */
-  const setTimeSpent = (e) => {
-    if (e.target.value.length >= 2) {
-      timeSpent = e.target.valueAsNumber;
-    }
+    console.log(startHour);
   };
 
   /* Save value for the end hour. */
@@ -103,7 +97,28 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       endHour = e.target.value;
     }
     console.log(endHour);
+    setTimeSpent();
   };
+
+  /* Save value for number of hours. */
+  const setTimeSpent = () => {
+    console.log("here");
+    if (endHour != null && startHour != null) {
+      let end = endHour;
+      let start = startHour;
+
+      hour = (end - (end % 100)) / 100 - (start - (start % 100)) / 100;
+      min = hour * 60 + (end % 100) - (start % 100);
+
+      hour = Math.floor(min / 60);
+      min = min % 60;
+
+      timeSpent = hour + '' + min;
+      console.log("hours: ", hour + "minute: ", min);
+    }
+  };
+
+
 
   console.log("eventDate: ", eventDate);
   console.log("startHour: ", startHour);
@@ -288,8 +303,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       ml3,
       section,
       remarks,
-      laneID
-    
+      laneID,
     };
     console.log("Definition Data: ", definitionData);
     defineMethod
@@ -308,67 +322,78 @@ const AddEventDay = ({ laneID, eventsDay }) => {
         <PlusSquare></PlusSquare> Add New Event
       </Button>
       <Modal size="lg" show={show} onHide={handleClose}>
-        <Formik
-          validationSchema={schema}
-          onSubmit={submit}
-          initialValues={{
-            day: " ",
-            title: " ",
-            start: " ",
-            end: " ",
-            min: 0,
-            type: "Planned",
-            ml1: 0,
-            ml2: 0,
-            ml3: 0,
-            section: " ",
-            remarks: " ",
-          }}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            touched,
-            isValid,
-            errors,
-          }) => (
-            <Form noValidate onSubmit={handleSubmit}>
-              <Modal.Header closeButton>
-                <Modal.Title as="h5">Add New Event</Modal.Title>
-              </Modal.Header>
+        <Modal.Header closeButton>
+          <Modal.Title as="h5">Add New Event</Modal.Title>
+        </Modal.Header>
 
-              <Modal.Body>
-                <Container id={PAGE_IDS.ADD_EVENT_DAY} className="py-3">
-                  <Alert key={"info"} variant={"info"}>
-                    Click on the button <ClockHistory />{" "}
-                    <b>Check Availability</b> to inspect how many hours are left
-                    for the day.
-                  </Alert>
+        <Modal.Body>
+          <Container id={PAGE_IDS.ADD_EVENT_DAY} className="py-3">
+            <Alert key={"info"} variant={"info"}>
+              Click on the button <ClockHistory /> <b>Check Availability</b> to
+              inspect how many hours are left for the day.
+            </Alert>
+            <Formik
+              validationSchema={schema}
+              onSubmit={submit}
+              initialValues={{
+                day: "",
+                title: "",
+                start: "",
+                end: "",
+                min: 0,
+                type: "Planned",
+                ml1: 0,
+                ml2: 0,
+                ml3: 0,
+                section: "",
+                remarks: "",
+              }}
+            >
+              {({
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                values,
+                touched,
+                isValid,
+                errors,
+              }) => (
+                <Form noValidate onSubmit={handleSubmit}>
                   <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="validationFormik01">
                       <Form.Label>Event Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="day"
-                        onChange={(e) => {
-                          setEventDate(e);
-                          handleChange(e);
-                        }}
-                        isValid={touched.day && !errors.day}
-                      />
+                      <InputGroup hasValidation>
+                        <Form.Control
+                          type="date"
+                          name="day"
+                          value={values.day}
+                          onChange={(e) => {
+                            setEventDate(e);
+                            handleChange(e);
+                          }}
+                          isInvalid={!!errors.day}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.day}
+                        </Form.Control.Feedback>
+                      </InputGroup>
                     </Form.Group>
 
                     <Form.Group as={Col} md="8" controlId="validationFormik02">
                       <Form.Label>Event Title</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="title"
-                        placeholder="Ex: INSTALL WINDOW"
-                        onChange={handleChange}
-                        isValid={touched.title && !errors.title}
-                      />
+                      <InputGroup hasValidation>
+                        <Form.Control
+                          type="text"
+                          name="title"
+                          placeholder="Ex: INSTALL WINDOW"
+                          value={values.title}
+                          onChange={handleChange}
+                          isInvalid={!!errors.title}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.title}
+                        </Form.Control.Feedback>
+                      </InputGroup>
                     </Form.Group>
                   </Row>
 
@@ -380,37 +405,22 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                         controlId="validationFormik03"
                       >
                         <Form.Label>Start Hour</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="start"
-                          onChange={(e) => {
-                            setStartHour(e);
-                            handleChange(e);
-                          }}
-                          isValid={touched.start && !errors.start}
-                        />
-                      </Form.Group>
-
-                      <Form.Group
-                        as={Col}
-                        md="4"
-                        controlId="validationCustom04"
-                      >
-                        <Form.Label>Time Spent (Mins)</Form.Label>
-                        <Form.Control
-                          type="number"
-                          name="min"
-                          placeholder="Ex: 60"
-                          min={0}
-                          onChange={(e) => {
-                            setTimeSpent(e);
-                            handleChange(e);
-                          }}
-                          isValid={touched.min && !errors.min}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please provide a valid number.
-                        </Form.Control.Feedback>
+                        <InputGroup hasValidation>
+                          <Form.Control
+                            type="text"
+                            name="start"
+                            placeholder="Ex: 0900"
+                            value={values.start}
+                            onChange={(e) => {
+                              setStartHour(e);
+                              handleChange(e);
+                            }}
+                            isInvalid={!!errors.start}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.start}
+                          </Form.Control.Feedback>
+                        </InputGroup>
                       </Form.Group>
 
                       <Form.Group
@@ -419,16 +429,22 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                         controlId="validationFormik05"
                       >
                         <Form.Label>End Hour</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="end"
-                          onChange={(e) => {
-                            setEndHour(e);
-                            handleChange(e);
-                          }}
-                          isValid={touched.end && !errors.end}
-                        />
+                        <InputGroup hasValidation>
+                          <Form.Control
+                            type="text"
+                            name="end"
+                            placeholder="Ex: 0930"
+                            value={values.end}
+                            onChange={(e) => {
+                              setEndHour(e);
+                              handleChange(e);
+                            }}
+                            isInvalid={!!errors.end}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.end}
+                          </Form.Control.Feedback>
+                        </InputGroup>
                       </Form.Group>
                     </Row>
 
@@ -476,7 +492,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                           </Button>
                         </div>
                       </Alert>
-                      {!showAlert && eventDate && startHour && endHour && timeSpent!= 0 ? (
+                      {!showAlert && eventDate && startHour && endHour ? (
                         <Row>
                           <div>
                             <Button
@@ -502,34 +518,31 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     <Form.Group as={Col} controlId="validationFormik06">
                       <Form.Label>ML1</Form.Label>
                       <Form.Control
-                        required
                         type="number"
                         name="ml1"
                         min={0}
+                        value={values.ml1}
                         onChange={handleChange}
-                        isValid={touched.end && !errors.end}
                       />
                     </Form.Group>
                     <Form.Group as={Col} controlId="validationFormik07">
                       <Form.Label>ML2</Form.Label>
                       <Form.Control
-                        required
                         type="number"
                         name="ml2"
                         min={0}
+                        value={values.ml2}
                         onChange={handleChange}
-                        isValid={touched.end && !errors.end}
                       />
                     </Form.Group>
                     <Form.Group as={Col} controlId="validationFormik08">
                       <Form.Label>ML3</Form.Label>
                       <Form.Control
-                        required
                         type="number"
                         name="ml3"
                         min={0}
+                        value={values.ml3}
                         onChange={handleChange}
-                        isValid={touched.end && !errors.end}
                       />
                     </Form.Group>
                   </Row>
@@ -538,12 +551,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                   <Row className="mb-3">
                     <Form.Group as={Col} controlId="validationFormik09">
                       <Form.Label>Event Type</Form.Label>
-                      <Form.Select
-                        required
-                        name="type"
-                        onChange={handleChange}
-                        isValid={touched.end && !errors.end}
-                      >
+                      <Form.Select name="type" onChange={handleChange}>
                         <option value="1">Planned</option>
                         <option value="2">Unexpected</option>
                         <option value="3">Plan Incurred</option>
@@ -552,11 +560,10 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     <Form.Group as={Col} controlId="validationFormik10">
                       <Form.Label>Aircraft Section</Form.Label>
                       <Form.Control
-                        required
                         type="text"
                         name="section"
+                        value={values.section}
                         onChange={handleChange}
-                        isValid={touched.end && !errors.end}
                       />
                     </Form.Group>
                   </Row>
@@ -565,31 +572,30 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     <Form.Group as={Col} controlId="validationFormik11">
                       <Form.Label>Remarks</Form.Label>
                       <Form.Control
-                        required
                         type="text"
                         name="remarks"
                         placeholder="Relevant information about the event."
                         onChange={handleChange}
-                        isValid={touched.end && !errors.end}
+                        value={values.remarks}
                       />
                     </Form.Group>
                   </Row>
-                </Container>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="danger" onClick={handleClose}>
-                  <XSquare
-                    style={{ marginBottom: "4px", marginRight: "6px" }}
-                  />
-                  Close
-                </Button>
-                <Button variant="success" onClick={handleClose} type="submit">
-                  Save
-                </Button>
-              </Modal.Footer>
-            </Form>
-          )}
-        </Formik>
+
+                  <br />
+                  <Button variant="success" type="submit">
+                    <Save /> Save
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

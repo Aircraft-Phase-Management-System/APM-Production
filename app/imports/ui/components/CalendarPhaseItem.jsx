@@ -53,7 +53,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
 
   const filteredData = eventsFromLane.filter((eventday) => {
     const lowerCase = query.toLowerCase();
-    return eventday/*.title.toLowerCase().startsWith(lowerCase)*/;
+    return eventday.title.toLowerCase().startsWith(lowerCase);
   });
 
   /* CALENDAR: Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
