@@ -250,7 +250,7 @@ const ImportButton = () => {
          /* split the date in day, month, year. */
         let day = parseInt(date.substring(8));
         let month = date.substring(5, 7);
-        let year = (date = date.substring(0, 4));
+        let year = date.substring(0, 4);
 
         /* Add all the conflicting days together. */
         conflictingDays += getOverlappingRangeDays(event, holsRngDates);

@@ -102,7 +102,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
 
   /* Save value for number of hours. */
   const setTimeSpent = () => {
-    console.log("here");
     if (endHour != null && startHour != null) {
       let end = endHour;
       let start = startHour;
@@ -113,8 +112,8 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       hour = Math.floor(min / 60);
       min = min % 60;
 
-      timeSpent = hour + '' + min;
-      console.log("hours: ", hour + "minute: ", min);
+      timeSpent = (hour < 10 ? '0' + hour: hour) + '' + (min < 10 ? '0' + min: min);
+      console.log("timeSpent, ", timeSpent);
     }
   };
 
@@ -282,7 +281,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       title,
       start,
       end,
-      min,
       type,
       ml1,
       ml2,
@@ -296,7 +294,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       title,
       start,
       end,
-      min,
+      timeSpent,
       type,
       ml1,
       ml2,
@@ -345,8 +343,8 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                 ml1: 0,
                 ml2: 0,
                 ml3: 0,
-                section: "",
-                remarks: "",
+                section: " ",
+                remarks: " ",
               }}
             >
               {({
@@ -552,9 +550,9 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     <Form.Group as={Col} controlId="validationFormik09">
                       <Form.Label>Event Type</Form.Label>
                       <Form.Select name="type" onChange={handleChange}>
-                        <option value="1">Planned</option>
-                        <option value="2">Unexpected</option>
-                        <option value="3">Plan Incurred</option>
+                        <option value="Planned">Planned</option>
+                        <option value="Unexpected">Unexpected</option>
+                        <option value="Plan ">Plan Incurred</option>
                       </Form.Select>
                     </Form.Group>
                     <Form.Group as={Col} controlId="validationFormik10">
@@ -562,7 +560,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                       <Form.Control
                         type="text"
                         name="section"
-                        value={values.section}
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -576,7 +573,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                         name="remarks"
                         placeholder="Relevant information about the event."
                         onChange={handleChange}
-                        value={values.remarks}
                       />
                     </Form.Group>
                   </Row>
