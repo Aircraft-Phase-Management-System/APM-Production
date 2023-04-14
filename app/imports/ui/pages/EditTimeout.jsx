@@ -127,7 +127,6 @@ const EditTimeout = ({ timeout }) => {
                 </Col>
               </Row>
               <ErrorsField />
-              <HiddenField name="owner" />
             </Container>
           </Modal.Body>
           <Modal.Footer>

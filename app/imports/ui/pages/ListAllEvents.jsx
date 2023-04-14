@@ -1,36 +1,18 @@
 import React, { useState } from "react";
-import { Container, Row, Table, Card, InputGroup, Form } from "react-bootstrap";
+import { Container, Table, Card, InputGroup, Form } from "react-bootstrap";
 import { List, Search } from "react-bootstrap-icons";
 import { useTracker } from "meteor/react-meteor-data";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
-import { Phases } from "../../api/phase_lane/PhaseCollection";
 import EventDayItem from "../components/EventDayItem";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
-import { useLocation } from "react-router-dom";
 
 /* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
-const ListEventDay = () => {
+const ListAllEvents = () => {
   const [query, setQuery] = useState("");
 
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-  const { ready, phases } = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
-    const subscription = Phases.subscribePhase();
-    // Determine if the subscription is ready
-    const rdy = subscription.ready();
-    // Get the Stuff documents
-    const phaseItems = Phases.find().fetch();
-
-    return {
-      phases: phaseItems,
-      ready: rdy,
-    };
-  }, []);
-
-  const { ready2, eventsday } = useTracker(() => {
+  const { ready, eventsday } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
     // Get access to Stuff documents.
@@ -42,30 +24,20 @@ const ListEventDay = () => {
 
     return {
       eventsday: eventsDayItems,
-      ready2: rdy,
+      ready: rdy,
     };
   }, []);
 
-
-  const getLaneIssueNumber = () => {
-    const location = useLocation();
-    const laneID = location.pathname.substring(16);
-    const phaseLane = phases.filter((phase) => { return phase._id === laneID; });
-    return phaseLane[0].issue;
-  };
-
-  const eventsFromLane = eventsday.filter((eventday) => { return eventday.laneID === getLaneIssueNumber() ; });
-
-  const filteredData = eventsFromLane.filter((eventday) => {
+  const filteredData = eventsday.filter((eventday) => {
     const lowerCase = query.toLowerCase();
     return eventday.title.toLowerCase().startsWith(lowerCase);
   });
 
   return ready ? (
-    <Container id={PAGE_IDS.LIST_EVENTSDAY} className="py-3">
-      <Card className="card-list-eventsday">
+    <Container id={PAGE_IDS.LIST_ALL_EVENTS} className="py-3">
+      <Card className="card-list-all-eventsday">
         <Card.Title>
-          <List /> All Current Events For Phase Lane {getLaneIssueNumber()} ({eventsFromLane.length})
+          <List /> All Current Events ({eventsday.length})
         </Card.Title>
         <br />
         <InputGroup>
@@ -77,10 +49,12 @@ const ListEventDay = () => {
             onChange={(event) => setQuery(event.target.value)}
           />
         </InputGroup>
+        
         <br />
         <Table striped bordered hover>
           <thead>
             <tr>
+              <th>Lane</th>
               <th>Title</th>
               <th>Date</th>
               <th>Start</th>
@@ -97,15 +71,15 @@ const ListEventDay = () => {
           </thead>
           <tbody>
             {filteredData.map((eventday) => (
-              <EventDayItem key={eventday._id} event={eventday} />
+              <EventDayItem key={eventday._id} event={eventday} code={1} />
             ))}
           </tbody>
         </Table>
       </Card>
     </Container>
   ) : (
-    <LoadingSpinner message="Loading eventday" />
+    <LoadingSpinner message="Loading Events" />
   );
 };
 
-export default ListEventDay;
+export default ListAllEvents;

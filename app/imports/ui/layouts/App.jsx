@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { useTracker } from 'meteor/react-meteor-data';
+import { ROLE } from '../../api/role/Role';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Footer from '../components/Footer';
-import Landing from '../pages/Landing';
-import ListStuff from '../pages/ListStuff';
+import LoadingSpinner from '../components/LoadingSpinner';
 import ListStuffAdmin from '../pages/ListStuffAdmin';
-import AddTimeout from '../pages/AddTimeout';
+import NotAuthorized from '../pages/NotAuthorized';
+import ListAllEvents from '../pages/ListAllEvents';
+import ListEventDay from '../pages/ListEventDay';
+import ListTimeout from '../pages/ListTimeout';
 import EditTimeout from '../pages/EditTimeout';
 import TimeoutTabs from '../pages/TimeoutTabs';
-import ListEventDay from '../pages/ListEventDay';
-import NotFound from '../pages/NotFound';
-import SignUp from '../pages/SignUp';
-import SignOut from '../pages/SignOut';
+import AddTimeout from '../pages/AddTimeout';
+import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';
+import NotFound from '../pages/NotFound';
+import SignOut from '../pages/SignOut';
 import SignIn from '../pages/SignIn';
+import SignUp from '../pages/SignUp';
+import Landing from '../pages/Landing';
 import Calendar from '../pages/Calendar';
-import ListTimeout from '../pages/ListTimeout';
-import NotAuthorized from '../pages/NotAuthorized';
-import { ROLE } from '../../api/role/Role';
-import LoadingSpinner from '../components/LoadingSpinner';
 import Contact from '../pages/Contact';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
@@ -37,22 +37,22 @@ const App = () => {
       <div className="d-flex flex-column min-vh-100">
         <NavBar />
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route exact path="/" element={<Landing />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/notauthorized" element={<NotAuthorized />} />
           <Route path="/home" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
-          <Route path="/main-calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
-          <Route path="/total-timeouts" element={<ProtectedRoute><TimeoutTabs /></ProtectedRoute>} />
-          <Route path="/list-timeout" element={<ProtectedRoute><ListTimeout /></ProtectedRoute>} />
-          <Route path="/list-eventsday/:_id" element={<ProtectedRoute><ListEventDay /></ProtectedRoute>} />
-          <Route path="/list" element={<ProtectedRoute><ListStuff /></ProtectedRoute>} />
           <Route path="/add-timeout" element={<ProtectedRoute><AddTimeout /></ProtectedRoute>} />
           <Route path="/edit/:_id" element={<ProtectedRoute><EditTimeout /></ProtectedRoute>} />
+          <Route path="/main-calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+          <Route path="/list-timeout" element={<ProtectedRoute><ListTimeout /></ProtectedRoute>} />
+          <Route path="/total-timeouts" element={<ProtectedRoute><TimeoutTabs /></ProtectedRoute>} />
+          <Route path="/list-all-events" element={<ProtectedRoute><ListAllEvents /></ProtectedRoute>} />
+          <Route path="/list-eventsday/:_id" element={<ProtectedRoute><ListEventDay /></ProtectedRoute>} />
           <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
-          <Route path="/notauthorized" element={<NotAuthorized />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </div>

@@ -6,8 +6,9 @@ import EditEventDay from "../pages/EditEventDay";
 //import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
-const EventDayItem = ({ event }) => (
+const EventDayItem = ({ event, code }) => (
   <tr>
+  {code === 1 ? <td>{event.laneID}</td>: ''}
   <td>{event.title}</td>
   <td>{event.day}</td>
   <td>{event.start}</td>
