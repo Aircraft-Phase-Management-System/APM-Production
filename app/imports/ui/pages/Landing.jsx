@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Image, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { NavLink } from 'react-router-dom';
 import { HandIndexThumb } from "react-bootstrap-icons";

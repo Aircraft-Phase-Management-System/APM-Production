@@ -1,19 +1,22 @@
-import React from 'react';
-import { Container, Col, Image } from 'react-bootstrap';
+import React from "react";
+import { Container, Col, Image, Row } from "react-bootstrap";
+import { EnvelopeAtFill } from "react-bootstrap-icons";
 
 /** The Footer appears at the bottom of every page. Rendered by the App Layout component. */
 const Footer = () => {
-  const divStyle = { paddingTop: '15px' };
+  const divStyle = { paddingTop: "15px", marginBottom: "10px" };
   return (
     <footer className="mt-auto bg-lig ht">
       <Container style={divStyle}>
-        <Col className="text-center">
-          Department of Information and Computer Sciences <br />
-          University of Hawaii<br />
-          Honolulu, HI 96822 <br />
-          <a href="http://ics-software-engineering.github.io/meteor-application-template-production">Template Home Page</a>
+        <Row>
+        <Col xs={2}><Image src="/images/logo.png" width="110px" /></Col>
+        <Col xs={8} className="text-center">
+          209th Aviation Support Battalion <br />
+          1129 Wright Ave, Wahiawa, HI <br />
+
+          <a href="/contact"><EnvelopeAtFill style={{marginBottom: 4}}/> Contact Us </a>
         </Col>
-        <Image src="/images/logo.png" width="300px" />
+        </Row>
       </Container>
     </footer>
   );
