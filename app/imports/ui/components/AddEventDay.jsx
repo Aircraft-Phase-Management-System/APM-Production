@@ -47,6 +47,8 @@ let endHour = null;
 
 /* Renders the AddEvent page for adding a document. */
 const AddEventDay = ({ laneID, eventsDay }) => {
+
+  laneID = laneID.issue;
   /* To open and close modal */
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -273,7 +275,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       section,
       remarks,
     } = data;
-    console.log(title);
     const collectionName = EventsDay.getCollectionName();
     const definitionData = {
       day,
@@ -286,8 +287,11 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       ml2,
       ml3,
       section,
-      remarks
+      remarks,
+      laneID
+    
     };
+    console.log("Definition Data: ", definitionData);
     defineMethod
       .callPromise({ collectionName, definitionData })
       .catch((error) => swal("Error", error.message, "error"))
@@ -313,7 +317,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
             start: " ",
             end: " ",
             min: 0,
-            type: " ",
+            type: "Planned",
             ml1: 0,
             ml2: 0,
             ml3: 0,
