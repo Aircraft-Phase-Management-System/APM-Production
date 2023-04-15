@@ -1,14 +1,14 @@
-import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { PAGE_IDS } from '../utilities/PageIDs';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { Button, Col, Container, Row, Link } from "react-bootstrap";
+import { PAGE_IDS } from "../utilities/PageIDs";
+import { NavLink } from "react-router-dom";
 import { HandIndexThumb } from "react-bootstrap-icons";
 
 function checkSignInState() {
   if (Meteor.userId()) {
-    return '/main-calendar';
+    return "/main-calendar";
   }
-  return '/signin';
+  return "/signin";
 }
 
 /* A simple static component to render some text for the landing page. */
@@ -18,13 +18,22 @@ const Landing = () => (
       <Col className="d-flex flex-column justify-content-center">
         <h1>Aircraft Phase Management System</h1>
         <p>Welcome to Aircraft Phase Lane Management System! </p>
-        <p>Our user-friendly platform helps you streamline and monitor your aircraft's maintenance. Stay compliant and airworthy with our comprehensive approach. </p>
-        <p>Trust us to keep your aircraft running smoothly and efficiently. Thank you for choosing our system!</p>
-        <NavLink to="/signin" className="">
-        <Button color="green" size="large" as={NavLink} exact to={`${checkSignInState()}`}>START HERE! <HandIndexThumb/></Button>
-        </NavLink>
+        <p>
+          Our user-friendly platform helps you streamline and monitor your
+          aircraft's maintenance. Stay compliant and airworthy with our
+          comprehensive approach.{" "}
+        </p>
+        <p>
+          Trust us to keep your aircraft running smoothly and efficiently. Thank
+          you for choosing our system!
+        </p>
       </Col>
     </Row>
+    <Col className="d-flex justify-content-center">
+      <Button color="green" size="sm" href={`${checkSignInState()}`}>
+        START HERE! <HandIndexThumb />
+      </Button>
+    </Col>
   </Container>
 );
 

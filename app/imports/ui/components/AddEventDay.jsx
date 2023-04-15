@@ -46,6 +46,11 @@ let timeSpent = 0;
 let startHour = null;
 let endHour = null;
 
+let hrsAvail = 0;
+let hrsUsed = 0;
+let hrsLeft = 0;
+let isDateAHoliday = false;
+
 /* Renders the AddEvent page for adding a document. */
 const AddEventDay = ({ laneID, eventsDay }) => {
   laneID = laneID.issue;
@@ -72,11 +77,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       ready: rdy,
     };
   }, []);
-
-  const allStartTimeouts = _.pluck(timeouts, "start");
-  const allEndTimeouts = _.pluck(timeouts, "end");
-
-  const allDatesRange = _.zip(allStartTimeouts, allEndTimeouts);
 
   /* Save value for date */
   const setEventDate = (e) => {
@@ -112,153 +112,125 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       hour = Math.floor(min / 60);
       min = min % 60;
 
-      timeSpent = (hour < 10 ? '0' + hour: hour) + '' + (min < 10 ? '0' + min: min);
+      timeSpent =
+        (hour < 10 ? "0" + hour : hour) + "" + (min < 10 ? "0" + min : min);
       console.log("timeSpent, ", timeSpent);
     }
   };
 
+  /* Function to calculate how many manwork hours are available within the day. */
+  const calcManWorkHrsAvailability = () => {
+    isDateAHoliday = isDateHol();
+    console.log("IsDateHol: ", isDateAHoliday);
+    hrsAvail = 0;
+    hrsUsed = calcManWorkHrsUsed();
+    console.log("hrsUsed: ", hrsUsed);
 
+    hrsLeft = hrsAvail - hrsUsed;
+    console.log("hrsLeft: ", hrsLeft);
+  };
 
-  console.log("eventDate: ", eventDate);
-  console.log("startHour: ", startHour);
-  console.log("timeSpent: ", timeSpent);
-  console.log("endHour: ", endHour);
-
-  function calculateTimeAvailability() {
+  /* Function to calculate how many manwork hours were are used in the day.  */
+  const calcManWorkHrsUsed = () => {
     /* Only maintain the eventsDay that are equal to the input from the user. */
     const allSameDayEvents = _.filter(eventsDay, function (event) {
       return event.day === eventDate;
     });
-
     console.log("Same Day Events: ", allSameDayEvents);
-    /* Only main the title, start and end hour keys. */
-    const eventsSchedule = allSameDayEvents.map(
-      ({ title, start, end, min, ...rest }) => ({
-        title,
-        start,
-        end,
-        min,
-      })
-    );
 
-    /* Convert schedule from string to integer. */
-    const convertStringtoInt = eventsSchedule.map((event) => {
-      return {
-        ...event, //copies all items first...
-        start: parseInt(event.start),
-        end: parseInt(event.end),
-      };
+    /* Sum all the time spent for the day. */
+    const sumOfTimeSpent = _.reduce(
+      allSameDayEvents,
+      function (a, b) {
+        return a + b.min;
+      },
+      0
+    );
+    console.log("Sum of Time Spent: ", sumOfTimeSpent);
+
+    const sumAllML1s = _.reduce(
+      allSameDayEvents,
+      function (a, b) {
+        return a + b.ml1;
+      },
+      0
+    );
+    const sumAllML2s = _.reduce(
+      allSameDayEvents,
+      function (a, b) {
+        return a + b.ml2;
+      },
+      0
+    );
+    const sumAllML3s = _.reduce(
+      allSameDayEvents,
+      function (a, b) {
+        return a + b.ml3;
+      },
+      0
+    );
+    const totalMLs = sumAllML1s + sumAllML2s + sumAllML3s;
+
+    return sumOfTimeSpent * totalMLs;
+  };
+
+  /* Const to find the number of conflicting days for a holiday range. */
+  const isDateHol = () => {
+    const date = Date.parse(eventDate);
+
+
+    /* Filter all the holidays to check if the parsed dates are the same. */
+    const onlyHolidays = _.filter(timeouts, (timeout) => {
+      return timeout.type === "Holiday";
     });
 
-    /* Sort array of objects by key 'min'. */
-    let sortedEventsSchedule = _.sortBy(convertStringtoInt, "min").reverse();
+    /* Filter all the holidays that have a start and end day - more than one day. */
+    const allHolsWithRng = _.filter(onlyHolidays, (holiday) => {
+      return holiday.start.length === 10 && holiday.end.length === 10;
+    });
 
-    /* Remove events that start and end at the same time. */
-    sortedEventsSchedule = sortedEventsSchedule.reduce((unique, o) => {
-      if (!unique.some((obj) => obj.start === o.start && obj.end === o.end)) {
-        unique.push(o);
-      }
-      return unique;
-    }, []);
+    /* Filter all the single holidays that doesn't have a end date. */
+    const allSingleHols = _.filter(onlyHolidays, (holiday) => {
+      return holiday.start.length === 10 && holiday.end === "-";
+    });
 
-    console.log("Sorted by Minutes Spent: ", sortedEventsSchedule);
-    console.log("------REMOVE OVERLAPPING EVENTS--------");
-    /* Call function to remove overlapping events and save. */
-    sortedEventsSchedule = removeOverlappingEvents(sortedEventsSchedule);
-    /* Sort array of objects by key 'start' after overlapped events were deleted. */
-    sortedEventsSchedule = _.sortBy(sortedEventsSchedule, "start");
-    console.log("Sorted by Start Time: ", sortedEventsSchedule);
-    console.log("------CALCULATE TIME LEFT--------");
-    /* Call function to time how much time is left. */
-    console.log(calculateTimeLeft(sortedEventsSchedule));
-  }
+    /* Zip all the start and end days together for each holiday. */
+    const holsRngDates = _.zip(
+      _.pluck(allHolsWithRng, "start"),
+      _.pluck(allHolsWithRng, "end")
+    );
 
-  /* Function to remove smaller overalapping events.
-   * Ex: remove task 7:30-8:00 if there is a task 7:00-8:00.
-   * Keep the task with larger time spent. */
-  function removeOverlappingEvents(sortedEventsSchedule) {
-    for (let i = 0; i < sortedEventsSchedule.length; i++) {
-      const startHour = sortedEventsSchedule[i].start;
-      const endHour = sortedEventsSchedule[i].end;
-      //console.log("startHour: " + startHour + " endHour: " + endHour);
+    console.log("Event Date: ", eventDate);
 
-      for (let j = i + 1; j < sortedEventsSchedule.length; j++) {
-        //console.log("j: ", j);
-        const nextStartHour = sortedEventsSchedule[j].start;
-        const nextEndHour = sortedEventsSchedule[j].end;
-        const nextTitle = sortedEventsSchedule[j].title;
+    /* Iterate over holidays with single of days (start only). */
+    for (let i = 0; i < allSingleHols.length; i++) {
+      /* Get the start and end dates of the current holiday. */
+      const holDateCurrent = allSingleHols[i].start;
+      console.log("holDateCurrent: ", holDateCurrent);
 
-        //console.log("nextStartHour: " + nextStartHour + " nextEndHour: " + nextEndHour);*/
-
-        if (startHour <= nextStartHour && endHour >= nextEndHour) {
-          //console.log(nextTitle);
-          sortedEventsSchedule = _.filter(
-            sortedEventsSchedule,
-            function (event) {
-              return event.title != nextTitle;
-            }
-          );
-          //console.log(sortedEventsSchedule.length);
-          j--;
-        }
+      if (eventDate === holDateCurrent) {
+        console.log("hereee");
+        return true;
       }
     }
-    /* Returns array with the overlapping shorter events removed. */
-    return sortedEventsSchedule;
-  }
 
-  /* Functio to check if there is available time to add a new event in the same day. */
-  function calculateTimeLeft(sortedEventsSchedule) {
-    let minutesWorkedSum = [];
-    let didRemain = false;
+    /* Iterate over holidays with a range of days (start and end). */
+    for (let i = 0; i < holsRngDates.length; i++) {
+      /* Get the start and end dates of the current holiday. */
+      const holStartStr = holsRngDates[i][0];
+      const holEndStr = holsRngDates[i][1];
 
-    /* Iterate over all the objects in the array */
-    for (let i = 0; i < sortedEventsSchedule.length - 1; i++) {
-      const title = sortedEventsSchedule[i].title;
-      const startHour = sortedEventsSchedule[i].start;
-      const endHour = sortedEventsSchedule[i].end;
+      /* Convert to Date format. */
+      const holStart = Date.parse(holStartStr);
+      const holEnd = Date.parse(holEndStr);
 
-      //const nextTitle = sortedEventsSchedule[i + 1].title;
-      const nextStartHour = sortedEventsSchedule[i + 1].start;
-      const nextEndHour = sortedEventsSchedule[i + 1].end;
-
-      console.log(title);
-
-      /* if it is the first event of the day, save minutes.*/
-      if (i === 0 || didRemain) {
-        minutesWorkedSum.push(calculateHours(startHour, endHour, false));
-      } else {
-        /*const prevTitle = sortedEventsSchedule[i - 1].title;
-      const prevStartHour = sortedEventsSchedule[i - 1].start;
-      const prevEndHour = sortedEventsSchedule[i - 1].end;*/
-      }
-
-      /* if the end hour overlaps with the start hour of the next event.  */
-      if (endHour > nextStartHour) {
-        // do nothing
-        if (endHour >= nextEndHour) {
-          // do nothing: move to the next of the next event
-        } else {
-          /* if the end hour of the next event is later than the end hour of the current. */
-          minutesWorkedSum += nextEndHour - endHour;
-        }
-        didRemain = false;
-        /* if the end hour does not overlap with the start hour of the next event.  */
-      } else if (endHour < nextStartHour) {
-        minutesWorkedSum.push(calculateHours(endHour, nextStartHour, true));
-        didRemain = true;
-      } else {
-        /* if equal, do nothing */
-      }
-
-      /* If the last event*/
-      if (i + 1 === sortedEventsSchedule.length - 1) {
-        minutesWorkedSum.push(
-          calculateHours(nextStartHour, nextEndHour, false)
-        );
+      if (holStart <= date && date <= holEnd) {
+        return true;
       }
     }
-  }
+
+    return false;
+  };
 
   /* Function to calculate hours between a range of hours. */
   function calculateHours(start, end, isFlipped) {
@@ -276,18 +248,8 @@ const AddEventDay = ({ laneID, eventsDay }) => {
 
   // On submit, insert the data.
   const submit = (data) => {
-    const {
-      day,
-      title,
-      start,
-      end,
-      type,
-      ml1,
-      ml2,
-      ml3,
-      section,
-      remarks,
-    } = data;
+    const { day, title, start, end, type, ml1, ml2, ml3, section, remarks } =
+      data;
     const collectionName = EventsDay.getCollectionName();
     const definitionData = {
       day,
@@ -497,7 +459,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                               variant="primary"
                               size="sm"
                               onClick={() => {
-                                calculateTimeAvailability();
+                                calcManWorkHrsAvailability();
                                 setShowAlert(true);
                               }}
                             >

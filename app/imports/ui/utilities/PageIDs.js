@@ -2,6 +2,7 @@
 export const PAGE_IDS = {
   ADD_HOLIDAY: 'add-holiday',
   ADD_EVENT: 'add-event',
+  ADD_TIMEOUT: 'add-timeout',
   LIST_EVENTSDAY: 'list-eventsday',
   NON_WORKING_DAYS: 'non-working-days',
   LIST_HOLIDAY: 'list-holiday',

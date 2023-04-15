@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import {
-  Col,
-  Container,
-  Row,
-  Table,
-  Card,
-  InputGroup,
-  Form,
-  Dropdown,
-} from "react-bootstrap";
-import { List, Search, Funnel, SortNumericDown } from "react-bootstrap-icons";
+import { Container, Row, Table, Card, InputGroup, Form } from "react-bootstrap";
+import { List, Search } from "react-bootstrap-icons";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import TimeoutItem from "../components/TimeoutItem";
@@ -37,8 +28,8 @@ const ListTimeout = () => {
   }, []);
 
   const filteredData = timeouts.filter((timeout) => {
-      const lowerCase = query.toLowerCase();
-      return timeout.title.toLowerCase().startsWith(lowerCase);
+    const lowerCase = query.toLowerCase();
+    return timeout.title.toLowerCase().startsWith(lowerCase);
   });
 
   return ready ? (
@@ -48,15 +39,15 @@ const ListTimeout = () => {
           <List /> All Current Timeouts ({timeouts.length})
         </Card.Title>
         <br />
-            <InputGroup>
-              <InputGroup.Text>
-                <Search></Search>
-              </InputGroup.Text>
-              <Form.Control
-                placeholder="Search by title..."
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </InputGroup>
+        <InputGroup>
+          <InputGroup.Text>
+            <Search></Search>
+          </InputGroup.Text>
+          <Form.Control
+            placeholder="Search by title..."
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </InputGroup>
         <br />
         <Row className="card-list-row-timeouts">
           <Table striped bordered hover>
@@ -71,12 +62,12 @@ const ListTimeout = () => {
               </tr>
             </thead>
             <tbody>
-            {filteredData.map((timeout) => (
-          <TimeoutItem key={timeout._id} timeout={timeout} />
-        ))}
+              {filteredData.map((timeout) => (
+                <TimeoutItem key={timeout._id} timeout={timeout} />
+              ))}
             </tbody>
           </Table>
-      </Row>
+        </Row>
       </Card>
     </Container>
   ) : (

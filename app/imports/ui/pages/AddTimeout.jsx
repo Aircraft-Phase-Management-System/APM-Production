@@ -10,7 +10,6 @@ import {
   TextField,
 } from "uniforms-bootstrap5";
 import swal from "sweetalert";
-import { Meteor } from "meteor/meteor";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 import SimpleSchema from "simpl-schema";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
@@ -26,7 +25,7 @@ const formSchema = new SimpleSchema({
   start: String,
   end: {type: String, optional: true },
   type: {type: String, allowedValues: timeoutTypes, defaultValue: "Holiday" },
-  hours: {type: Number, defaultValue: 2},
+  hours: {type: Number, defaultValue: 0},
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
@@ -39,8 +38,7 @@ const AddTimeout = () => {
     let { title, start, end, type, hours } = data;
     console.log(end);
     start = moment(start).format('YYYY-MM-DD');
-    end = end != undefined? moment(end).format('YYYY-MM-DD') + " 15:00:00" : "-";
-    console.log(end);
+    end = (end != undefined? moment(end).format('YYYY-MM-DD') + " 15:00:00" : "-");
     const collectionName = Timeouts.getCollectionName();
     const definitionData = { title, start, end, type, hours };
     defineMethod
