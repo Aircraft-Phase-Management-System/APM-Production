@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Container, Nav, Row, Tab} from 'react-bootstrap';
 import { PAGE_IDS } from '../utilities/PageIDs';
 import { List, PlusSquare} from 'react-bootstrap-icons';
-import AddTimeout from './AddTimeout';
-import ListTimeout from './ListTimeout';
+import AddTimeout from '../components/AddTimeout';
+import ListTimeout from '../components/ListTimeout';
 
 function TimeoutTabs() {
   return (
@@ -24,6 +24,7 @@ function TimeoutTabs() {
           <Tab.Content>
             <Tab.Pane eventKey="first">
               <AddTimeout/>
+              
             </Tab.Pane>
             <Tab.Pane eventKey="second">
             <ListTimeout/>

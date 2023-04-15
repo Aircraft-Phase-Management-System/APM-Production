@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import {
-  Col,
   Container,
   Row,
   Table,
   Card,
   InputGroup,
-  Form,
-  Dropdown,
+  Form
 } from "react-bootstrap";
-import { List, Search, Funnel, SortNumericDown } from "react-bootstrap-icons";
+import { List, Search } from "react-bootstrap-icons";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import TimeoutItem from "../components/TimeoutItem";
-import LoadingSpinner from "../components/LoadingSpinner";
+import TimeoutItem from "./TimeoutItem";
+import LoadingSpinner from "./LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 
 /* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
