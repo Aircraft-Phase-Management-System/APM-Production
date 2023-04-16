@@ -46,6 +46,7 @@ let timeSpent = 0;
 let startHour = null;
 let endHour = null;
 
+/* hours in manhours */
 let hrsAvail = 0;
 let hrsUsed = 0;
 let hrsLeft = 0;
@@ -56,8 +57,10 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   laneID = laneID.issue;
   /* To open and close modal */
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const [buttonHide, setButtonHide ] = useState(false);
+  const handleClose = () => { setShow(false); setShowAlert(false); setButtonHide(true)};
   const handleShow = () => setShow(true);
+
 
   /* Show alert after providing start date and required number of days. */
   const [showAlert, setShowAlert] = useState(false);
@@ -87,16 +90,16 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   const setStartHour = (e) => {
     if (e.target.value.length === 4) {
       startHour = e.target.value;
+      console.log(startHour);
     }
-    console.log(startHour);
   };
 
   /* Save value for the end hour. */
   const setEndHour = (e) => {
     if (e.target.value.length === 4) {
       endHour = e.target.value;
+      console.log(endHour);
     }
-    console.log(endHour);
     setTimeSpent();
   };
 
@@ -120,14 +123,33 @@ const AddEventDay = ({ laneID, eventsDay }) => {
 
   /* Function to calculate how many manwork hours are available within the day. */
   const calcManWorkHrsAvailability = () => {
+    let offHours = 0;
+    let manHours = 0;
+
     isDateAHoliday = isDateHol();
     console.log("IsDateHol: ", isDateAHoliday);
-    hrsAvail = 0;
-    hrsUsed = calcManWorkHrsUsed();
-    console.log("hrsUsed: ", hrsUsed);
 
-    hrsLeft = hrsAvail - hrsUsed;
-    console.log("hrsLeft: ", hrsLeft);
+    if (isDateAHoliday) {
+      return;
+    } else {
+      hrsUsed = calcManWorkHrsUsed();
+      console.log("hrsUsed: ", hrsUsed);
+
+      /* get all the off hours for mahalo friday. */
+      offHours = offHrs();
+
+      if (offHours === 0) {
+        manHours = 96;
+      } else {
+        manHours = offHours * 12 - 96;
+      }
+      console.log("manHours: ", manHours);
+
+      /* hours in manhours */
+      hrsAvail = manHours;
+      hrsLeft = manHours - hrsUsed;
+      console.log("hrsLeft: ", hrsLeft);
+    }
   };
 
   /* Function to calculate how many manwork hours were are used in the day.  */
@@ -170,14 +192,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       0
     );
     const totalMLs = sumAllML1s + sumAllML2s + sumAllML3s;
+    console.log("Total of MLs: ", totalMLs);
 
-    return sumOfTimeSpent * totalMLs;
+    return (sumOfTimeSpent * totalMLs) / 60 / 12;
   };
 
   /* Const to find the number of conflicting days for a holiday range. */
   const isDateHol = () => {
     const date = Date.parse(eventDate);
-
 
     /* Filter all the holidays to check if the parsed dates are the same. */
     const onlyHolidays = _.filter(timeouts, (timeout) => {
@@ -209,7 +231,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       console.log("holDateCurrent: ", holDateCurrent);
 
       if (eventDate === holDateCurrent) {
-        console.log("hereee");
         return true;
       }
     }
@@ -232,19 +253,30 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     return false;
   };
 
-  /* Function to calculate hours between a range of hours. */
-  function calculateHours(start, end, isFlipped) {
-    let hour = 0;
-    let min = 0;
+  const offHrs = () => {
+    let mahaloHrs = 0;
+    //let trainingHrs = 0;
 
-    hour = (end - (end % 100)) / 100 - (start - (start % 100)) / 100;
-    min = hour * 60 + (end % 100) - (start % 100);
+    /* Filter the Mahalo Friday that occur in the same day. */
+    const onlyMahaloDay = _.filter(timeouts, (timeout) => {
+      return timeout.type === "Mahalo Day" && timeout.start === eventDate;
+    });
 
-    hour = Math.floor(min / 60);
-    min = min % 60;
+    /* Filter the Training day that occur in the same day. */
+    /* const onlyTrainingDay = _.filter(timeouts, (timeout) => {
+      return timeout.type === "Trainning Day" && timeout.start === eventDate;
+    });*/
 
-    return [hour, min, isFlipped, start, end];
-  }
+    if (onlyMahaloDay.length != 0) {
+      mahaloHrs = onlyMahaloDay[0].hours;
+    }
+
+    /* if(onlyTrainingDay.length!=0) {
+      trainingHrs = onlyTrainingDay[0].hours;
+    }*/
+
+    return mahaloHrs;
+  };
 
   // On submit, insert the data.
   const submit = (data) => {
@@ -409,50 +441,8 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     </Row>
 
                     <Row className="mb-3">
-                      <Alert
-                        style={{ backgroundColor: "#eb9d0c" }}
-                        show={showAlert}
-                      >
-                        <>
-                          <Alert.Heading>
-                            <ExclamationDiamond /> Event Report
-                          </Alert.Heading>
-                          <p>We found conflicting timeouts within the range!</p>
-                          <Card>
-                            <Card.Header>
-                              Total Amount of Available Time in Minutes:{" "}
-                            </Card.Header>
-                            <Table striped bordered hover>
-                              <thead>
-                                <tr>
-                                  <th>Title</th>
-                                  <th>Start Date</th>
-                                  <th>End Date</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {/*conflictingDates.map((date) => (
-                                    <ConflictingDate date={date} />
-                                  ))*/}
-                              </tbody>
-                            </Table>
-                            <Card.Footer>
-                              <h6>Suggested End Date:</h6>
-                            </Card.Footer>
-                          </Card>
-                          <hr />
-                        </>
-
-                        <div className="d-flex justify-content-end">
-                          <Button
-                            onClick={() => setShowAlert(false)}
-                            variant="primary"
-                          >
-                            Close
-                          </Button>
-                        </div>
-                      </Alert>
-                      {!showAlert && eventDate && startHour && endHour ? (
+                      {availableHours(showAlert, setShowAlert)}
+                      {!showAlert && !buttonHide && eventDate && startHour && endHour ? (
                         <Row>
                           <div>
                             <Button
@@ -558,5 +548,44 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     </>
   );
 };
+
+function availableHours(showAlert, setShowAlert) {
+  return (
+    <Alert style={{ backgroundColor: "#84B498" }} show={showAlert}>
+      <>
+        <Alert.Heading>
+          <ExclamationDiamond /> Event Report
+        </Alert.Heading>
+        <p>We found available hours on {eventDate}!</p>
+        <Card>
+          <Card.Header>Total Amount of Available Man-hours: </Card.Header>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Hours Used</th>
+                <th>Hours Available</th>
+                <th>Hours Left</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{hrsUsed}</td>
+                <td>{hrsAvail}</td>
+                <td>{hrsLeft}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Card>
+        <hr />
+      </>
+
+      <div className="d-flex justify-content-end">
+        <Button onClick={() => setShowAlert(false)} variant="primary">
+          Close
+        </Button>
+      </div>
+    </Alert>
+  );
+}
 
 export default AddEventDay;
