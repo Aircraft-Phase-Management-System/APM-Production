@@ -25,6 +25,8 @@ const EventSameDayItem = ({ event }) => {
       
   };
 
+  console.log(event);
+
   return (
   <>
     <br />

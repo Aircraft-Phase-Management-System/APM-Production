@@ -27,6 +27,8 @@ import Modal from "react-bootstrap/Modal";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+const reload = () => window.location.reload();
+
 const schema = yup.object().shape({
   day: yup.string().required(),
   title: yup.string().required(),
@@ -57,16 +59,16 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   laneID = laneID.issue;
   /* To open and close modal */
   const [show, setShow] = useState(false);
-  const [buttonHide, setButtonHide ] = useState(false);
-  const handleClose = () => { setShow(false); setShowAlert(false); setButtonHide(true)};
+  const [buttonHide, setButtonHide] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setShowAlert(false);
+    setButtonHide(true);
+  };
   const handleShow = () => setShow(true);
-
 
   /* Show alert after providing start date and required number of days. */
   const [showAlert, setShowAlert] = useState(false);
-  /* Show suggestion if a non-working days was found.  */
-  const [showSuggestion, setSuggestion] = useState(false);
-  /* Save the suggestion date after found.  */
 
   const { ready, timeouts } = useTracker(() => {
     const subscription = Timeouts.subscribeTimeout();
@@ -115,8 +117,9 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       hour = Math.floor(min / 60);
       min = min % 60;
 
-      timeSpent =
-        (hour < 10 ? "0" + hour : hour) + "" + (min < 10 ? "0" + min : min);
+      /*timeSpent =
+        (hour < 10 ? "0" + hour : hour) + "" + (min < 10 ? "0" + min : min);*/
+      timeSpent = hour * 60 + min;
       console.log("timeSpent, ", timeSpent);
     }
   };
@@ -127,12 +130,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     let manHours = 0;
 
     isDateAHoliday = isDateHol();
+
     console.log("IsDateHol: ", isDateAHoliday);
 
     if (isDateAHoliday) {
       return;
     } else {
       hrsUsed = calcManWorkHrsUsed();
+      hrsUsed = Math.round((hrsUsed + Number.EPSILON) * 100) / 100;
       console.log("hrsUsed: ", hrsUsed);
 
       /* get all the off hours for mahalo friday. */
@@ -141,13 +146,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       if (offHours === 0) {
         manHours = 96;
       } else {
-        manHours = offHours * 12 - 96;
+        manHours = 96 - offHours * 12;
       }
       console.log("manHours: ", manHours);
 
       /* hours in manhours */
       hrsAvail = manHours;
       hrsLeft = manHours - hrsUsed;
+      hrsLeft = Math.round((hrsLeft + Number.EPSILON) * 100) / 100;
       console.log("hrsLeft: ", hrsLeft);
     }
   };
@@ -280,6 +286,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
 
   // On submit, insert the data.
   const submit = (data) => {
+    const min = timeSpent;
     const { day, title, start, end, type, ml1, ml2, ml3, section, remarks } =
       data;
     const collectionName = EventsDay.getCollectionName();
@@ -288,7 +295,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       title,
       start,
       end,
-      timeSpent,
+      min,
       type,
       ml1,
       ml2,
@@ -313,7 +320,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       <Button variant="outline-primary" size="sm" onClick={handleShow}>
         <PlusSquare></PlusSquare> Add New Event
       </Button>
-      <Modal size="lg" show={show} onHide={handleClose}>
+      <Modal size="lg" show={show} onHide={handleClose} onExiting={reload}>
         <Modal.Header closeButton>
           <Modal.Title as="h5">Add New Event</Modal.Title>
         </Modal.Header>
@@ -441,8 +448,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
                     </Row>
 
                     <Row className="mb-3">
-                      {availableHours(showAlert, setShowAlert)}
-                      {!showAlert && !buttonHide && eventDate && startHour && endHour ? (
+                      {!isDateAHoliday
+                        ? availableHours(showAlert, setShowAlert)
+                        : foundHoliday(showAlert, setShowAlert)}
+                      {!showAlert &&
+                      !buttonHide &&
+                      eventDate &&
+                      startHour &&
+                      endHour ? (
                         <Row>
                           <div>
                             <Button
@@ -549,6 +562,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   );
 };
 
+/* ALERT: Found available hours. */
 function availableHours(showAlert, setShowAlert) {
   return (
     <Alert style={{ backgroundColor: "#84B498" }} show={showAlert}>
@@ -563,7 +577,9 @@ function availableHours(showAlert, setShowAlert) {
             <thead>
               <tr>
                 <th>Hours Used</th>
-                <th>Hours Available</th>
+                <th>
+                  Hours Available{hrsAvail != 96 ? " (Mahalo Friday)" : ""}
+                </th>
                 <th>Hours Left</th>
               </tr>
             </thead>
@@ -575,7 +591,36 @@ function availableHours(showAlert, setShowAlert) {
               </tr>
             </tbody>
           </Table>
+          <Card.Footer>
+            <p>Amount of time requested: {timeSpent} (mins).</p>
+          </Card.Footer>
         </Card>
+
+        <hr />
+      </>
+
+      <div className="d-flex justify-content-end">
+        <Button onClick={() => setShowAlert(false)} variant="primary">
+          Close
+        </Button>
+      </div>
+    </Alert>
+  );
+}
+
+/* ALERT: Found Holiday. */
+function foundHoliday(showAlert, setShowAlert) {
+  return (
+    <Alert style={{ backgroundColor: "#CC3E35" }} show={showAlert}>
+      <>
+        <Alert.Heading>
+          <ExclamationDiamond /> Event Report
+        </Alert.Heading>
+        <p style={{ color: "white" }}>
+          The date {eventDate} is a holiday! Click{" "}
+          <a href={"/total-timeouts"}>here</a> to see all the holidays.
+        </p>
+
         <hr />
       </>
 
