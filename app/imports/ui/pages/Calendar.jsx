@@ -57,24 +57,14 @@ const Calendar = () => {
 
   /* Add another field to the timeouts named color with a standard color red. */
   timeouts.forEach(function (element) {
-    element.color = "#c22f25";
+    element.color = (element.type === 'Holiday' ? '#c22f25' : '#D7A743');
   });
-
-  //console.log(events);
-  /*  const formattedCalendarEvents = events.map(({ start: startHour, day: start, ...rest }) => ({
-    startHour,
-    start,
-    ...rest,
-  })); */
-
-  //const dateWithHour = events.map(event => ({day: event.day + " " + event.hour, ...rest}));
-  // console.log(dateWithHour);
 
   /* Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
   const formattedCalendarEvents = events.map(({ day: start, title, _id }) => ({
     start,
     title,
-    _id
+    _id,
   }));
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
@@ -84,10 +74,10 @@ const Calendar = () => {
       <div className="app-sidebar">
         <Container>
           <Row>
-         <ImportButton/>
-          </Row> 
+            <ImportButton />
+          </Row>
           <Row>
-            <AddPhaseLane/>
+            <AddPhaseLane />
           </Row>
           <Row>
             {phases.map((phase) => (
@@ -100,54 +90,58 @@ const Calendar = () => {
   };
 
   handleDateClick = (clickInfo) => {
-    // bind with an arrow function
+    const sameDayEvents = _.filter(events, (event) => {
+      return event.day === clickInfo.dateStr;
+    });
+    const sumMins = _.reduce(
+      sameDayEvents,
+      (a, b) => {
+        return a + b.min;
+      },
+      0
+    );
+    const mls1 = _.reduce(
+      sameDayEvents,
+      (a, b) => {
+        return a + b.ml1;
+      },
+      0
+    );
+    const mls2 = _.reduce(
+      sameDayEvents,
+      (a, b) => {
+        return a + b.ml2;
+      },
+      0
+    );
+    const mls3 = _.reduce(
+      sameDayEvents,
+      (a, b) => {
+        return a + b.ml3;
+      },
+      0
+    );
+    const sumMLs = mls1 + mls2 + mls3;
 
-    console.log(clickInfo.dateStr);
-    for (let n = 0; n < timeouts.length; n++) {
-      if (clickInfo.dateStr == timeouts[n].start) {
-        alert(clickInfo.dateStr + " is a Holiday \n You can't edit this date");
-        console.log(timeouts);
-        return;
-      }
-    }
-    let title = prompt("Please enter a new title for your event");
-    if (title) {
-      calendarApi.addEvent({
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
-    alert(clickInfo.dateStr);
-  };
+    const manHrs = (sumMins * sumMLs) / 60 / 12;
+    const intHr = Math.floor((sumMins * sumMLs) / 60 / 12);
+    const decimalHr = Math.round((manHrs - intHr + Number.EPSILON) * 10) / 10;
 
-  handleDateSelect = (selectInfo) => {
-    console.log(selectInfo.startStr);
-    let title = prompt("Please enter a new title for your event");
-    let calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
+    alert(
+      `You have selected day ${
+        clickInfo.dateStr
+      } \n Man-hours Used: ${intHr} hours and ${decimalHr * 60} minutes.`
+    );
   };
 
   handleEventClick = (clickInfo) => {
-    if (
-      confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-      timeouts.removeIt(clickInfo.event.title);
-    }
+    const event = _.filter(events, (event) => {
+      return clickInfo.event.title === event.title;
+    })[0];
+
+    alert(
+      `Title: ${event.title} \n Lane: ${event.laneID} \n Type: ${event.type} \n Start: ${event.start} \n End: ${event.end} \n Minutes: ${event.min} \n ML1: ${event.ml1} \n ML2: ${event.ml2} \n ML3: ${event.ml3}`
+    );
   };
 
   return (
@@ -168,7 +162,7 @@ const Calendar = () => {
           dayMaxEvents={true}
           dateClick={handleDateClick}
           eventContent={renderEventContent} // custom render function
-          eventClick={this.handleEventClick}
+          eventClick={handleEventClick}
         />
       </div>
     </div>
@@ -183,4 +177,5 @@ function renderEventContent(eventInfo) {
     </>
   );
 }
+
 export default Calendar;

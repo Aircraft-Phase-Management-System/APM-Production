@@ -41,7 +41,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
 
   /* Add another field to the timeouts named color with a standard color red. */
   timeouts.forEach(function (element) {
-    element.color = "#c22f25";
+    element.color = (element.type === 'Holiday' ? '#c22f25' : '#D7A743');
   });
 
   /* LIST: List events from the current phase lane and apply filter is needed by user. */
