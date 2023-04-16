@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Stuffs } from '../stuff/StuffCollection';
 import { Timeouts } from '../timeout/TimeoutCollection';
 import { EventsDay } from '../event_day/EventDayCollection';
 import { Phases } from '../phase_lane/PhaseCollection';
@@ -20,7 +19,6 @@ class MATPClass {
       Timeouts,
       EventsDay,
       Phases,
-      Stuffs,
       UserProfiles,
     ];
     /*
@@ -32,7 +30,6 @@ class MATPClass {
       Timeouts,
       EventsDay,
       Phases,
-      Stuffs,
     ];
 
     /*

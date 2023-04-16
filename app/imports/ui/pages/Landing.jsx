@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Col, Container, Row, Link } from "react-bootstrap";
 import { PAGE_IDS } from "../utilities/PageIDs";
-import { NavLink } from "react-router-dom";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { HandIndexThumb } from "react-bootstrap-icons";
 
 function checkSignInState() {

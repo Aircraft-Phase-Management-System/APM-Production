@@ -4,7 +4,6 @@ import {
   AutoForm,
   ErrorsField,
   HiddenField,
-  SelectField,
   SubmitField,
   TextField,
 } from "uniforms-bootstrap5";
@@ -29,7 +28,6 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 function setBg() {
-  //const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
   const randomColor =
     "hsl(" +
     360 * Math.random() +
@@ -44,14 +42,12 @@ function setBg() {
 /* Renders the AddEvent page for adding a document. */
 const AddPhaseLane = () => {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   // On submit, insert the data.
   const submit = (data, formRef) => {
     const { name, author, color, issue } = data;
-    console.log("color: ", color);
     const owner = Meteor.user().username;
     const collectionName = Phases.getCollectionName();
     const definitionData = { name, author, color, issue, owner };

@@ -6,7 +6,6 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { ROLE } from '../../api/role/Role';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
-import ListStuffAdmin from '../pages/ListStuffAdmin';
 import NotAuthorized from '../pages/NotAuthorized';
 import ListAllEvents from '../pages/ListAllEvents';
 import ListEventDay from '../pages/ListEventDay';
@@ -52,7 +51,6 @@ const App = () => {
           <Route path="/total-timeouts" element={<ProtectedRoute><TimeoutTabs /></ProtectedRoute>} />
           <Route path="/list-all-events" element={<ProtectedRoute><ListAllEvents /></ProtectedRoute>} />
           <Route path="/list-eventsday/:_id" element={<ProtectedRoute><ListEventDay /></ProtectedRoute>} />
-          <Route path="/admin" element={<AdminProtectedRoute ready={ready}><ListStuffAdmin /></AdminProtectedRoute>} />
         </Routes>
         <Footer />
       </div>

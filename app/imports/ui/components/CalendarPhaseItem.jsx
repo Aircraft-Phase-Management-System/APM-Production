@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useTracker } from "meteor/react-meteor-data";
+import { Link } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
+import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import { XSquare, Calendar, HandIndex, Search } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
 import {
   Container,
   Row,
@@ -41,7 +42,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
 
   /* Add another field to the timeouts named color with a standard color red. */
   timeouts.forEach(function (element) {
-    element.color = (element.type === 'Holiday' ? '#c22f25' : '#D7A743');
+    element.color = element.type === "Holiday" ? "#c22f25" : "#D7A743";
   });
 
   /* LIST: List events from the current phase lane and apply filter is needed by user. */
@@ -57,15 +58,15 @@ const CalendarPhaseItem = ({ phase, events }) => {
   });
 
   /* CALENDAR: Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
-  const formattedCalendarEvents = eventsFromLane.map(({ day: start, title, _id }) => ({
-    start,
-    title,
-    _id,
-  }));
+  const formattedCalendarEvents = eventsFromLane.map(
+    ({ day: start, title, _id }) => ({
+      start,
+      title,
+      _id,
+    })
+  );
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
-
-  console.log(eventsFromLane);
 
   const renderSideBar = () => {
     return (
@@ -106,7 +107,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
                 <CalendarPhaseRow key={event._id} event={event} />
               ))}
             </tbody>
-          </Table> 
+          </Table>
         </Container>
       </div>
     );

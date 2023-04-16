@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Col, Button, InputGroup, Form } from "react-bootstrap";
 import swal from "sweetalert";
-import { useTracker } from "meteor/react-meteor-data";
-import { Airplane, FileEarmarkArrowDown } from "react-bootstrap-icons";
-import { defineMethod } from "../../api/base/BaseCollection.methods";
-import Modal from "react-bootstrap/Modal";
-
 import Papa from "papaparse";
+import { useTracker } from "meteor/react-meteor-data";
+import { COMPONENT_IDS } from "../utilities/ComponentIDs";
+import { defineMethod } from "../../api/base/BaseCollection.methods";
+import { Col, Button, InputGroup, Form, Modal } from "react-bootstrap";
+import { Airplane, FileEarmarkArrowDown } from "react-bootstrap-icons";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 
@@ -247,7 +246,7 @@ const ImportButton = () => {
         let date = event.Date;
         let conflictingDays = 0;
 
-         /* split the date in day, month, year. */
+        /* split the date in day, month, year. */
         let day = parseInt(date.substring(8));
         let month = date.substring(5, 7);
         let year = date.substring(0, 4);
@@ -280,7 +279,8 @@ const ImportButton = () => {
                 "-" +
                 (day < 10 ? "0" + day : day);
             } else {
-              date = year + "-" + nextMonthNmb + "-" + (day < 10 ? "0" + day : day);
+              date =
+                year + "-" + nextMonthNmb + "-" + (day < 10 ? "0" + day : day);
             }
           }
         }

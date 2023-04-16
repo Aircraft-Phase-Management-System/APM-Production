@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { PAGE_IDS } from "../utilities/PageIDs";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Container, Col, Row, Button, Card } from "react-bootstrap";
 import { useTracker } from "meteor/react-meteor-data";
 import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
-import { PAGE_IDS } from "../utilities/PageIDs";
-import { formatDate } from "@fullcalendar/core";
 import PhaseLaneItem from "../components/PhaseLaneItem";
 import AddPhaseLane from "../components/AddPhaseLane";
-import { date } from "yup";
+
 import ImportButton from "../components/ImportButton";
+import { Container, Row } from "react-bootstrap";
 
 const Calendar = () => {
   const { ready, timeouts } = useTracker(() => {

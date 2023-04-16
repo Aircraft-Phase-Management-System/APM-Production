@@ -1,17 +1,5 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
-import { PencilFill, XSquare, Download, Trash } from "react-bootstrap-icons";
-import { Col, Container, Row, Modal, Button } from "react-bootstrap";
-import {
-  AutoForm,
-  ErrorsField,
-  SubmitField,
-  TextField,
-  SelectField,
-  DateField,
-  NumField,
-  LongTextField,
-} from "uniforms-bootstrap5";
 import { useTracker } from "meteor/react-meteor-data";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
@@ -19,6 +7,17 @@ import { updateMethod } from "../../api/base/BaseCollection.methods";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
+import { PencilFill, XSquare, Trash } from "react-bootstrap-icons";
+import { Col, Container, Row, Modal, Button } from "react-bootstrap";
+import {
+  AutoForm,
+  ErrorsField,
+  SubmitField,
+  TextField,
+  SelectField,
+  NumField,
+  LongTextField,
+} from "uniforms-bootstrap5";
 
 const bridge = new SimpleSchema2Bridge(EventsDay._schema);
 

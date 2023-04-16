@@ -1,4 +1,14 @@
 import React, { useState } from "react";
+import swal from "sweetalert";
+import { useTracker } from "meteor/react-meteor-data";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
+import { EventsDay } from "../../api/event_day/EventDayCollection";
+import { defineMethod } from "../../api/base/BaseCollection.methods";
+import { COMPONENT_IDS } from "../utilities/ComponentIDs";
+import { PAGE_IDS } from "../utilities/PageIDs";
+import Modal from "react-bootstrap/Modal";
+import { Formik } from "formik";
+import * as yup from "yup";
 import {
   Col,
   Container,
@@ -17,15 +27,6 @@ import {
   ClockHistory,
   Save,
 } from "react-bootstrap-icons";
-import swal from "sweetalert";
-import { useTracker } from "meteor/react-meteor-data";
-import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import { EventsDay } from "../../api/event_day/EventDayCollection";
-import { defineMethod } from "../../api/base/BaseCollection.methods";
-import { PAGE_IDS } from "../utilities/PageIDs";
-import Modal from "react-bootstrap/Modal";
-import { Formik } from "formik";
-import * as yup from "yup";
 
 const reload = () => window.location.reload();
 
@@ -268,18 +269,9 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       return timeout.type === "Mahalo Day" && timeout.start === eventDate;
     });
 
-    /* Filter the Training day that occur in the same day. */
-    /* const onlyTrainingDay = _.filter(timeouts, (timeout) => {
-      return timeout.type === "Trainning Day" && timeout.start === eventDate;
-    });*/
-
     if (onlyMahaloDay.length != 0) {
       mahaloHrs = onlyMahaloDay[0].hours;
     }
-
-    /* if(onlyTrainingDay.length!=0) {
-      trainingHrs = onlyTrainingDay[0].hours;
-    }*/
 
     return mahaloHrs;
   };

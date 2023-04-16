@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Col, Container, Row, Table, Button, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const TimeoutItem = ({ timeout }) => (
   <tr>
-  <td>{timeout.title}</td>
-  <td>{timeout.start.substring(0,10)}</td>
-  <td>{timeout.end.substring(0,10)}</td>
-  <td>{timeout.type}</td>
-  <td>{timeout.hours}</td>
-  <td><EditTimeout key={timeout._id} timeout={timeout}/></td>
-</tr>
+    <td>{timeout.title}</td>
+    <td>{timeout.start.substring(0, 10)}</td>
+    <td>{timeout.end.substring(0, 10)}</td>
+    <td>{timeout.type}</td>
+    <td>{timeout.hours}</td>
+    <td>
+      <EditTimeout key={timeout._id} timeout={timeout} />
+    </td>
+  </tr>
 );
 
 // Require a document to be passed to this component.

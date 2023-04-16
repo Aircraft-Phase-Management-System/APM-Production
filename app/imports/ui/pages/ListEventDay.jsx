@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Container, Row, Table, Card, InputGroup, Form } from "react-bootstrap";
-import { List, Search } from "react-bootstrap-icons";
 import { useTracker } from "meteor/react-meteor-data";
-import { EventsDay } from "../../api/event_day/EventDayCollection";
-import { Phases } from "../../api/phase_lane/PhaseCollection";
-import EventDayItem from "../components/EventDayItem";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 import { useLocation } from "react-router-dom";
+import { EventsDay } from "../../api/event_day/EventDayCollection";
+import { Phases } from "../../api/phase_lane/PhaseCollection";
+import EventDayItem from "../components/EventDayItem";
+import { Container, Table, Card, InputGroup, Form } from "react-bootstrap";
+import { List, Search } from "react-bootstrap-icons";
 
 /* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 const ListEventDay = () => {

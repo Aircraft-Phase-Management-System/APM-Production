@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
+import { useTracker } from "meteor/react-meteor-data";
+import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
+import { updateMethod } from "../../api/base/BaseCollection.methods";
+import { removeItMethod } from "../../api/base/BaseCollection.methods";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { PAGE_IDS } from "../utilities/PageIDs";
+import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { PencilFill, XSquare, ExclamationOctagon, Trash } from "react-bootstrap-icons";
 import { Col, Container, Row, Modal, Button, Alert } from "react-bootstrap";
 import {
   AutoForm,
   ErrorsField,
-  HiddenField,
   SubmitField,
   TextField,
   SelectField,
   NumField,
 } from "uniforms-bootstrap5";
-import { useTracker } from "meteor/react-meteor-data";
-import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
-// import { useParams } from "react-router";
-import { Timeouts } from "../../api/timeout/TimeoutCollection";
-import { updateMethod } from "../../api/base/BaseCollection.methods";
-import { removeItMethod } from "../../api/base/BaseCollection.methods";
-
-import LoadingSpinner from "../components/LoadingSpinner";
-import { PAGE_IDS } from "../utilities/PageIDs";
 
 const bridge = new SimpleSchema2Bridge(Timeouts._schema);
 
@@ -59,8 +56,6 @@ const EditTimeout = ({ timeout }) => {
   const handleDelete = () => {
     const collectionName = Timeouts.getCollectionName();
     const instance = Timeouts.findDoc(timeout._id);
-    console.log(timeout._id)
-    console.log(instance)
     removeItMethod
       .callPromise({ collectionName, instance })
       .catch((error) => swal("Error", error.message, "error"))

@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
-import { PencilFill, XSquare, Download, Trash } from "react-bootstrap-icons";
-import { Card, Col, Container, Row, Modal, Button } from "react-bootstrap";
-import {
-  AutoForm,
-  ErrorsField,
-  HiddenField,
-  SubmitField,
-  TextField,
-  SelectField,
-} from "uniforms-bootstrap5";
 import { useTracker } from "meteor/react-meteor-data";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
-import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { updateMethod } from "../../api/base/BaseCollection.methods";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
+import { Phases } from "../../api/phase_lane/PhaseCollection";
+import { PencilFill, XSquare, Trash } from "react-bootstrap-icons";
+import { Col, Container, Row, Modal, Button } from "react-bootstrap";
+import {
+  AutoForm,
+  ErrorsField,
+  SubmitField,
+  TextField,
+} from "uniforms-bootstrap5";
 
 const bridge = new SimpleSchema2Bridge(Phases._schema);
 
@@ -26,8 +24,6 @@ const EditPhaseLane = ({ phase }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-  //const { _id } = useParams();
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { doc, ready } = useTracker(() => {
     // Get access to Holiday documents.
@@ -58,8 +54,6 @@ const EditPhaseLane = ({ phase }) => {
   const handleDelete = () => {
     const collectionName = Phases.getCollectionName();
     const instance = Phases.findDoc(phase._id);
-    console.log(phase._id)
-    console.log(instance)
     removeItMethod
       .callPromise({ collectionName, instance })
       .catch((error) => swal("Error", error.message, "error"))
@@ -67,9 +61,7 @@ const EditPhaseLane = ({ phase }) => {
         swal("Success", "Phase Lane deleted successfully", "success");
         handleClose();
       });
-      
   };
-  
 
   return ready ? (
     <>
@@ -115,11 +107,11 @@ const EditPhaseLane = ({ phase }) => {
               <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
               Close
             </Button>
-            <Button variant="danger" onClick={handleDelete} >
+            <Button variant="danger" onClick={handleDelete}>
               <Trash style={{ marginBottom: "4px", marginRight: "6px" }} />
               Delete
             </Button>
-          
+
             <SubmitField value="Save Changes" onClick={handleClose} />
           </Modal.Footer>
         </AutoForm>

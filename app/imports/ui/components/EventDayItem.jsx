@@ -1,9 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditEventDay from "../pages/EditEventDay";
-//import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const EventDayItem = ({ event, code }) => (

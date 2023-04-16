@@ -1,13 +1,13 @@
 import React from "react";
+import { PAGE_IDS } from "../utilities/PageIDs";
+import AddEventDay from "../components/AddEventDay";
+import EventSameDayItem from "../components/EventSameDayItem";
 import { Accordion, Row, Button, Col } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
-import AddEventDay from "./AddEventDay";
-import EventSameDayItem from "./EventSameDayItem";
-import { Link } from 'react-router-dom';
 
 
 /* Renders a table containing all of the Event documents. Use <EventItem> to render each row. */
-const ListEvent = ({ laneID, eventsDay }) => {
+const ListEventAccordion = ({ laneID, eventsDay }) => {
 
   /* Get only the Events that belong to the Phase Lane and from today. */
   const todayDate = new Date();
@@ -56,4 +56,4 @@ const ListEvent = ({ laneID, eventsDay }) => {
 };
 
 
-export default ListEvent;
+export default ListEventAccordion;
