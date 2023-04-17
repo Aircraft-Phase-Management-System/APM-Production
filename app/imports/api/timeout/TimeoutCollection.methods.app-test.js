@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import faker from 'faker';
-import { Holidays } from './HolidayCollection';
+import { Timeouts, timeoutTypes } from './TimeoutCollection';
 import { defineTestUser, withLoggedInUser, withSubscriptions } from '../../test-utilities/test-utilities';
 import { defineMethod, updateMethod, removeItMethod } from '../base/BaseCollection.methods';
 
@@ -9,33 +9,48 @@ import { defineMethod, updateMethod, removeItMethod } from '../base/BaseCollecti
 /* eslint-env mocha */
 
 if (Meteor.isClient) {
-  describe('HolidayCollection Meteor Methods', function testSuite() {
+  describe('TimeoutCollection Meteor Methods', function testSuite() {
     it('Can define, update, and removeIt', async function test1() {
       const { username, password } = await defineTestUser.callPromise();
       await withLoggedInUser({ username, password });
       await withSubscriptions();
-      const collectionName = Holidays.getCollectionName();
+      const collectionName = Timeouts.getCollectionName();
       const definitionData = {};
-      definitionData.holidayName = faker.lorem.words();
-      definitionData.date = faker.lorem.words();
-      definitionData.owner = username;
-   
+      definitionData.title = faker.lorem.words();
+      definitionData.start = faker.lorem.words();
+      definitionData.end = faker.lorem.words();
+      definitionData.type = timeoutTypes[faker.datatype.number({ min: 0, max: timeoutTypes.length - 1 })];
+      definitionData.hours = faker.datatype.number({
+        min: 0,
+        max: 10,
+      });
       const docID = await defineMethod.callPromise({ collectionName, definitionData });
-      expect(Holidays.isDefined(docID)).to.be.true;
-      let doc = Holidays.findDoc(docID);
-      expect(doc.holidayName).to.equal(definitionData.holidayName);
-      expect(doc.date).to.equal(definitionData.date);
+      expect(Timeouts.isDefined(docID)).to.be.true;
+      let doc = Timeouts.findDoc(docID);
+      expect(doc.title).to.equal(definitionData.title);
+      expect(doc.start).to.equal(definitionData.start);
+      expect(doc.end).to.equal(definitionData.end);
+      expect(doc.type).to.equal(definitionData.type);
+      expect(doc.hours).to.equal(definitionData.hours);
       const updateData = {};
       updateData.id = docID;
-      updateData.holidayName = faker.lorem.words();
-      updateData.date = faker.lorem.words();
-
+      updateData.title = faker.lorem.words();
+      updateData.start = faker.lorem.words();
+      updateData.end = faker.lorem.words();
+      updateData.tyle = timeoutTypes[faker.datatype.number({ min: 0, max: timeoutTypes.length - 1 })];
+      updateData.hours = faker.datatype.number({
+        min: 0,
+        max: 10,
+      });
       await updateMethod.callPromise({ collectionName, updateData });
-      doc = Holidays.findDoc(docID);
-      expect(doc.holidayName).to.equal(updateData.holidayName);
-      expect(doc.date).to.equal(updateData.date);
+      doc = Timeouts.findDoc(docID);
+      expect(doc.title).to.equal(updateData.title);
+      expect(doc.start).to.equal(updateData.start);
+      expect(doc.end).to.equal(updateData.end);
+      expect(doc.type).to.equal(updateData.type);
+      expect(doc.hours).to.equal(updateData.hours);
       await removeItMethod.callPromise({ collectionName, instance: docID });
-      expect(Holidays.isDefined(docID)).to.be.false;
+      expect(Timeouts.isDefined(docID)).to.be.false;
     });
   });
 }
