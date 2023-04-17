@@ -34,7 +34,7 @@ const ListAllEvents = () => {
   });
 
   return ready ? (
-    <Container id={PAGE_IDS.NAVBAR_LIST_EVENT} className="py-3">
+    <Container id={PAGE_IDS.LIST_EVENTSDAY} className="py-3">
       <Card className="card-list-all-eventsday">
         <Card.Title>
           <List /> All Current Events ({eventsday.length})

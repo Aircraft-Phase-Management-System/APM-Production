@@ -14,9 +14,15 @@ const ListEventAccordion = ({ laneID, eventsDay }) => {
   const formattedDate = new Date(todayDate.getTime() - offset * 60 * 1000)
     .toISOString()
     .split("T")[0];
-  const eventsFromLane = _.filter(eventsDay, function (event) {
+  const eventsFromToday = _.filter(eventsDay, function (event) {
     return event.day === formattedDate;
   });
+
+  const eventsFromLane = _.filter(eventsFromToday, function (event) {
+    return event.laneID === laneID.issue;
+  });
+
+
 
 
   return (

@@ -125,7 +125,7 @@ const EditTimeout = ({ timeout }) => {
             </Container>
           </Modal.Body>
           <Modal.Footer>
-          <Button variant="dark" onClick={handleClose}>
+          <Button variant="outline-secondary" onClick={handleClose}>
               <XSquare style={{ marginBottom: "4px", marginRight: "6px" }} />
               Close
             </Button>
