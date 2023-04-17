@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import EditTimeout from "../pages/EditTimeout";
+import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const TimeoutItem = ({ timeout }) => (
@@ -11,7 +12,7 @@ const TimeoutItem = ({ timeout }) => (
     <td>{timeout.type}</td>
     <td>{timeout.hours}</td>
     <td>
-      <EditTimeout key={timeout._id} timeout={timeout} />
+      <EditTimeout className={COMPONENT_IDS.LIST_TIMEOUT_EDIT} key={timeout._id} timeout={timeout} />
     </td>
   </tr>
 );

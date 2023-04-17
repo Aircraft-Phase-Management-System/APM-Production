@@ -1,5 +1,6 @@
 import React from "react";
 import EditEventDay from "../pages/EditEventDay";
+import { COMPONENT_IDS } from '../utilities/ComponentIDs';
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */
 const EventDayItem = ({ event, code }) => (
@@ -16,7 +17,7 @@ const EventDayItem = ({ event, code }) => (
   <td>{event.ml3}</td>
   <td>{event.section}</td>
   <td>{event.remarks}</td>
-  <td><EditEventDay key={event._id} event={event}/></td>
+  <td><EditEventDay className={COMPONENT_IDS.LIST_EVENT_DAY}  key={event._id} event={event}/></td>
 </tr>
 );
 

@@ -1,5 +1,6 @@
 import { Selector, t } from 'testcafe';
 import { COMPONENT_IDS } from '../imports/ui/utilities/ComponentIDs';
+import { PAGE_IDS } from '../imports/ui/utilities/PageIDs';
 
 class NavBar {
 
@@ -55,45 +56,25 @@ class NavBar {
   }
 
   /* Go to the add stuff page. */
-  async gotoAddStuffPage() {
+  async gotoAddTimeoutPage() {
     const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
     if (!visible) {
       await t.click('button.navbar-toggler');
     }
     await t.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
-    await t.click(`#${COMPONENT_IDS.NAVBAR_ADD_STUFF}`);
+    await t.click(`#${COMPONENT_IDS.NAVBAR_TIMEOUTS}`);
   }
 
   /* Go to the list stuff page. */
-  async gotoListStuffPage() {
+  async gotoListEventPage() {
     const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
     if (!visible) {
       await t.click('button.navbar-toggler');
     }
     await t.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
-    await t.click(`#${COMPONENT_IDS.NAVBAR_LIST_STUFF}`);
+    await t.click(`#${COMPONENT_IDS.NAVBAR_LIST_EVENT}`);
   }
 
-  /* Go to the list stuff admin page. */
-  async gotoListStuffAdminPage() {
-    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
-    if (!visible) {
-      await t.click('button.navbar-toggler');
-    }
-    await t.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
-    await t.click(`#${COMPONENT_IDS.NAVBAR_LIST_STUFF_ADMIN}`);
-  }
-
-  /* Go to the manage database page. Must be adimin. */
-  async gotoManageDatabasePage() {
-    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_COLLAPSE}`).visible;
-    if (!visible) {
-      await t.click('button.navbar-toggler');
-    }
-    await t.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
-    await t.click(`#${COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN}`);
-    await t.click(`#${COMPONENT_IDS.NAVBAR_MANAGE_DROPDOWN_DATABASE}`);
-  }
 }
 
 export const navBar = new NavBar();
