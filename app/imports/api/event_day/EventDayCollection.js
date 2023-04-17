@@ -6,6 +6,8 @@ import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 import { ROLE } from '../role/Role';
 
+export const eventTypes = ['Planned', 'Unexpected', 'Plan Incurred'];
+
 export const eventDayPublications = {
   eventDay: 'EventsDay',
   eventDayAdmin: 'EventsDayAdmin',
@@ -21,7 +23,7 @@ class EventDayCollection extends BaseCollection {
       min: {type: Number, optional: true},
       type: {
         type: String,
-        allowedValues: ['Planned', 'Unexpected', 'Plan Incurred'],
+        allowedValues: eventTypes,
         defaultValue: 'Planned',
       },
       ml1: {type: Number, optional: true},
