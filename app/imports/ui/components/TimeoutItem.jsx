@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditTimeout from "../pages/EditTimeout";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */

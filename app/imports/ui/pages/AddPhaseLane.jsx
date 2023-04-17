@@ -11,10 +11,10 @@ import swal from "sweetalert";
 import { Meteor } from "meteor/meteor";
 import SimpleSchema2Bridge from "uniforms-bridge-simple-schema-2";
 import SimpleSchema from "simpl-schema";
+import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import { PlusSquare, XSquare } from "react-bootstrap-icons";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
-import { PAGE_IDS } from "../utilities/PageIDs";
 import Modal from "react-bootstrap/Modal";
 
 // Create a schema to specify the structure of the data to appear in the form.
@@ -83,7 +83,7 @@ const AddPhaseLane = () => {
             <Modal.Title as="h5">Add New Phase Lane</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Container id={PAGE_IDS.ADD_PHASE_LANE} className="py-3">
+            <Container id={COMPONENT_IDS.ADD_PHASE_LANE} className="py-3">
               <Row>
                 <Col>
                   <TextField

@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
 import faker from 'faker';
 import fc from 'fast-check';
-import { stuffConditions, Stuffs } from './StuffCollection';
+import { Phases } from './PhaseCollection';
 import { removeAllEntities } from '../base/BaseUtilities';
 import { MATPCollections } from '../matp/MATPCollections';
 import { testDefine, testDumpRestore, testUpdate } from '../utilities/test-helpers';
@@ -10,7 +9,7 @@ import { testDefine, testDumpRestore, testUpdate } from '../utilities/test-helpe
 /* eslint prefer-arrow-callback: "off",  no-unused-expressions: "off" */
 /* eslint-env mocha */
 
-const collectionName = Stuffs.getCollectionName();
+const collectionName = Phases.getCollectionName();
 
 if (Meteor.isServer) {
   describe(collectionName, function testSuite() {
@@ -27,13 +26,12 @@ if (Meteor.isServer) {
     it('Can define and removeIt', function test1(done) {
       fc.assert(
         fc.property(
-          fc.lorem({ maxCount: 2 }),
-          fc.integer({ min: 1, max: 10 }),
+          fc.lorem({ maxCount: 10 }),
+          fc.lorem({ maxCount: 4 }),
           fc.lorem({ maxCount: 1 }),
-          fc.integer({ min: 0, max: stuffConditions.length - 1 }),
-          (name, quantity, owner, choice) => {
-            const condition = stuffConditions[choice];
-            const definitionData = { name, quantity, owner, condition };
+          fc.lorem({ maxCount: 1 }),
+          (name, author, color, issue) => {
+            const definitionData = { name, author, color, issue };
             testDefine(collection, definitionData);
           },
         ),
@@ -41,39 +39,25 @@ if (Meteor.isServer) {
       done();
     });
 
-    it('Can define duplicates', function test2() {
-      const name = faker.animal.dog();
-      const quantity = faker.datatype.number({ min: 1, max: 5 });
-      const owner = faker.internet.email();
-      const condition = stuffConditions[Math.floor(Math.random() * stuffConditions.length)];
-      const docID1 = collection.define({ name, quantity, condition, owner });
-      const docID2 = collection.define({ name, quantity, condition, owner });
-      expect(docID1).to.not.equal(docID2);
-    });
-
     it('Can update', function test3(done) {
       const name = faker.lorem.words();
-      const quantity = faker.datatype.number({
-        min: 1,
-        max: 10,
-      });
-      const owner = faker.lorem.words();
-      const condition = stuffConditions[faker.datatype.number({ min: 1, max: stuffConditions.length - 1 })];
+      const author = faker.lorem.words();
+      const color = faker.lorem.words();
+      const issue = faker.lorem.words();
       const docID = collection.define({
         name,
-        quantity,
-        owner,
-        condition,
+        author,
+        color,
+        issue,
       });
-      // console.log(collection.findDoc(docID));
       fc.assert(
         fc.property(
           fc.lorem({ maxCount: 2 }),
           fc.integer({ max: 10 }),
           fc.integer({ min: 0, max: stuffConditions.length - 1 }),
-          (newName, newQuantity, index) => {
+          (newName, newAuthor, newIssue) => {
             // console.log('update', index, stuffConditions[index]);
-            const updateData = { name: newName, quantity: newQuantity, condition: stuffConditions[index] };
+            const updateData = { name: newName, author: newAuthor, issue: newIssue };
             testUpdate(collection, docID, updateData);
           },
         ),

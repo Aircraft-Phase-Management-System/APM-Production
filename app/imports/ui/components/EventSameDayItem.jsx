@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";

@@ -1,5 +1,4 @@
 import React from "react";
-import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import EditEventDay from "../pages/EditEventDay";
 
 /** Renders a single row in the List Timeout table. See pages/ListTimeout.jsx. */

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import swal from "sweetalert";
 import Papa from "papaparse";
 import { useTracker } from "meteor/react-meteor-data";
-import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { Col, Button, InputGroup, Form, Modal } from "react-bootstrap";
 import { Airplane, FileEarmarkArrowDown } from "react-bootstrap-icons";

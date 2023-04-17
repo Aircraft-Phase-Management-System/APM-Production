@@ -1,9 +1,10 @@
 export const COMPONENT_IDS = {
   LIST_HOLIDAY_EDIT: 'list-holiday-edit',
+  ADD_EVENT_DAY: 'add-event-day',
+  ADD_PHASE_LANE: 'add-phase-lane',
+  CALENDAR_PHASE_ITEM: 'calendar-phase-item',
   NAVBAR_NON_WORKING_DAYS: 'navbar-non-working-days',
   NAVBAR_MAIN_CALENDAR: 'navbar-main-calendar',
-  NAVBAR_LIST_STUFF: 'navbar-list-stuff',
-  NAVBAR_LIST_STUFF_ADMIN: 'navbar-list-stuff-admin',
   NAVBAR_CURRENT_USER: 'navbar-current-user',
   NAVBAR_LANDING_PAGE: 'navbar-landing-page',
   NAVBAR_COLLAPSE: 'navbar-collapse',

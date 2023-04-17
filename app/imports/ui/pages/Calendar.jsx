@@ -8,9 +8,8 @@ import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { Phases } from "../../api/phase_lane/PhaseCollection";
 import PhaseLaneItem from "../components/PhaseLaneItem";
-import AddPhaseLane from "../components/AddPhaseLane";
-
-import ImportButton from "../components/ImportButton";
+import AddPhaseLane from "./AddPhaseLane";
+import ImportButton from "./ImportButton";
 import { Container, Row } from "react-bootstrap";
 
 const Calendar = () => {

@@ -5,7 +5,6 @@ import { Timeouts } from "../../api/timeout/TimeoutCollection";
 import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { defineMethod } from "../../api/base/BaseCollection.methods";
 import { COMPONENT_IDS } from "../utilities/ComponentIDs";
-import { PAGE_IDS } from "../utilities/PageIDs";
 import Modal from "react-bootstrap/Modal";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -118,8 +117,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       hour = Math.floor(min / 60);
       min = min % 60;
 
-      /*timeSpent =
-        (hour < 10 ? "0" + hour : hour) + "" + (min < 10 ? "0" + min : min);*/
       timeSpent = hour * 60 + min;
       console.log("timeSpent, ", timeSpent);
     }
@@ -318,7 +315,7 @@ const AddEventDay = ({ laneID, eventsDay }) => {
         </Modal.Header>
 
         <Modal.Body>
-          <Container id={PAGE_IDS.ADD_EVENT_DAY} className="py-3">
+          <Container id={COMPONENT_IDS.ADD_EVENT_DAY} className="py-3">
             <Alert key={"info"} variant={"info"}>
               Click on the button <ClockHistory /> <b>Check Availability</b> to
               inspect how many hours are left for the day.

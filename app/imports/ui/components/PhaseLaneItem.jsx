@@ -1,5 +1,4 @@
 import React from "react";
-import { COMPONENT_IDS } from "../utilities/ComponentIDs";
 import ListEventAccordion from "../pages/ListEventAccordion";
 import EditPhaseLane from "../pages/EditPhaseLane";
 import CalendarPhaseItem from "./CalendarPhaseItem";

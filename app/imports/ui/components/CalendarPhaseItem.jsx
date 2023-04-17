@@ -71,7 +71,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
   const renderSideBar = () => {
     return (
       <div className="app-sidebar-item">
-        <Container style={{ backgroundColor: phase.color, padding: 14 }}>
+        <Container id={COMPONENT_IDS.CALENDAR_PHASE_ITEM}  style={{ backgroundColor: phase.color, padding: 14 }}>
           <Row>
             <h6 style={letterColor}>
               {phase.issue} {phase.name}

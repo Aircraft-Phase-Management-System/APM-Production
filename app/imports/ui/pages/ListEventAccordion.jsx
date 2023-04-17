@@ -1,6 +1,5 @@
 import React from "react";
-import { PAGE_IDS } from "../utilities/PageIDs";
-import AddEventDay from "../components/AddEventDay";
+import AddEventDay from "./AddEventDay";
 import EventSameDayItem from "../components/EventSameDayItem";
 import { Accordion, Row, Button, Col } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
