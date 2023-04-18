@@ -75,25 +75,30 @@ A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhour
 ### Add New Event Holiday - July 4th, 2023: 
 <img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
 
+### Edit Events: 
+<img width="700" alt="edit-events" src="https://user-images.githubusercontent.com/60526884/232667627-60ac1fe0-7381-4f8e-8a0a-ce0481b006d3.png">
 
+### Import CSV File - Events for Phase Lane #02: 
+<img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
 
-### Events For Phase Lane: 
+### Events For Phase Lane #02 - After File Imported: 
 <img width="700" alt="events-for-phase-lane_2" src="https://user-images.githubusercontent.com/60526884/232667635-cc0c5633-28ae-402b-ba85-2e7f9c98ba38.png">
 
 
-<img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
+### Calendar Day Information: 
 <img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
 
-<img width="700" alt="edit-events" src="https://user-images.githubusercontent.com/60526884/232667627-60ac1fe0-7381-4f8e-8a0a-ce0481b006d3.png">
+*ImportButton.jsx* contains logic to modify the date of the event in case the file contains dates that falls in weekends, and holidays. 
 
 <img width="700" alt="event-after-added" src="https://user-images.githubusercontent.com/60526884/232667632-765988e0-6029-46c7-9ce1-bf97f7bd0fac.png">
 
 <img width="700" alt="import-check-holiday" src="https://user-images.githubusercontent.com/60526884/232667638-fc1307af-de72-4570-ad6e-666d8dd544dc.png">
 <img width="700" alt="import-check-holidays" src="https://user-images.githubusercontent.com/60526884/232667640-fd4e72a2-6346-43d6-b90e-aed72a4132e3.png">
 <img width="700" alt="import-check-weekend" src="https://user-images.githubusercontent.com/60526884/232667643-9767d9af-b555-4572-84ff-d5cc67cf8db2.png">
-<img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
-<img width="700" alt="import-csv" src="https://user-images.githubusercontent.com/60526884/232667646-e3ab597f-667d-4a1e-8d17-55159edabb42.png">
 
+### List All Events: 
+It is also possible to see all the events from the system (here we only see events for lane #02 since we only created events for that lane so far):
+<img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
 
 
 ## Team Members
