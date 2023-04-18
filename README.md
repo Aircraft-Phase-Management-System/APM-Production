@@ -7,7 +7,7 @@
 ## About APM
 Aircraft Phase Management System manages and track military aircraft while they undergo maintenance inspections.
 
-## :computer: How to Use the App
+## How to Use the App
 
 1. Clone the GitHub repository to your computer. 
 2. Make sure that you have meteor installed, a guide can be found [here](https://www.meteor.com/developers/install).
@@ -15,7 +15,7 @@ Aircraft Phase Management System manages and track military aircraft while they 
 4. Run the system with: ```meteor npm run start```
 5. Go to http://localhost:3000 to see the app.
 
-## :door: Sign Up Credentials
+## Sign Up Credentials
 1. email: john@apms.com, password: changeme
 
 #### Sign In Page: 
