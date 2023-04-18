@@ -67,6 +67,8 @@ const Calendar = () => {
 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
 
+  console.log(timeouts);
+
   const renderSideBar = () => {
     return (
       <div className="app-sidebar">

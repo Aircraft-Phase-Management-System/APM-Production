@@ -7,7 +7,6 @@ import { removeItMethod } from "../../api/base/BaseCollection.methods";
 const EventSameDayItem = ({ event }) => {
   const handleDelete = () => {
     const collectionName = EventsDay.getCollectionName();
-    const owner = Meteor.user().username;
     const instance = EventsDay.findDoc(event._id);
     removeItMethod
       .callPromise({ collectionName, instance })
@@ -18,8 +17,6 @@ const EventSameDayItem = ({ event }) => {
     event._id.event.remove();
     timeouts.removeIt(event._id.event.title);
   };
-
-  console.log(event);
 
   return (
     <>

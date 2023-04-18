@@ -5,10 +5,10 @@
     { "email": "john@apms.com", "password": "changeme", "role": "USER" , "firstName": "John", "lastName": "Doe" }
   ],
   "defaultTimeouts": [
-    { "title": "New Year's Day", "start": "2023-12-29", "end": "2024-01-02", "type": "Holiday", "hours": 0 },
+    { "title": "New Year's Day", "start": "2023-12-29", "end": "2024-01-02 15:00:00", "type": "Holiday", "hours": 0 },
     { "title": "Independece Day", "start": "2023-07-04", "end": "-", "type": "Holiday", "hours": 0 },
     { "title": "Veterans Dar", "start": "2023-11-11", "end": "-", "type": "Holiday", "hours": 0 },
-    { "title": "Christmas Day","start": "2023-12-24", "end": "2023-12-27", "type": "Holiday","hours": 0 },
+    { "title": "Christmas Day","start": "2023-12-24", "end": "2023-12-27 15:00:00", "type": "Holiday","hours": 0 },
     { "title": "Basic Combat Training","start": "2023-04-24", "end": "-", "type": "Training Day","hours": 4 },
     { "title": "Mahalo Day I","start": "2023-04-14", "end": "-", "type": "Mahalo Day","hours": 2 }
   ],

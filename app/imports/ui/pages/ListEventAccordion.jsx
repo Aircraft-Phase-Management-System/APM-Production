@@ -23,8 +23,6 @@ const ListEventAccordion = ({ laneID, eventsDay }) => {
   });
 
 
-
-
   return (
     <Accordion flush>
       <Accordion.Item eventKey="0">

@@ -219,7 +219,7 @@ const ImportButton = () => {
 
         /* Filter all the holidays that have a start and end day - more than one day. */
         const allHolsWithRng = _.filter(onlyHolidays, (holiday) => {
-          return holiday.start.length === 10 && holiday.end.length === 10;
+          return holiday.start.length >= 10 && holiday.end.length >= 10;
         });
 
         /* Zip all the start and end days together for each holiday. */
@@ -240,6 +240,7 @@ const ImportButton = () => {
       };
 
       const [holsSingleDates, holsRngDates] = extractHoldays(timeouts);
+
 
       events.forEach((event) => {
         let date = event.Date;
