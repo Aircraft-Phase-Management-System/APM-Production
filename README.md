@@ -1,4 +1,9 @@
 
+[![ci-meteor-application-template-production](https://github.com/ics-software-engineering/meteor-application-template-production/actions/workflows/ci.yml/badge.svg)](https://github.com/ics-software-engineering/meteor-application-template-production/actions/workflows/ci.yml)
+
+This project used the Meteor Application Template Production, please see http://ics-software-engineering.github.io/meteor-application-template-production/ for details.
+
+
 <h1 align="center">Aircraft-Phase-Management-System</h1>
 <p align="center">
     :small_airplane:
@@ -6,11 +11,6 @@
 
 
 
-
-
-[![ci-meteor-application-template-production](https://github.com/ics-software-engineering/meteor-application-template-production/actions/workflows/ci.yml/badge.svg)](https://github.com/ics-software-engineering/meteor-application-template-production/actions/workflows/ci.yml)
-
-This project used the Meteor Application Template Production, please see http://ics-software-engineering.github.io/meteor-application-template-production/ for details.
 
 
 ![add-event-same-day](https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png)
