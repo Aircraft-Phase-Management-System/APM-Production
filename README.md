@@ -164,6 +164,9 @@ To add default database for collections, modify imports/startup/server/Mongo.js 
 
 ## :test_tube: Testing (TestCafé)
 
+<img width="700" alt="test-acceptance-development-single-terminal" src="https://user-images.githubusercontent.com/60526884/232707005-efa370e7-6f6a-4def-8a91-162e72ffb627.png">
+<img width="700" alt="test-acceptance-development-terminal" src="https://user-images.githubusercontent.com/60526884/232707015-88524808-ffb9-4af1-8326-9503fab2add1.png">
+
 ## Team Members
 - [Ana Araujo](https://acatarinaoaraujo.github.io/)
 - [Jingzhe Feng](https://github.com/jingzhef)
