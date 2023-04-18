@@ -3,10 +3,6 @@
 For details, please see http://ics-software-engineering.github.io/meteor-application-template-production/
 
 
-
-<img width="700px" class="img-fluid" src="../img/projects/methodology.png">
-
-
 ![add-event-same-day](https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png)
 <img width="1434" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
 <img width="1423" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
