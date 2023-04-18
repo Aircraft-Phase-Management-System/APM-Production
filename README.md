@@ -18,10 +18,11 @@ Aircraft Phase Management System manages and track military aircraft while they 
 ## Sign Up Credentials
 1. email: john@apms.com, password: changeme
 
+
+
+<p align="center">
+### Sign In Page
 <img width="700" alt="login" src="https://user-images.githubusercontent.com/60526884/232670224-e9455e58-c6d4-46ac-837e-3583f1a14d11.png">
-
-
-
 <img width="700" alt="add-event-same-day" src="https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png">
 <img width="700" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
 <img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
@@ -42,6 +43,7 @@ Aircraft Phase Management System manages and track military aircraft while they 
 <img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 <img width="700" alt="phase-lane-same-day-events" src="https://user-images.githubusercontent.com/60526884/232667653-f11753b0-b170-40be-bf03-107f2d793f79.png">
 <img width="700" alt="phase-lane" src="https://user-images.githubusercontent.com/60526884/232667656-95870ed6-c0d1-4a59-8f10-593399a066a5.png">
+</p>
 
 
 ## Team Members
