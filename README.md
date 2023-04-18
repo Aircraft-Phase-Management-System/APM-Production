@@ -113,8 +113,6 @@ row looks for holidays with just one day, and the last row looks for weekends.
 <img width="700" alt="import-check-weekend" src="https://user-images.githubusercontent.com/60526884/232667643-9767d9af-b555-4572-84ff-d5cc67cf8db2.png">
 
 #### List All Events: 
-`It is also possible to see all the events from the system (here we only see events for lane #02
-since we only created events for that lane so far)`
 <img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
 
 #### Sign Out Page: 
