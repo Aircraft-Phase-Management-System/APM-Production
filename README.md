@@ -7,7 +7,7 @@
 ## About APM
 Aircraft Phase Management System manages and track military aircraft while they undergo maintenance inspections.
 
-## How to Use the App
+## :computer: How to Use the App
 
 1. Clone the GitHub repository to your computer. 
 2. Make sure that you have meteor installed, a guide can be found [here](https://www.meteor.com/developers/install).
@@ -15,7 +15,7 @@ Aircraft Phase Management System manages and track military aircraft while they 
 4. Run the system with: ```meteor npm run start```
 5. Go to http://localhost:3000 to see the app.
 
-## Sign Up Credentials
+## :door: Sign Up Credentials
 1. email: john@apms.com, password: changeme
 
 #### Sign In Page: 
@@ -67,6 +67,7 @@ I.e 2 hours for each person for mahalo days = 2 x 12- 96 or 72 MMH, and such for
 Each phase has a list of task (aprox 300) and each task has a corresponding manhours associated with it. 
 ```
 <img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
+
 `Note: If the event is added in a Mahalo Friday, the number of manhours available will be less. 
 However, if there is a need to modify the amount of off hours for Mahalo friday, e.g modify from 2 hours to 1. 
 This change will show on the report - in this case, the number of manhours available will increase.`
@@ -118,7 +119,7 @@ It is also possible to see all the events from the system (here we only see even
 #### Sign Out Page: 
 <img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 
-## Documentation for Main Functionalities
+## :green_book: Documentation for Main Functionalities
 #### path: ..imports/ui/pages/
 `AddEventDay.jsx`: Create new events to a phase lane.
 - setTimeSpent: Save value for number of hours from `start` and `end`.
@@ -158,12 +159,9 @@ setBg: Set random colour to the background.
 
 `TimeoutTabs.jsx`: Tabs that include the add and list timeout functions.
 
-#### path: ..imports/ui/components/
-
-
-## Databse
+## :card_file_box: Databse
 #### Default Database
-#### Mongo DB Commands
+To add default database for collections, modify imports/startup/server/Mongo.js to insert the items from the `settings.development.json`.
 
 ## :test_tube: Testing (TestCafé)
 
