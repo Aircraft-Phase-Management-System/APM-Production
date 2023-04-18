@@ -18,25 +18,23 @@ Aircraft Phase Management System manages and track military aircraft while they 
 ## Sign Up Credentials
 1. email: john@apms.com, password: changeme
 
-### Sign In Page: 
-*pages/SignIn.jsx*
+#### Sign In Page: 
 <img width="700" alt="login" src="https://user-images.githubusercontent.com/60526884/232670224-e9455e58-c6d4-46ac-837e-3583f1a14d11.png">
+*pages/SignIn.jsx*
 
-### Sign Up Page: 
-*pages/SignUp.jsx* [New Users]
+#### Sign Up Page: *pages/SignUp.jsx* [New Users]
 <img width="700" alt="signup" src="https://user-images.githubusercontent.com/60526884/232673235-93709266-c789-4782-9797-16908f9c2e9e.png">
 
-### Sign Out Page: 
-*pages/SignOut.jsx*
-<img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
-
-### User Landing Page: 
+#### User Landing Page: 
 *pages/Landing.jsx*
 <img width="700" alt="landing-user" src="https://user-images.githubusercontent.com/60526884/232672611-7fb2509d-c62d-4101-a29a-98c1c59134aa.png">
 
 ### Calendar Page: 
 *pages/Calendar.jsx*
 <img width="700" alt="calendar" src="https://user-images.githubusercontent.com/60526884/232667624-18afea03-c17b-4317-a577-4822dd655cd5.png">
+
+### Calendar Day Information: 
+<img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
 
 ### Add Timeout Tab: 
 *pages/TimeoutTabs.jsx*, *pages/AddTimeout.jsx*
@@ -72,6 +70,9 @@ A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhour
 ```
 <img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
 
+### Calendar Events - After Added: 
+<img width="700" alt="event-after-added" src="https://user-images.githubusercontent.com/60526884/232667632-765988e0-6029-46c7-9ce1-bf97f7bd0fac.png">
+
 ### Add New Event Holiday - July 4th, 2023: 
 <img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
 
@@ -79,26 +80,40 @@ A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhour
 <img width="700" alt="edit-events" src="https://user-images.githubusercontent.com/60526884/232667627-60ac1fe0-7381-4f8e-8a0a-ce0481b006d3.png">
 
 ### Import CSV File - Events for Phase Lane #02: 
-<img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
+<img width="700" alt="import-csv" src="https://user-images.githubusercontent.com/60526884/232680355-733d641d-6456-4203-a956-886a6c8184c1.png">
 
 ### Events For Phase Lane #02 - After File Imported: 
 <img width="700" alt="events-for-phase-lane_2" src="https://user-images.githubusercontent.com/60526884/232667635-cc0c5633-28ae-402b-ba85-2e7f9c98ba38.png">
 
+### Import CSV File - Fix Dates (Weekends and Holidays): 
+*ImportButton.jsx* contains logic to modify the date of the event in case the file contains dates that falls in weekends, and holidays. The images below shows three new rows for testing. The first row checks for a holiday that contains more than one day, the second row checks for single holidays and the last row checks for weekends.
 
-### Calendar Day Information: 
-<img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
+<img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
 
-*ImportButton.jsx* contains logic to modify the date of the event in case the file contains dates that falls in weekends, and holidays. 
+1. Holiday: Christmas Day (2023-12-24 to 2023-12-27)
+Event Initial Date: 2023-12-25
+Event Final Date: 2023-12-28 (*after corrected*)
 
-<img width="700" alt="event-after-added" src="https://user-images.githubusercontent.com/60526884/232667632-765988e0-6029-46c7-9ce1-bf97f7bd0fac.png">
-
-<img width="700" alt="import-check-holiday" src="https://user-images.githubusercontent.com/60526884/232667638-fc1307af-de72-4570-ad6e-666d8dd544dc.png">
 <img width="700" alt="import-check-holidays" src="https://user-images.githubusercontent.com/60526884/232667640-fd4e72a2-6346-43d6-b90e-aed72a4132e3.png">
+
+2. Holiday: Independece Day	(2023-07-04)
+Initial Event Date: 2023-07-04
+Final Event Date: 2023-07-05 (*after corrected*)
+<img width="700" alt="import-check-holiday" src="https://user-images.githubusercontent.com/60526884/232667638-fc1307af-de72-4570-ad6e-666d8dd544dc.png">
+
+3. Weekend: 2023-04-09 (Sunday)
+Initial Event Date: 2023-04-09
+Final Event Date: 2023-04-10 (*after corrected*)
+
 <img width="700" alt="import-check-weekend" src="https://user-images.githubusercontent.com/60526884/232667643-9767d9af-b555-4572-84ff-d5cc67cf8db2.png">
 
 ### List All Events: 
 It is also possible to see all the events from the system (here we only see events for lane #02 since we only created events for that lane so far):
 <img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
+
+### Sign Out Page: 
+*pages/SignOut.jsx*
+<img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 
 
 ## Team Members
