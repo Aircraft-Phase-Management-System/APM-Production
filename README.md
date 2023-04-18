@@ -19,55 +19,42 @@ Aircraft Phase Management System manages and track military aircraft while they 
 1. email: john@apms.com, password: changeme
 
 #### Sign In Page: 
-Files: *pages/SignIn.jsx*
 <img width="700" alt="login" src="https://user-images.githubusercontent.com/60526884/232670224-e9455e58-c6d4-46ac-837e-3583f1a14d11.png">
 
-#### Sign Up Page: 
-Files: *pages/SignUp.jsx* [New Users]
+#### Sign Up Page [New Users]: 
 <img width="700" alt="signup" src="https://user-images.githubusercontent.com/60526884/232673235-93709266-c789-4782-9797-16908f9c2e9e.png">
 
 #### User Landing Page: 
-Files: *pages/Landing.jsx*
 <img width="700" alt="landing-user" src="https://user-images.githubusercontent.com/60526884/232672611-7fb2509d-c62d-4101-a29a-98c1c59134aa.png">
 
 #### Calendar Page: 
-Files: *pages/Calendar.jsx*
 <img width="700" alt="calendar" src="https://user-images.githubusercontent.com/60526884/232667624-18afea03-c17b-4317-a577-4822dd655cd5.png">
 
 #### Calendar Day Information: 
-Files: *pages/Calendar.jsx*
 <img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
 
 #### Add Timeout Tab: 
-Files: *pages/TimeoutTabs.jsx*, *pages/AddTimeout.jsx*
 <img width="700" alt="add-timeouts" src="https://user-images.githubusercontent.com/60526884/232673538-e6891682-68ed-4bb6-9042-324fd76b60bc.png">
 
 #### List Timeout Tab: 
-Files: *pages/TimeoutTabs.jsx*, *pages/ListTimeout.jsx*, *components/TimeoutItem.jsx*
 <img width="700" alt="list-timeouts" src="https://user-images.githubusercontent.com/60526884/232673998-e60c5022-ca66-4730-ae08-f5c324d20250.png">
 
 #### Edit Timeout Modal: 
-Files: *pages/ListTimeout.jsx*, *pages/editTimeout.jsx*
 <img width="700" alt="edit-timeout" src="https://user-images.githubusercontent.com/60526884/232674449-fb579678-9db1-4d12-a158-1151b37fb61a.png">
 
 #### Add Phase Lane Modal: 
-Files: *pages/AddPhaseLane.jsx*
 <img width="700" alt="add-phase" src="https://user-images.githubusercontent.com/60526884/232667619-d2956238-c48f-4d0c-b838-21a2bc37f35f.png">
 
 #### Edit Phase Lane Modal: 
-Files: *pages/EditPhaseLane.jsx*
 <img width="700" alt="edit-phase-lane" src="https://user-images.githubusercontent.com/60526884/232667628-c0588d77-136c-44a4-8d55-cce44f43a16a.png">
 
 #### Add Same Day Event - April 17, 2023 as of today:
-Files: *AddEventDay.jsx*
 <img width="700" alt="add-event-same-day" src="https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png">
 
 #### List Only Today's Event - April 17, 2023 as of today: 
-Files: /*EventSameDayItem.jsx*/
 <img width="700" alt="phase-lane-same-day-events" src="https://user-images.githubusercontent.com/60526884/232667653-f11753b0-b170-40be-bf03-107f2d793f79.png">
 
 #### Add New Event - November 16, 2022 containing 23 events: 
-Files: *AddEventDay.jsx*
 <img width="700" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
 
 #### Add New Event Report - November 16, 2022 containing 23 events: 
@@ -126,7 +113,6 @@ It is also possible to see all the events from the system (here we only see even
 <img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
 
 #### Sign Out Page: 
-*pages/SignOut.jsx*
 <img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 
 
