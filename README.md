@@ -56,19 +56,30 @@ Aircraft Phase Management System manages and track military aircraft while they 
 ### Edit Phase Lane Modal: 
 <img width="700" alt="edit-phase-lane" src="https://user-images.githubusercontent.com/60526884/232667628-c0588d77-136c-44a4-8d55-cce44f43a16a.png">
 
+### Add Same Day Event - April 17, 2023 as of today: 
+<img width="700" alt="add-event-same-day" src="https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png">
+
+### List Only Today's Event - April 17, 2023 as of today: 
+<img width="700" alt="phase-lane-same-day-events" src="https://user-images.githubusercontent.com/60526884/232667653-f11753b0-b170-40be-bf03-107f2d793f79.png">
+
+### Add New Event - November 16, 2022 containing 23 events: 
+<img width="700" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
+
+### Add New Event Report - November 16, 2022 containing 23 events: 
+```
+Formula for manhours used in the day: (sum of all 'time spent' of the day) x (sum of all MLs of the day) 
+A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhours a day. Of that, 1.5 hours per person is dedicated to physical fitness and 1 hour for lunch = 2.5 x 12= 30. 30 - 126 = 96 maintenance manhours per typical day. (Minus any lost time . I.e 2 hours for each person for mahalo days = 2 x 12- 96 or 72 MMH, and such for any half days or trn days etc). Each phase has a list of task (aprox 300) and each task has a corresponding manhours associated with it. 
+```
+<img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
+
+### Add New Event Holiday - July 4th, 2023: 
+<img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
+
 
 
 ### Events For Phase Lane: 
 <img width="700" alt="events-for-phase-lane_2" src="https://user-images.githubusercontent.com/60526884/232667635-cc0c5633-28ae-402b-ba85-2e7f9c98ba38.png">
 
-<img width="700" alt="phase-lane-same-day-events" src="https://user-images.githubusercontent.com/60526884/232667653-f11753b0-b170-40be-bf03-107f2d793f79.png">
-<img width="700" alt="phase-lane" src="https://user-images.githubusercontent.com/60526884/232667656-95870ed6-c0d1-4a59-8f10-593399a066a5.png">
-
-
-<img width="700" alt="add-event-same-day" src="https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png">
-<img width="700" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
-<img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
-<img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
 
 <img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
 <img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
