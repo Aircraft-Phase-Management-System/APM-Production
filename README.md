@@ -19,99 +19,113 @@ Aircraft Phase Management System manages and track military aircraft while they 
 1. email: john@apms.com, password: changeme
 
 #### Sign In Page: 
+Files: *pages/SignIn.jsx*
 <img width="700" alt="login" src="https://user-images.githubusercontent.com/60526884/232670224-e9455e58-c6d4-46ac-837e-3583f1a14d11.png">
-*pages/SignIn.jsx*
 
-#### Sign Up Page: *pages/SignUp.jsx* [New Users]
+#### Sign Up Page: 
+Files: *pages/SignUp.jsx* [New Users]
 <img width="700" alt="signup" src="https://user-images.githubusercontent.com/60526884/232673235-93709266-c789-4782-9797-16908f9c2e9e.png">
 
 #### User Landing Page: 
-*pages/Landing.jsx*
+Files: *pages/Landing.jsx*
 <img width="700" alt="landing-user" src="https://user-images.githubusercontent.com/60526884/232672611-7fb2509d-c62d-4101-a29a-98c1c59134aa.png">
 
-### Calendar Page: 
-*pages/Calendar.jsx*
+#### Calendar Page: 
+Files: *pages/Calendar.jsx*
 <img width="700" alt="calendar" src="https://user-images.githubusercontent.com/60526884/232667624-18afea03-c17b-4317-a577-4822dd655cd5.png">
 
-### Calendar Day Information: 
+#### Calendar Day Information: 
+Files: *pages/Calendar.jsx*
 <img width="700" alt="calendar-day-manhours" src="https://user-images.githubusercontent.com/60526884/232667622-27d9cb38-3cc0-4261-990a-d99f72c22c0f.png">
 
-### Add Timeout Tab: 
-*pages/TimeoutTabs.jsx*, *pages/AddTimeout.jsx*
+#### Add Timeout Tab: 
+Files: *pages/TimeoutTabs.jsx*, *pages/AddTimeout.jsx*
 <img width="700" alt="add-timeouts" src="https://user-images.githubusercontent.com/60526884/232673538-e6891682-68ed-4bb6-9042-324fd76b60bc.png">
 
-### List Timeout Tab: 
-*pages/TimeoutTabs.jsx*, *pages/ListTimeout.jsx*, *components/TimeoutItem.jsx*
+#### List Timeout Tab: 
+Files: *pages/TimeoutTabs.jsx*, *pages/ListTimeout.jsx*, *components/TimeoutItem.jsx*
 <img width="700" alt="list-timeouts" src="https://user-images.githubusercontent.com/60526884/232673998-e60c5022-ca66-4730-ae08-f5c324d20250.png">
 
-### Edit Timeout Modal: 
-*pages/ListTimeout.jsx*, *pages/editTimeout.jsx*
+#### Edit Timeout Modal: 
+Files: *pages/ListTimeout.jsx*, *pages/editTimeout.jsx*
 <img width="700" alt="edit-timeout" src="https://user-images.githubusercontent.com/60526884/232674449-fb579678-9db1-4d12-a158-1151b37fb61a.png">
 
-### Add Phase Lane Modal: 
+#### Add Phase Lane Modal: 
+Files: *pages/AddPhaseLane.jsx*
 <img width="700" alt="add-phase" src="https://user-images.githubusercontent.com/60526884/232667619-d2956238-c48f-4d0c-b838-21a2bc37f35f.png">
 
-### Edit Phase Lane Modal: 
+#### Edit Phase Lane Modal: 
+Files: *pages/EditPhaseLane.jsx*
 <img width="700" alt="edit-phase-lane" src="https://user-images.githubusercontent.com/60526884/232667628-c0588d77-136c-44a4-8d55-cce44f43a16a.png">
 
-### Add Same Day Event - April 17, 2023 as of today: 
+#### Add Same Day Event - April 17, 2023 as of today:
+Files: *AddEventDay.jsx*
 <img width="700" alt="add-event-same-day" src="https://user-images.githubusercontent.com/60526884/232667612-b749ba06-bf79-42c9-9d70-06d0bee7727d.png">
 
-### List Only Today's Event - April 17, 2023 as of today: 
+#### List Only Today's Event - April 17, 2023 as of today: 
+Files: /*EventSameDayItem.jsx*/
 <img width="700" alt="phase-lane-same-day-events" src="https://user-images.githubusercontent.com/60526884/232667653-f11753b0-b170-40be-bf03-107f2d793f79.png">
 
-### Add New Event - November 16, 2022 containing 23 events: 
+#### Add New Event - November 16, 2022 containing 23 events: 
+Files: *AddEventDay.jsx*
 <img width="700" alt="add-new-event" src="https://user-images.githubusercontent.com/60526884/232667614-44fdb37c-a2c4-4761-8e6d-1cb32b66d144.png">
 
-### Add New Event Report - November 16, 2022 containing 23 events: 
+#### Add New Event Report - November 16, 2022 containing 23 events: 
 ```
 Formula for manhours used in the day: (sum of all 'time spent' of the day) x (sum of all MLs of the day) 
-A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhours a day. Of that, 1.5 hours per person is dedicated to physical fitness and 1 hour for lunch = 2.5 x 12= 30. 30 - 126 = 96 maintenance manhours per typical day. (Minus any lost time . I.e 2 hours for each person for mahalo days = 2 x 12- 96 or 72 MMH, and such for any half days or trn days etc). Each phase has a list of task (aprox 300) and each task has a corresponding manhours associated with it. 
+A typical phase team is 12 people assigned a 10.5 hr day = 126 available manhours a day.
+Of that, 1.5 hours per person is dedicated to physical fitness and 1 hour for lunch = 2.5 x 12= 30.
+30 - 126 = 96 maintenance manhours per typical day. (Minus any lost time . 
+I.e 2 hours for each person for mahalo days = 2 x 12- 96 or 72 MMH, and such for any half days or trn days etc).
+Each phase has a list of task (aprox 300) and each task has a corresponding manhours associated with it. 
 ```
 <img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
 
-### Calendar Events - After Added: 
+#### Calendar Events - After Added: 
 <img width="700" alt="event-after-added" src="https://user-images.githubusercontent.com/60526884/232667632-765988e0-6029-46c7-9ce1-bf97f7bd0fac.png">
 
-### Add New Event Holiday - July 4th, 2023: 
+#### Add New Event Holiday - July 4th, 2023: 
 <img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
 
-### Edit Events: 
+###3 Edit Events: 
 <img width="700" alt="edit-events" src="https://user-images.githubusercontent.com/60526884/232667627-60ac1fe0-7381-4f8e-8a0a-ce0481b006d3.png">
 
-### Import CSV File - Events for Phase Lane #02: 
+#### Import CSV File - Events for Phase Lane #02: 
 <img width="700" alt="import-csv" src="https://user-images.githubusercontent.com/60526884/232680355-733d641d-6456-4203-a956-886a6c8184c1.png">
 
-### Events For Phase Lane #02 - After File Imported: 
+#### Events For Phase Lane #02 - After File Imported: 
 <img width="700" alt="events-for-phase-lane_2" src="https://user-images.githubusercontent.com/60526884/232667635-cc0c5633-28ae-402b-ba85-2e7f9c98ba38.png">
 
-### Import CSV File - Fix Dates (Weekends and Holidays): 
-*ImportButton.jsx* contains logic to modify the date of the event in case the file contains dates that falls in weekends, and holidays. The images below shows three new rows for testing. The first row checks for a holiday that contains more than one day, the second row checks for single holidays and the last row checks for weekends.
-
+#### Import CSV File - Fix Dates (Weekends and Holidays): 
+```
+ImportButton.jsx includes logic to change the event's date if the file contains dates that fall on weekends or holidays.
+Three more rows are shown in the images below for testing. The top row looks for holidays with several days, the second
+row looks for holidays with just one day, and the last row looks for weekends.
+```
 <img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
 
-1. Holiday: Christmas Day (2023-12-24 to 2023-12-27)
+`1. Holiday: Christmas Day (2023-12-24 to 2023-12-27)
 Event Initial Date: 2023-12-25
-Event Final Date: 2023-12-28 (*after corrected*)
+Event Final Date: 2023-12-28 (*after corrected*)`
 
 <img width="700" alt="import-check-holidays" src="https://user-images.githubusercontent.com/60526884/232667640-fd4e72a2-6346-43d6-b90e-aed72a4132e3.png">
 
-2. Holiday: Independece Day	(2023-07-04)
+`2. Holiday: Independece Day	(2023-07-04)
 Initial Event Date: 2023-07-04
-Final Event Date: 2023-07-05 (*after corrected*)
+Final Event Date: 2023-07-05 (*after corrected*)`
 <img width="700" alt="import-check-holiday" src="https://user-images.githubusercontent.com/60526884/232667638-fc1307af-de72-4570-ad6e-666d8dd544dc.png">
 
-3. Weekend: 2023-04-09 (Sunday)
+`3. Weekend: 2023-04-09 (Sunday)
 Initial Event Date: 2023-04-09
-Final Event Date: 2023-04-10 (*after corrected*)
+Final Event Date: 2023-04-10 (*after corrected*)`
 
 <img width="700" alt="import-check-weekend" src="https://user-images.githubusercontent.com/60526884/232667643-9767d9af-b555-4572-84ff-d5cc67cf8db2.png">
 
-### List All Events: 
+#### List All Events: 
 It is also possible to see all the events from the system (here we only see events for lane #02 since we only created events for that lane so far):
 <img width="700" alt="all-events" src="https://user-images.githubusercontent.com/60526884/232667621-6779a530-9585-4d18-8001-c3aff8e9e1ab.png">
 
-### Sign Out Page: 
+#### Sign Out Page: 
 *pages/SignOut.jsx*
 <img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 
