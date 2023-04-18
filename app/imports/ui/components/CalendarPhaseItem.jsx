@@ -31,7 +31,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Timeout documents
     const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
 
     return {
@@ -40,24 +40,26 @@ const CalendarPhaseItem = ({ phase, events }) => {
     };
   }, []);
 
-  /* Add another field to the timeouts named color with a standard color red. */
+  // Add another field to the timeouts named color with a standard color red. 
   timeouts.forEach(function (element) {
     element.color = element.type === "Holiday" ? "#c22f25" : "#D7A743";
   });
 
-  /* LIST: List events from the current phase lane and apply filter is needed by user. */
+  // LIST: List events from the current phase lane and apply filter is needed by user. 
   events = _.sortBy(events, "day").reverse();
 
+  // Get only events from the phase lane.
   const eventsFromLane = events.filter((event) => {
     return event.laneID === phase.issue;
   });
 
+  // filter events by title. 
   const filteredData = eventsFromLane.filter((eventday) => {
     const lowerCase = query.toLowerCase();
     return eventday.title.toLowerCase().startsWith(lowerCase);
   });
 
-  /* CALENDAR: Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'. */
+  // CALENDAR: Modify event.day to event.start to show on Calendar, since it recognizes the date as 'start'.
   const formattedCalendarEvents = eventsFromLane.map(
     ({ day: start, title, _id }) => ({
       start,
@@ -66,6 +68,7 @@ const CalendarPhaseItem = ({ phase, events }) => {
     })
   );
 
+  // Merge the two arrays to fit on the calendar. 
   Array.prototype.push.apply(formattedCalendarEvents, timeouts);
 
   const renderSideBar = () => {

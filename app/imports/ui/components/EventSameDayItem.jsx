@@ -5,6 +5,8 @@ import { EventsDay } from "../../api/event_day/EventDayCollection";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 
 const EventSameDayItem = ({ event }) => {
+
+  /** Delete event from the database. */
   const handleDelete = () => {
     const collectionName = EventsDay.getCollectionName();
     const instance = EventsDay.findDoc(event._id);

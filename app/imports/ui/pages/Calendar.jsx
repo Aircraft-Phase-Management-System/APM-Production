@@ -17,7 +17,7 @@ const Calendar = () => {
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Timeout documents
     const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
 
     return {
@@ -28,11 +28,10 @@ const Calendar = () => {
 
   /* Get all the day events */
   const { ready1, events } = useTracker(() => {
-    // Get access to Stuff documents.
     const subscription = EventsDay.subscribeEventDay();
     // Determine if the subscription is ready
     const rdy1 = subscription.ready();
-    // Get the Stuff documents
+    // Get the events documents
     const eventItems = EventsDay.find({}, { sort: { title: 1 } }).fetch();
     return {
       events: eventItems,
@@ -41,11 +40,10 @@ const Calendar = () => {
   }, []);
 
   const { ready2, phases } = useTracker(() => {
-    // Get access to Stuff documents.
     const subscription = Phases.subscribePhase();
     // Determine if the subscription is ready
     const rdy2 = subscription.ready();
-    // Get the Stuff documents
+    // Get the phases documents
     const phaseItems = Phases.find({}, { sort: { name: 1 } }).fetch();
     return {
       phases: phaseItems,

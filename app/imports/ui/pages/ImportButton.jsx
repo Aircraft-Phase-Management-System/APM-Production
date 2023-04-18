@@ -153,11 +153,13 @@ const ImportButton = () => {
         return conflictingDays;
       };
 
+      /* Check whether the day falls on a weekend. */
       const checkWeekendDays = (event) => {
         let year = parseInt(event.Date.substring(0, 4));
         let month = parseInt(event.Date.substring(5, 7)) - 1; // 0-11 months
         let day = parseInt(event.Date.substring(8));
 
+        // Add the date to the object
         let date = new Date();
         date.setFullYear(year);
         date.setMonth(month);
@@ -165,6 +167,7 @@ const ImportButton = () => {
 
         let weekendDaysCounter = 0;
 
+        // while the date is still a weekend, increment by one.
         while (date.getDay() == 6 || date.getDay() == 0) {
           weekendDaysCounter += 1;
           date.setDate(day + weekendDaysCounter);
@@ -173,6 +176,7 @@ const ImportButton = () => {
         return weekendDaysCounter;
       };
 
+      /* Receive the month in number and return the name and the amount of days. */
       const findMonthNamesAndDays = (monthStr) => {
         let monthNamesAndDays = new Map([
           ["01", ["Jan", 31]],
@@ -192,6 +196,7 @@ const ImportButton = () => {
         return monthNamesAndDays.get(monthStr);
       };
 
+      /* Receive the name of the month, and find the month after that one. */
       const getNextMonth = (monthStr) => {
         let nextMonth = new Map([
           ["Jan", ["Feb", "02"]],

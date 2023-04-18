@@ -21,14 +21,12 @@ import {
 
 const bridge = new SimpleSchema2Bridge(EventsDay._schema);
 
-/* Renders the EditHoliday page for editing a single document. */
+/* Renders the EditEventDay page for editing a single document. */
 const EditEventDay = ({ event }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-  //const { _id } = useParams();
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { doc, ready } = useTracker(() => {
     // Get access to Holiday documents.
@@ -79,6 +77,7 @@ const EditEventDay = ({ event }) => {
       .then(() => swal("Success", "Event updated successfully", "success"));
   };
 
+  /* Delete event from the database. */
   const handleDelete = () => {
     const collectionName = EventsDay.getCollectionName();
     const instance = EventsDay.findDoc(event._id);

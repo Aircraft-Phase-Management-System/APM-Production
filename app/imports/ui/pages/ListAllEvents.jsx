@@ -7,7 +7,7 @@ import EventDayItem from "../components/EventDayItem";
 import { Container, Table, Card, InputGroup, Form } from "react-bootstrap";
 import { List, Search } from "react-bootstrap-icons";
 
-/* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
+/* Renders a table containing all of the Events documents. Use <EventDayItem> to render each row. */
 const ListAllEvents = () => {
   const [query, setQuery] = useState("");
 
@@ -15,11 +15,10 @@ const ListAllEvents = () => {
   const { ready, eventsday } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = EventsDay.subscribeEventDay();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Events documents
     const eventsDayItems = EventsDay.find({}, { sort: { day: 1 } }).fetch();
 
     return {

@@ -18,7 +18,7 @@ import {
 
 const bridge = new SimpleSchema2Bridge(Phases._schema);
 
-/* Renders the EditHoliday page for editing a single document. */
+/* Renders the EditPhaseLane page for editing a single document. */
 const EditPhaseLane = ({ phase }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -26,7 +26,7 @@ const EditPhaseLane = ({ phase }) => {
 
   // useTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
   const { doc, ready } = useTracker(() => {
-    // Get access to Holiday documents.
+    // Get access to Phase lane documents.
     const subscription = Phases.subscribePhase();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
@@ -51,6 +51,7 @@ const EditPhaseLane = ({ phase }) => {
       );
   };
 
+  /* Delete the phase lane. */
   const handleDelete = () => {
     const collectionName = Phases.getCollectionName();
     const instance = Phases.findDoc(phase._id);

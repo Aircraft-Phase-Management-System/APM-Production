@@ -9,7 +9,7 @@ import EventDayItem from "../components/EventDayItem";
 import { Container, Table, Card, InputGroup, Form } from "react-bootstrap";
 import { List, Search } from "react-bootstrap-icons";
 
-/* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
+/* Renders a table containing all of the EventDay documents. Use <StuffItem> to render each row. */
 const ListEventDay = () => {
   const [query, setQuery] = useState("");
 
@@ -17,11 +17,10 @@ const ListEventDay = () => {
   const { ready, phases } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = Phases.subscribePhase();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Phases documents
     const phaseItems = Phases.find().fetch();
 
     return {
@@ -33,11 +32,10 @@ const ListEventDay = () => {
   const { ready2, eventsday } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = EventsDay.subscribeEventDay();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Events documents
     const eventsDayItems = EventsDay.find({}, { sort: { day: 1 } }).fetch();
 
     return {
@@ -47,6 +45,7 @@ const ListEventDay = () => {
   }, []);
 
 
+  /* Get the ID of the phase lane through the path of the location and return the issue number of the phase lane. */
   const getLaneIssueNumber = () => {
     const location = useLocation();
     const laneID = location.pathname.substring(16);
@@ -54,6 +53,7 @@ const ListEventDay = () => {
     return phaseLane[0].issue;
   };
 
+  /* Filter only the events for the phase lane. */
   const eventsFromLane = eventsday.filter((eventday) => { return eventday.laneID === getLaneIssueNumber() ; });
 
   const filteredData = eventsFromLane.filter((eventday) => {

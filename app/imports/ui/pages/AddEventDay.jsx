@@ -54,10 +54,11 @@ let hrsUsed = 0;
 let hrsLeft = 0;
 let isDateAHoliday = false;
 
-/* Renders the AddEvent page for adding a document. */
+/** Renders the AddEvent page for adding a document. */
 const AddEventDay = ({ laneID, eventsDay }) => {
   laneID = laneID.issue;
-  /* To open and close modal */
+
+  // To open and close modal
   const [show, setShow] = useState(false);
   const [buttonHide, setButtonHide] = useState(false);
   const handleClose = () => {
@@ -67,14 +68,14 @@ const AddEventDay = ({ laneID, eventsDay }) => {
   };
   const handleShow = () => setShow(true);
 
-  /* Show alert after providing start date and required number of days. */
+  // Show alert after providing start date and required number of days.
   const [showAlert, setShowAlert] = useState(false);
 
   const { ready, timeouts } = useTracker(() => {
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Timeout documents
     const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
 
     return {
@@ -83,29 +84,27 @@ const AddEventDay = ({ laneID, eventsDay }) => {
     };
   }, []);
 
-  /* Save value for date */
+  // Save value for date.
   const setEventDate = (e) => {
     eventDate = e.target.value;
   };
 
-  /* Save value for the start hour. */
+  // Save value for the start hour.
   const setStartHour = (e) => {
     if (e.target.value.length === 4) {
       startHour = e.target.value;
-      console.log(startHour);
     }
   };
 
-  /* Save value for the end hour. */
+  // Save value for the end hour. 
   const setEndHour = (e) => {
     if (e.target.value.length === 4) {
       endHour = e.target.value;
-      console.log(endHour);
     }
     setTimeSpent();
   };
 
-  /* Save value for number of hours. */
+  // Save value for number of hours.
   const setTimeSpent = () => {
     if (endHour != null && startHour != null) {
       let end = endHour;
@@ -118,25 +117,21 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       min = min % 60;
 
       timeSpent = hour * 60 + min;
-      console.log("timeSpent, ", timeSpent);
     }
   };
 
-  /* Function to calculate how many manwork hours are available within the day. */
+  // Function to calculate how many manwork hours are available within the day.
   const calcManWorkHrsAvailability = () => {
     let offHours = 0;
     let manHours = 0;
 
     isDateAHoliday = isDateHol();
 
-    console.log("IsDateHol: ", isDateAHoliday);
-
     if (isDateAHoliday) {
       return;
     } else {
       hrsUsed = calcManWorkHrsUsed();
       hrsUsed = Math.round((hrsUsed + Number.EPSILON) * 100) / 100;
-      console.log("hrsUsed: ", hrsUsed);
 
       /* get all the off hours for mahalo friday. */
       offHours = offHrs();
@@ -146,23 +141,20 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       } else {
         manHours = 96 - offHours * 12;
       }
-      console.log("manHours: ", manHours);
 
-      /* hours in manhours */
+      // hours in manhours
       hrsAvail = manHours;
       hrsLeft = manHours - hrsUsed;
       hrsLeft = Math.round((hrsLeft + Number.EPSILON) * 100) / 100;
-      console.log("hrsLeft: ", hrsLeft);
     }
   };
 
-  /* Function to calculate how many manwork hours were are used in the day.  */
+  // Function to calculate how many manwork hours were are used in the day. 
   const calcManWorkHrsUsed = () => {
-    /* Only maintain the eventsDay that are equal to the input from the user. */
+    // Only maintain the eventsDay that are equal to the input from the user. 
     const allSameDayEvents = _.filter(eventsDay, function (event) {
       return event.day === eventDate;
     });
-    console.log("Same Day Events: ", allSameDayEvents);
 
     /* Sum all the time spent for the day. */
     const sumOfTimeSpent = _.reduce(
@@ -172,7 +164,6 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       },
       0
     );
-    console.log("Sum of Time Spent: ", sumOfTimeSpent);
 
     const sumAllML1s = _.reduce(
       allSameDayEvents,
@@ -195,77 +186,70 @@ const AddEventDay = ({ laneID, eventsDay }) => {
       },
       0
     );
+
     const totalMLs = sumAllML1s + sumAllML2s + sumAllML3s;
-    console.log("Total of MLs: ", totalMLs);
 
     return (sumOfTimeSpent * totalMLs) / 60 / 12;
   };
 
-  /* Const to find the number of conflicting days for a holiday range. */
+  // Const to find is there is a holiday
   const isDateHol = () => {
     const date = Date.parse(eventDate);
 
-    /* Filter all the holidays to check if the parsed dates are the same. */
+    // Filter all the holidays to check if the parsed dates are the same.
     const onlyHolidays = _.filter(timeouts, (timeout) => {
       return timeout.type === "Holiday";
     });
 
-    /* Filter all the holidays that have a start and end day - more than one day. */
+    // Filter all the holidays that have a start and end day - more than one day.
     const allHolsWithRng = _.filter(onlyHolidays, (holiday) => {
       return holiday.start.length === 10 && holiday.end.length === 10;
     });
 
-    /* Filter all the single holidays that doesn't have a end date. */
+    // Filter all the single holidays that doesn't have a end date. 
     const allSingleHols = _.filter(onlyHolidays, (holiday) => {
       return holiday.start.length === 10 && holiday.end === "-";
     });
 
-    /* Zip all the start and end days together for each holiday. */
+    // Zip all the start and end days together for each holiday. 
     const holsRngDates = _.zip(
       _.pluck(allHolsWithRng, "start"),
       _.pluck(allHolsWithRng, "end")
     );
 
-    console.log("Event Date: ", eventDate);
-
-    /* Iterate over holidays with single of days (start only). */
+    // Iterate over holidays with single of days (start only).
     for (let i = 0; i < allSingleHols.length; i++) {
-      /* Get the start and end dates of the current holiday. */
+      // Get the start and end dates of the current holiday. 
       const holDateCurrent = allSingleHols[i].start;
-      console.log("holDateCurrent: ", holDateCurrent);
 
-      if (eventDate === holDateCurrent) {
-        return true;
-      }
+      if (eventDate === holDateCurrent) { return true; }
     }
 
-    /* Iterate over holidays with a range of days (start and end). */
+    // Iterate over holidays with a range of days (start and end). 
     for (let i = 0; i < holsRngDates.length; i++) {
-      /* Get the start and end dates of the current holiday. */
+      // Get the start and end dates of the current holiday. 
       const holStartStr = holsRngDates[i][0];
       const holEndStr = holsRngDates[i][1];
 
-      /* Convert to Date format. */
+      // Convert to Date format.
       const holStart = Date.parse(holStartStr);
       const holEnd = Date.parse(holEndStr);
 
-      if (holStart <= date && date <= holEnd) {
-        return true;
-      }
+      if (holStart <= date && date <= holEnd) { return true; }
     }
 
     return false;
   };
 
+  // Get hours off from mahalo friday
   const offHrs = () => {
     let mahaloHrs = 0;
-    //let trainingHrs = 0;
 
-    /* Filter the Mahalo Friday that occur in the same day. */
+    // Filter the Mahalo Friday that occur in the same day.
     const onlyMahaloDay = _.filter(timeouts, (timeout) => {
       return timeout.type === "Mahalo Day" && timeout.start === eventDate;
     });
-
+    
     if (onlyMahaloDay.length != 0) {
       mahaloHrs = onlyMahaloDay[0].hours;
     }

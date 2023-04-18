@@ -7,7 +7,7 @@ import TimeoutItem from "../components/TimeoutItem";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
 
-/* Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
+/* Renders a table containing all of the Timeout documents. Use <TimeoutItem> to render each row. */
 const ListTimeout = () => {
   const [query, setQuery] = useState("");
 
@@ -15,11 +15,10 @@ const ListTimeout = () => {
   const { ready, timeouts } = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
-    // Get access to Stuff documents.
     const subscription = Timeouts.subscribeTimeout();
     // Determine if the subscription is ready
     const rdy = subscription.ready();
-    // Get the Stuff documents
+    // Get the Timeout documents
     const timeoutItems = Timeouts.find({}, { sort: { title: 1 } }).fetch();
     return {
       timeouts: timeoutItems,

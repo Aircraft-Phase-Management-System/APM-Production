@@ -4,7 +4,6 @@ import EventSameDayItem from "../components/EventSameDayItem";
 import { Accordion, Row, Button, Col } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 
-
 /* Renders a table containing all of the Event documents. Use <EventItem> to render each row. */
 const ListEventAccordion = ({ laneID, eventsDay }) => {
 
@@ -14,6 +13,7 @@ const ListEventAccordion = ({ laneID, eventsDay }) => {
   const formattedDate = new Date(todayDate.getTime() - offset * 60 * 1000)
     .toISOString()
     .split("T")[0];
+    
   const eventsFromToday = _.filter(eventsDay, function (event) {
     return event.day === formattedDate;
   });
@@ -21,7 +21,6 @@ const ListEventAccordion = ({ laneID, eventsDay }) => {
   const eventsFromLane = _.filter(eventsFromToday, function (event) {
     return event.laneID === laneID.issue;
   });
-
 
   return (
     <Accordion flush>
