@@ -67,6 +67,9 @@ I.e 2 hours for each person for mahalo days = 2 x 12- 96 or 72 MMH, and such for
 Each phase has a list of task (aprox 300) and each task has a corresponding manhours associated with it. 
 ```
 <img width="700" alt="add-new-event-report" src="https://user-images.githubusercontent.com/60526884/232667617-c8dd17ef-bbd5-42fc-ae45-dcd436b7d9a8.png">
+`Note: If the event is added in a Mahalo Friday, the number of manhours available will be less. 
+However, if there is a need to modify the amount of off hours for Mahalo friday, e.g modify from 2 hours to 1. 
+This change will show on the report - in this case, the number of manhours available will increase.`
 
 #### Calendar Events - After Added: 
 <img width="700" alt="event-after-added" src="https://user-images.githubusercontent.com/60526884/232667632-765988e0-6029-46c7-9ce1-bf97f7bd0fac.png">
@@ -74,7 +77,7 @@ Each phase has a list of task (aprox 300) and each task has a corresponding manh
 #### Add New Event Holiday - July 4th, 2023: 
 <img width="700" alt="add-new-event-holiday" src="https://user-images.githubusercontent.com/60526884/232667616-d292b1d4-2fa3-47ac-b1fb-52541fc5bdbd.png">
 
-###3 Edit Events: 
+#### Edit Events: 
 <img width="700" alt="edit-events" src="https://user-images.githubusercontent.com/60526884/232667627-60ac1fe0-7381-4f8e-8a0a-ce0481b006d3.png">
 
 #### Import CSV File - Events for Phase Lane #02: 
@@ -91,20 +94,20 @@ row looks for holidays with just one day, and the last row looks for weekends.
 ```
 <img width="700" alt="import-file-csv" src="https://user-images.githubusercontent.com/60526884/232667647-fc86f1ba-934c-4bd3-837f-e00b9ad87e3e.png">
 
-`1. Holiday: Christmas Day (2023-12-24 to 2023-12-27)
-Event Initial Date: 2023-12-25
-Event Final Date: 2023-12-28 (*after corrected*)`
+1. Holiday: `Christmas Day (2023-12-24 to 2023-12-27)`
+- Event Initial Date: `2023-12-25`
+- Event Final Date: `2023-12-28` (*after corrected*)
 
 <img width="700" alt="import-check-holidays" src="https://user-images.githubusercontent.com/60526884/232667640-fd4e72a2-6346-43d6-b90e-aed72a4132e3.png">
 
-`2. Holiday: Independece Day	(2023-07-04)
-Initial Event Date: 2023-07-04
-Final Event Date: 2023-07-05 (*after corrected*)`
+2. Holiday: `Independece Day (2023-07-04)`
+- Initial Event Date: `2023-07-04`
+- Final Event Date: `2023-07-05` (*after corrected*)
 <img width="700" alt="import-check-holiday" src="https://user-images.githubusercontent.com/60526884/232667638-fc1307af-de72-4570-ad6e-666d8dd544dc.png">
 
-`3. Weekend: 2023-04-09 (Sunday)
-Initial Event Date: 2023-04-09
-Final Event Date: 2023-04-10 (*after corrected*)`
+3. Weekend: `2023-04-09 (Sunday)`
+- Initial Event Date: `2023-04-09`
+- Final Event Date: `2023-04-10` (*after corrected*)
 
 <img width="700" alt="import-check-weekend" src="https://user-images.githubusercontent.com/60526884/232667643-9767d9af-b555-4572-84ff-d5cc67cf8db2.png">
 
@@ -115,6 +118,54 @@ It is also possible to see all the events from the system (here we only see even
 #### Sign Out Page: 
 <img width="700" alt="landing" src="https://user-images.githubusercontent.com/60526884/232667649-648c9ca7-ab2e-4e58-b28e-9cf9b5fe6000.png">
 
+## Documentation for Main Functionalities
+#### path: ..imports/ui/pages/
+`AddEventDay.jsx`: Create new events to a phase lane.
+- setTimeSpent: Save value for number of hours from `start` and `end`.
+- calcManWorkHrsAvailability: Calculate how many manwork hours are available within the day.
+- calcManWorkHrsUsed: Calculate how many manwork hours were are used in the day.
+- isDateHol: Find if there is a holiday within that day.
+- offHrs: Find how many hours will not be used, e.g 2 hours for Mahalo Friday.
+
+`AddPhaseLane.jsx`: Create a new phase lane to the calendar.
+setBg: Set random colour to the background.
+
+`AddTimeout.jsx`: Create new holiday, mahalo friday or tranning day.
+
+`Calendar.jsx`: Show all the events, holidays, etc in the calendar.
+
+`Contact.jsx`: Page with information about the sponsor.
+
+`EditEventDay.jsx`: Edit events from the phase lane.
+
+`EditPhaseLane.jsx`: Edit a phase lane - the color, which is assigned randomly, can't be edited.
+
+`EditTimeout.jsx`: Edit holidays, mahalo fridays, and training days.
+
+`ImportButton.jsx`: Import events from a CSV file to a phase lane.
+1. Modify the event data to fit the calendar format.
+2. Find the number of conflicting days from holidays.
+3. Check if day falls in a weekend, if it does, keep looping until day is not a weekend anymore.
+
+`ListAllEvents.jsx`: List all the events of the system.
+- filteredData: Filter events by title based on the input of the user.
+
+`ListEventAccordion.jsx`: According that shows events from lane, event from that day, and add event.
+
+`ListEventDay.jsx`: List only the events from the phase lane.
+
+`ListTimeout.jsx`: List all holidays, mahalo fridays and tranning days.
+
+`TimeoutTabs.jsx`: Tabs that include the add and list timeout functions.
+
+#### path: ..imports/ui/components/
+
+
+## Databse
+#### Default Database
+#### Mongo DB Commands
+
+## :test_tube: Testing (TestCafé)
 
 ## Team Members
 - [Ana Araujo](https://acatarinaoaraujo.github.io/)
