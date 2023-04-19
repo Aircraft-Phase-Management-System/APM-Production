@@ -51,18 +51,23 @@ const EditPhaseLane = ({ phase }) => {
       );
   };
 
-  /* Delete the phase lane. */
-  const handleDelete = () => {
-    const collectionName = Phases.getCollectionName();
-    const instance = Phases.findDoc(phase._id);
-    removeItMethod
-      .callPromise({ collectionName, instance })
-      .catch((error) => swal("Error", error.message, "error"))
-      .then(() => {
-        swal("Success", "Phase Lane deleted successfully", "success");
-        handleClose();
-      });
-  };
+ const handleDelete = () => {
+  const confirmed = window.confirm('Are you sure you want to delete this Phase Lane?');
+  if (confirmed) {
+          const collectionName = Phases.getCollectionName();
+          const instance = Phases.findDoc(phase._id);
+          console.log(phase._id)
+          console.log(instance)
+          removeItMethod
+            .callPromise({ collectionName, instance })
+            .catch((error) => swal("Error", error.message, "error"))
+            .then(() => {
+              swal("Success", "Phase Lane deleted successfully", "success");
+              handleClose();
+            });
+          }
+        };
+  
 
   return ready ? (
     <>
