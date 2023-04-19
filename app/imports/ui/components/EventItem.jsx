@@ -25,21 +25,22 @@ const EventItem = ({ event }) => {
   }, [event._id]);
 
   const handleDelete = () => {
-    const collectionName = Events.getCollectionName();
-    const owner = Meteor.user().username;
-    const instance = Events.findDoc(event._id);
-    console.log(event._id)
-    console.log(instance)
-    removeItMethod
-      .callPromise({ collectionName, instance })
-      .catch((error) => swal("Error", error.message, "error"))
-      .then(() => {
-        swal("Success", "Event deleted successfully", "success");
-      });
-    event._id.event.remove();
-    timeouts.removeIt(event._id.event.title);
+    const confirmed = window.confirm('Are you sure you want to delete this Event?');
+  if (confirmed) {
+            const collectionName = Events.getCollectionName();
+            const owner = Meteor.user().username;
+            const instance = Events.findDoc(event._id);
+            removeItMethod
+              .callPromise({ collectionName, instance })
+              .catch((error) => swal("Error", error.message, "error"))
+              .then(() => {
+                swal("Success", "Event deleted successfully", "success");
+              });
+            event._id.event.remove();
+            timeouts.removeIt(event._id.event.title);
+          };
+        }
       
-  };
 
 
   return ready ? (

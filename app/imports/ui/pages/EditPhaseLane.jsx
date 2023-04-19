@@ -17,6 +17,8 @@ import { updateMethod } from "../../api/base/BaseCollection.methods";
 import { removeItMethod } from "../../api/base/BaseCollection.methods";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { PAGE_IDS } from "../utilities/PageIDs";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const bridge = new SimpleSchema2Bridge(Phases._schema);
 
@@ -55,20 +57,22 @@ const EditPhaseLane = ({ phase }) => {
       );
   };
 
-  const handleDelete = () => {
-    const collectionName = Phases.getCollectionName();
-    const instance = Phases.findDoc(phase._id);
-    console.log(phase._id)
-    console.log(instance)
-    removeItMethod
-      .callPromise({ collectionName, instance })
-      .catch((error) => swal("Error", error.message, "error"))
-      .then(() => {
-        swal("Success", "Phase Lane deleted successfully", "success");
-        handleClose();
-      });
-      
-  };
+ const handleDelete = () => {
+  const confirmed = window.confirm('Are you sure you want to delete this Phase Lane?');
+  if (confirmed) {
+          const collectionName = Phases.getCollectionName();
+          const instance = Phases.findDoc(phase._id);
+          console.log(phase._id)
+          console.log(instance)
+          removeItMethod
+            .callPromise({ collectionName, instance })
+            .catch((error) => swal("Error", error.message, "error"))
+            .then(() => {
+              swal("Success", "Phase Lane deleted successfully", "success");
+              handleClose();
+            });
+          }
+        };
   
 
   return ready ? (

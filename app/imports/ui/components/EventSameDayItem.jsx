@@ -11,6 +11,8 @@ import { removeItMethod } from "../../api/base/BaseCollection.methods";
 const EventSameDayItem = ({ event }) => {
 
   const handleDelete = () => {
+    const confirmed = window.confirm('Are you sure you want to delete this Event?');
+  if (confirmed) {
     const collectionName = EventsDay.getCollectionName();
     const owner = Meteor.user().username;
     const instance = EventsDay.findDoc(event._id);
@@ -24,6 +26,7 @@ const EventSameDayItem = ({ event }) => {
     timeouts.removeIt(event._id.event.title);
       
   };
+}
 
   return (
   <>

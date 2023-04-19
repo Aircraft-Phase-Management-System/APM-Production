@@ -81,6 +81,8 @@ const EditEventDay = ({ event }) => {
   };
 
   const handleDelete = () => {
+    const confirmed = window.confirm('Are you sure you want to delete this Event?');
+  if (confirmed) {
     const collectionName = EventsDay.getCollectionName();
     const instance = EventsDay.findDoc(event._id);
     console.log(event._id);
@@ -93,6 +95,7 @@ const EditEventDay = ({ event }) => {
         handleClose();
       });
   };
+}
 
   return ready ? (
     <>

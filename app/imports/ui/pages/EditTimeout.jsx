@@ -57,6 +57,8 @@ const EditTimeout = ({ timeout }) => {
   };
 
   const handleDelete = () => {
+    const confirmed = window.confirm('Are you sure you want to delete this Timeout?');
+  if (confirmed) {
     const collectionName = Timeouts.getCollectionName();
     const instance = Timeouts.findDoc(timeout._id);
     console.log(timeout._id)
@@ -70,6 +72,7 @@ const EditTimeout = ({ timeout }) => {
       });
       
   };
+}
 
   return ready ? (
     <>
